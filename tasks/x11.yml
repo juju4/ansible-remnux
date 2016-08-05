@@ -1,0 +1,35 @@
+---
+
+- name: Debian | x11 packages install
+  apt: name={{item}} state=present
+  with_items:
+    - xinit
+
+- name: Debian | REMNUX x11 packages install (lxde)
+  apt: name={{item}} state=present
+  with_items:
+    - xinit
+#    - lubuntu-desktop
+#    - lightgdm
+    - lxde
+    - lxdm
+  when: remnux_x11_env is defined and remnux_x11_env
+
+- include: menus-lxde.yml
+  when: remnux_x11_env is defined and remnux_x11_env
+
+#- name: Setting up auto-login for user {{ remnux_user }}
+#  replace: dest='/etc/lxdm/lxdm.conf' regexp={{ item.regexp }} replace={{ item.replace }}
+#  with_items:
+#    - { regexp: '^#\ autologin=dgod', replace: "autologin={{ remnux_user }}" }
+#    - { regexp: '^disable=0$', replace: 'disable=1' }
+#  when: remnux_x11_env is defined and remnux_x11_env == 'remnux'
+- name: Setting up auto-login for user {{ remnux_user }}
+  replace: dest='/etc/lxdm/lxdm.conf' regexp='^#\ autologin=dgod' replace="autologin={{ remnux_user }}"
+  when: remnux_x11_env is defined and remnux_x11_env
+- replace: dest='/etc/lxdm/lxdm.conf' regexp='^disable=0$' replace='disable=1'
+  when: remnux_x11_env is defined and remnux_x11_env
+# Fix an error that would be otherwise seen when the user logs out using the GUI
+- lineinfile: dest=/etc/pam.d/lxdm regexp='^session required pam_systemd.so' line='session required pam_systemd.so'
+  when: remnux_x11_env is defined and remnux_x11_env
+

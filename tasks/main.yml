@@ -1,0 +1,68 @@
+---
+
+- fail: msg="This role is only compatible with Ubuntu"
+  when: ansible_distribution != 'Ubuntu'
+
+- name: Include version-specific variables for Ubuntu.
+  include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml"
+  when: ansible_distribution == 'Ubuntu'
+
+- name: Add authorized keys for {{ remnux_user }} user
+  authorized_key:
+    "user='{{ remnux_user }}' key='{{ item }}'"
+  with_file: "{{ remnux_public_keys }}"
+  when: remnux_public_keys is defined and remnux_public_keys != ""
+  become: yes
+
+- hostname: name={{ remnux_hostname }}
+  when: remnux_hostname is defined
+- name: Add new hostname in /etc/hosts (local resolv)
+  replace:
+    "dest='/etc/hosts' regexp='^127.0.0.1       localhost' replace='127.0.0.1       localhost {{ remnux_hostname }}'"
+  when: remnux_hostname is defined
+
+- name: Restrict sshd config
+  lineinfile: dest=/etc/ssh/sshd_config regexp="{{ item.regexp }}" line="{{ item.line }}" backup=yes
+  with_items:
+    - { regexp: '^PasswordAuthentication', line: 'PasswordAuthentication no' }
+    - { regexp: '^PermitRootLogin', line: 'PermitRootLogin without-password' }
+
+#- name: Include version-specific variables for Ubuntu.
+#  include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml"
+#  when: ansible_distribution == 'Ubuntu'
+
+## https://answers.launchpad.net/ubuntu/+source/snort/+question/262496
+- name: Ubuntu | snort noninteractive settings - dir
+  file: dest=/etc/snort state=directory mode=0755
+- name: Ubuntu | snort noninteractive settings - conf
+  lineinfile: dest=/etc/snort/snort.debian.conf line="{{ item }}" mode=0755 backup=yes create=yes
+  with_items:
+    - 'DEBIAN_SNORT_HOME_NET="any"'
+    - "DEBIAN_SNORT_INTERFACE=\"{{ ansible_default_ipv4.address }}\""
+
+- command: dpkg --print-foreign-architectures
+  register: archi
+  changed_when: False
+  when: ansible_architecture == 'x86_64'
+- name: Ensure both i386/x86_64 architecture support for packages
+  shell: dpkg --add-architecture i386
+  when: ansible_architecture == 'x86_64' and archi.stdout.find('i386') == -1
+
+## https://remnux.org/docs/distro/get/#install-remnux-on-an-existing-system
+- include: remnux.yml
+  when: remnux_do_remnux and (ansible_distribution == 'Ubuntu' and ansible_distribution_version == '14.04' and ansible_architecture == 'x86_64')
+  tags:
+    - remnux
+
+- include: x11.yml
+  when: remnux_do_x11 is defined and remnux_do_x11
+
+- name: Review some limits
+  lineinfile: dest=/etc/security/limits.d/openfiles regexp="^{{ remnux_user }}\t\thard\tnofiles\t\t2048" line="{{ remnux_user }}\t\thard\tnofiles\t\t2048" state=present create=yes
+
+- name: disable GUI upgrade prompt
+  replace: dest=/etc/update-manager/release-upgrades regexp='^Prompt=.*' replace='Prompt=never'
+
+- name: check ruby spec permissions
+  file: "dest=/home/{{ remnux_user }}/.gem/specs state=directory mode=0755 owner={{ remnux_user }}"
+
