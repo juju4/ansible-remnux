@@ -231,3 +231,39 @@ remnux_packages:
     - menu-xdg
     - lxterminal
 
+remnux_pip_packages:
+    - distorm3
+#    - git+https://github.com/gdabah/distorm#egg=distorm3
+    - cryptography
+    - pyelftools
+#    - rekall
+    - jsbeautifier
+    - xortool
+    - cybox
+    - olefile
+## FIXME! compilation fails on digitalocean: 'x86_64-linux-gnu-gcc -pthread -fno-strict-aliasing -DNDEBUG -g -fwrapv -O2 -Wall -Wstrict-prototypes -fPIC -I/usr/include/libxml2 -Isrc/lxml/includes -I/usr/include/python2.7 -c src/lxml/lxml.etree.c -o build/temp.linux-x86_64-2.7/src/lxml/lxml.etree.o -w\n\nx86_64-linux-gnu-gcc: internal compiler error: Killed (program cc1)'
+#    - mitmproxy
+    - pydeep
+    - bottle
+    - pylzma
+    - pyelftools
+    - bitstring
+    - requesocks
+    - rarfile
+    - fuzzywuzzy
+    - docker-py
+
+remnux_docker_images:
+    - remnux/thug
+    - remnux/v8
+    - remnux/crits
+    - remnux/viper
+    - remnux/rekall
+    - remnux/jsdetox
+    - remnux/radare2
+    - remnux/pescanner
+    - remnux/volatility
+    - remnux/mastiff
+    - remnux/maltrieve
+    - remnux/metasploit
+

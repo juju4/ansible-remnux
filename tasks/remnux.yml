@@ -67,26 +67,7 @@
 
 - name: Install pip packages
   pip: name={{item}} state=present
-  with_items:
-    - distorm3
-#    - git+https://github.com/gdabah/distorm#egg=distorm3
-    - cryptography
-    - pyelftools
-#    - rekall
-    - jsbeautifier
-    - xortool
-    - cybox
-    - olefile
-    - mitmproxy
-    - pydeep
-    - bottle
-    - pylzma
-    - pyelftools
-    - bitstring
-    - requesocks
-    - rarfile
-    - fuzzywuzzy
-    - docker-py
+  with_items: "{{ remnux_pip_packages }}"
 
 - name: Install Ruby Gems
   gem: name={{item}} state=present user_install=no
@@ -356,19 +337,7 @@
 - name: pre-download Remnux docker images
 #  docker_image: name="{{ item }}"
   command: "docker pull {{ item }}"
-  with_items:
-    - remnux/thug
-    - remnux/v8
-    - remnux/crits
-    - remnux/viper
-    - remnux/rekall
-    - remnux/jsdetox
-    - remnux/radare2
-    - remnux/pescanner
-    - remnux/volatility
-    - remnux/mastiff
-    - remnux/maltrieve
-    - remnux/metasploit
+  with_items: "{{ remnux_docker_images }}"
 
 # Just for fun
 - debug: msg="Taking the dog for a walk"
