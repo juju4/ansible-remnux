@@ -6,14 +6,19 @@
 - name: Creating remnux generic account
   user: name={{ remnux_user }} password={{ remnux_pass }} groups={{ remnux_user }},sudo append=yes
 
+- name: Add authorized keys for {{ remnux_user }} user
+  authorized_key:
+    "user='{{ remnux_user }}' key='{{ item }}'"
+  with_file: "{{ remnux_public_keys }}"
+  when: remnux_public_keys is defined and remnux_public_keys != ""
+  become: yes
+
 - name: adding REMnux repository
   apt_repository: repo='ppa:remnux/stable' state=present
   when: ansible_distribution == 'Ubuntu'
 - name: adding Inetsim archive signing key
-  apt_key: url=http://www.inetsim.org/inetsim.org-archive-signing-key.asc state=present
+  apt_key: url=http://www.inetsim.org/inetsim-archive-signing-key.asc state=present
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
-  ## Failed to download key at http://www.inetsim.org/inetsim.org-archive-signing-key.asc: Connection failure: timed out
-  ignore_errors: true
 
 - name: adding Inetsim repository
   apt_repository: repo='deb http://www.inetsim.org/debian/ binary/' state=present
@@ -34,7 +39,7 @@
   when: ansible_distribution == 'Ubuntu'
 
 - name: REMNUX | packages install
-  apt: name={{item}} state=present update_cache=yes cache_valid_time=3600
+  apt: name={{item}} state=present update_cache=yes
   with_items: "{{ remnux_packages }}"
   notify:
     - Updating ClamAV Signatures
@@ -42,26 +47,24 @@
   async: 7200
   poll: 300
 
-- name: REMNUX | nginx packages install
-  apt: name={{item}} state=present update_cache=yes cache_valid_time=3600
-  with_items:
-    - nginx
-  when: remnux_webserver is defined and remnux_webserver == 'nginx'
-- name: Stopping Nginx daemon
-  service: name=nginx state=stopped enabled=no
-  when: remnux_webserver is defined and remnux_webserver == 'nginx'
-- name: Configuring Web Server
-  replace:
-    dest=/etc/nginx/nginx.conf regexp='worker_processes 4' replace='worker_processes 1'
-  when: remnux_webserver is defined and remnux_webserver == 'nginx'
-- stat: path=/var/www
-  register: www
-- file: dest=/var/www owner=www-data group=www-data mode=0755 state=directory
-  when: remnux_webserver is defined and remnux_webserver == 'nginx'
-- replace:
-    dest=/etc/nginx/sites-enabled/default regexp='^\s.*location \/ {' replace='\tlocation \/ {\n\t\tautoindex on;'
-  when: remnux_webserver is defined and remnux_webserver == 'nginx'
-- file: src=/usr/share/remnux/fake-forms dest=/var/www/fake-forms state=link
+- block:
+    - name: REMNUX | nginx packages install
+      apt: name={{item}} state=present update_cache=yes cache_valid_time=3600
+      with_items:
+        - nginx
+    - name: Stopping Nginx daemon
+      service: name=nginx state=stopped enabled=no
+    - name: Configuring Web Server
+      replace:
+        dest=/etc/nginx/nginx.conf regexp='worker_processes 4' replace='worker_processes 1'
+    - stat: path=/var/www
+      register: www
+    - file: dest=/var/www owner=www-data group=www-data mode=0755 state=directory
+    - name: enable autoindex inside nginx
+      replace:
+        dest=/etc/nginx/sites-enabled/default regexp='^\s.*location \/ {' replace='\tlocation \/ {\n\t\tautoindex on;'
+#      lineinfile: "dest=/etc/nginx/sites-enabled/default line='\t\tautoindex on;' insertafter='^\\s.*location \\/ {'"
+    - file: src=/usr/share/remnux/fake-forms dest=/var/www/fake-forms state=link
   when: remnux_webserver is defined and remnux_webserver == 'nginx'
 
 
@@ -70,11 +73,8 @@
   with_items: "{{ remnux_pip_packages }}"
 
 - name: Install Ruby Gems
-  gem: name={{item}} state=present user_install=no
-  with_items:
-    - therubyracer
-    - origami
-    - pedump
+  gem: name={{item.n}} version={{ item.v }} state=present user_install=no
+  with_items: "{{ remnux_ruby_gems }}"
 - name: Install Ruby Gems - v2
   gem: name={{item}} state=present user_install=no executable=/usr/bin/gem2.0
   with_items:

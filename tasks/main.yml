@@ -1,18 +1,11 @@
 ---
 
-- fail: msg="This role is only compatible with Ubuntu"
-  when: ansible_distribution != 'Ubuntu'
+- fail: msg="This role is only compatible with Ubuntu x86_64"
+  when: ansible_distribution != 'Ubuntu' or ansible_architecture != 'x86_64'
 
 - name: Include version-specific variables for Ubuntu.
   include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml"
   when: ansible_distribution == 'Ubuntu'
-
-- name: Add authorized keys for {{ remnux_user }} user
-  authorized_key:
-    "user='{{ remnux_user }}' key='{{ item }}'"
-  with_file: "{{ remnux_public_keys }}"
-  when: remnux_public_keys is defined and remnux_public_keys != ""
-  become: yes
 
 - hostname: name={{ remnux_hostname }}
   when: remnux_hostname is defined
@@ -50,7 +43,7 @@
 
 ## https://remnux.org/docs/distro/get/#install-remnux-on-an-existing-system
 - include: remnux.yml
-  when: remnux_do_remnux and (ansible_distribution == 'Ubuntu' and ansible_distribution_version == '14.04' and ansible_architecture == 'x86_64')
+  when: remnux_do_remnux
   tags:
     - remnux
 

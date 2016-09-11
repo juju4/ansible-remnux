@@ -1,2 +1,9 @@
 ---
 
+
+remnux_ruby_gems:
+    - { n: therubyracer, v: 0.12.2 }
+## origami 2.0.0 requires ruby 2.1 not available by default on trusty
+    - { n: origami, v: 2.0.0 }
+    - { n: pedump, v: 0.5.2 }
+
