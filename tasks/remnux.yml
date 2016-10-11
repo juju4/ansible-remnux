@@ -17,7 +17,9 @@
   apt_repository: repo='ppa:remnux/stable' state=present
   when: ansible_distribution == 'Ubuntu'
 - name: adding Inetsim archive signing key
-  apt_key: url=http://www.inetsim.org/inetsim-archive-signing-key.asc state=present
+## inetsim.org seems unreliable
+#  apt_key: url=http://www.inetsim.org/inetsim-archive-signing-key.asc state=present
+  apt_key: data="{{ lookup('file', 'inetsim-archive-signing-key.asc') }}" state=present
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
 - name: adding Inetsim repository
