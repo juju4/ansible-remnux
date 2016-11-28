@@ -5,7 +5,7 @@ set :backend, :exec
 
 describe package('docker-engine') do
   it { should be_installed }
-  its('version') { should >= '1.12.3' }
+  its('version') { should >= '1.12' }
 end
 
 ## https://remnux.org/docs/containers/malware-analysis/
