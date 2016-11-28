@@ -8,7 +8,7 @@ before_install:
  - sudo apt-get install -qq python-apt python-pycurl
   # role dependencies
  - ln -s ansible-remnux ../remnux
- - git clone https://github.com/geerlingguy/ansible-role-java.git ../geerlingguy.java
+ - ./get-dependencies.sh
 ## FIXME! under travis, 'adding REMnux repository' fails whereas it works with kitchen...
 # - sudo add-apt-repository ppa:remnux/stable -y
 ## http://www.webupd8.org/2016/03/fix-failed-to-fetch-google-chrome_3.html
