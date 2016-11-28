@@ -4,7 +4,7 @@
 - name: Creating remnux group
   group: name={{ remnux_user }}
 - name: Creating remnux generic account
-  user: name={{ remnux_user }} password={{ remnux_pass }} groups={{ remnux_user }},sudo append=yes
+  user: name={{ remnux_user }} password={{ remnux_pass }} groups={{ remnux_user }},sudo append=yes shell=/bin/bash
 
 - name: Add authorized keys for {{ remnux_user }} user
   authorized_key:
@@ -32,7 +32,8 @@
 - name: adding Draios repository (sysdig)
   apt_repository: repo='deb http://download.draios.com/stable/deb stable-$(ARCH)/' state=present
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
-- apt_key: url=https://s3.amazonaws.com/download.draios.com/DRAIOS-GPG-KEY.public state=present
+- name: install draios apt gpg key
+  apt_key: url=https://s3.amazonaws.com/download.draios.com/DRAIOS-GPG-KEY.public state=present
 # These repositories are needed for REMnux, but are disabled on some Ubuntu 14.04 base builds, so enable them.
 - name: Enabling Universe repository
   apt_repository: repo='deb http://archive.ubuntu.com/ubuntu trusty universe' state=present
@@ -148,9 +149,12 @@
   with_items:
     - clamav-daemon
     - clamav-freshclam
+
 - name: Stopping Docker daemon
   service: name=docker state=stopped enabled=no
-- lineinfile: dest=/etc/init/docker.override regexp='^manual' line='manual'
+- name: Configure docker in manual mode
+  lineinfile: dest=/etc/init/docker.override regexp='^manual' line='manual'
+
 - name: Stopping InspIRCd daemon
   service: name=inspircd state=stopped enabled=no
 

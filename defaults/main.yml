@@ -17,6 +17,7 @@ remnux_user: remnux
 #remnux_pass: malware
 remnux_pass: '$6$nSMTLQvm$nWuyQyNCqWQ6o028hSNkVP6a8rjLdV74e9zc12kY2GRzgu5h6yPP9JZ.t9iwxjJUDREoJaYKZ7ZF/.BCx4fW7/'
 ## want ssh keys?
+remnux_public_keys: []
 #remnux_public_keys:
 #    - dummykey.pub
 
@@ -53,7 +54,9 @@ remnux_docker_images:
     - remnux/viper
     - remnux/rekall
     - remnux/jsdetox
+## remnux or upstream?
     - remnux/radare2
+    - radare/radare2
     - remnux/pescanner
     - remnux/volatility
     - remnux/mastiff

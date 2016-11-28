@@ -15,4 +15,6 @@ galaxy_info:
 
 dependencies:
   - geerlingguy.java
+## use external role for docker-engine repository
+  - ernestas-poskus.docker
 
