@@ -5,7 +5,7 @@ node {
     try{
         currentBuild.result = "SUCCESS"
         def workspace = pwd()
-        def directory = "remnux"
+        def directory = "juju4.remnux"
 
         stage 'Clean Workspace'
             deleteDir()
