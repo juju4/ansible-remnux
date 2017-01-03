@@ -7,8 +7,11 @@
   include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml"
   when: ansible_distribution == 'Ubuntu'
 
-- hostname: name={{ remnux_hostname }}
+## fails under lxd+systemd, https://github.com/ansible/ansible-modules-core/issues/5582
+- name: set remnux hostname
+  hostname: name={{ remnux_hostname }}
   when: remnux_hostname is defined
+  ignore_errors: true
 - name: Add new hostname in /etc/hosts (local resolv)
   replace:
     "dest='/etc/hosts' regexp='^127.0.0.1       localhost' replace='127.0.0.1       localhost {{ remnux_hostname }}'"

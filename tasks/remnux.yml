@@ -255,7 +255,8 @@
   register: procdot
 - file: dest=/home/{{ remnux_user }}/.procdot/default.pd owner={{ remnux_user }} state=touch
   when: not procdot.stat.exists
-- command: "rsync -ci --chown={{ remnux_user }} /usr/share/remnux/scite.conf /home/{{ remnux_user }}/.SciTEUser.properties"
+- name: use remnux scite user configuration
+  command: "rsync -ci --chown={{ remnux_user }} /usr/share/remnux/scite.conf /home/{{ remnux_user }}/.SciTEUser.properties"
   register: rsync_result
   changed_when: 'rsync_result.stdout != ""'
 - file: path=/var/log/network-miner state=directory mode=1777
@@ -282,15 +283,20 @@
 # Allow non-privileged users to write to Androwarn's Reports directory
 - command: chown -R {{ remnux_user }}:{{ remnux_user }} /opt/remnux-androwarn/Report
 - file: src=/usr/bin/js24 dest=/etc/alternatives/js state=link
-- command: "rsync -ci --chown={{ remnux_user }} /usr/share/remnux/wget.conf /home/{{ remnux_user }}/.wgetrc"
+- name: use remnux wget configuration
+  command: "rsync -ci --chown={{ remnux_user }} /usr/share/remnux/wget.conf /home/{{ remnux_user }}/.wgetrc"
   register: rsync_result
   changed_when: 'rsync_result.stdout != ""'
-- file: dest="/home/{{ remnux_user }}/.wgetrc" owner="{{ remnux_user }}"
-- command: "rsync -ci --chown={{ remnux_user }} /usr/share/remnux/curl.conf /home/{{ remnux_user }}/.curlrc"
+- name: ensure permission of wget user configuration
+  file: dest="/home/{{ remnux_user }}/.wgetrc" owner="{{ remnux_user }}"
+- name: use remnux curl configuration
+  command: "rsync -ci --chown={{ remnux_user }} /usr/share/remnux/curl.conf /home/{{ remnux_user }}/.curlrc"
   register: rsync_result
   changed_when: 'rsync_result.stdout != ""'
-- file: dest="/home/{{ remnux_user }}/.curlrc" owner="{{ remnux_user }}"
-- lineinfile: dest=/home/{{ remnux_user }}/.wxHexEditor regexp='^UpdateCheck=0' line='UpdateCheck=0' owner={{ remnux_user }} create=yes
+- name: ensure permission of curl user configuration
+  file: dest="/home/{{ remnux_user }}/.curlrc" owner="{{ remnux_user }}"
+- name: disable update check of wxHexEditor
+  lineinfile: dest=/home/{{ remnux_user }}/.wxHexEditor regexp='^UpdateCheck=.*' line='UpdateCheck=0' owner={{ remnux_user }} create=yes
 
 - name: Setting LXDE options
 # Set up LXTerminal to start automatically when the user logs in
@@ -344,6 +350,7 @@
 #  docker_image: name="{{ item }}"
   command: "docker pull {{ item }}"
   with_items: "{{ remnux_docker_images }}"
+  ignore_errors: true
 
 # Just for fun
 - debug: msg="Taking the dog for a walk"
