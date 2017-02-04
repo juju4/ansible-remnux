@@ -1,4 +1,5 @@
-[![Build Status](https://travis-ci.org/juju4/ansible-remnux.svg?branch=master)](https://travis-ci.org/juju4/ansible-remnux)
+[![Build Status - Master](https://travis-ci.org/juju4/ansible-remnux.svg?branch=master)](https://travis-ci.org/juju4/ansible-remnux)
+[![Build Status - Devel](https://travis-ci.org/juju4/ansible-remnux.svg?branch=devel)](https://travis-ci.org/juju4/ansible-remnux/branches)
 # Remnux ansible role
 
 Ansible role to setup Remnux on a box.
@@ -12,6 +13,7 @@ http://remnux.org/get-remnux.sh
 It was tested on the following versions:
  * 1.9
  * 2.0
+ * 2.2
 
 ### Operating systems
 
@@ -25,7 +27,7 @@ For example
 ```
 - host: dfir
   roles:
-    - remnux
+    - juju4.remnux
 ```
 
 ## Variables
@@ -54,14 +56,14 @@ Default kitchen config (.kitchen.yml) is lxd-based, while (.kitchen.vagrant.yml)
 
 Once you ensured all necessary roles are present, You can test with:
 ```
-$ cd /path/to/roles/remnux
+$ cd /path/to/roles/juju4.remnux
 $ kitchen verify
 $ kitchen login
 $ KITCHEN_YAML=".kitchen.vagrant.yml" kitchen verify
 ```
 or
 ```
-$ cd /path/to/roles/remnux/test/vagrant
+$ cd /path/to/roles/juju4.remnux/test/vagrant
 $ vagrant up
 $ vagrant ssh
 ```
