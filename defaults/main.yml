@@ -13,9 +13,8 @@ remnux_x11_env: true
 #remnux_webserver: apache2
 remnux_webserver: nginx
 
-remnux_user: remnux
-#remnux_pass: malware
-remnux_pass: '$6$nSMTLQvm$nWuyQyNCqWQ6o028hSNkVP6a8rjLdV74e9zc12kY2GRzgu5h6yPP9JZ.t9iwxjJUDREoJaYKZ7ZF/.BCx4fW7/'
+remnux_user: 'remnux'
+remnux_pass: 'malware'
 ## want ssh keys?
 remnux_public_keys: []
 #remnux_public_keys:
