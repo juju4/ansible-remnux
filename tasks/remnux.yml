@@ -71,9 +71,24 @@
   when: remnux_webserver is defined and remnux_webserver == 'nginx'
 
 
-- name: Install pip packages
-  pip: name={{item}} state=present
-  with_items: "{{ remnux_pip_packages }}"
+- block:
+    - name: Install pip packages
+      pip:
+        name: "{{item}}"
+        state: present
+      with_items: "{{ remnux_pip_packages }}"
+  when: remnux_pip_virtualenv == ''
+- block:
+## avoid conflict on six when installed along sift/trusty
+## if get 'setuptools must be installed to install from a source distribution', try to erase virtualenv and replay
+## https://github.com/pypa/pip/issues/2931#issuecomment-151074766
+    - name: Install pip packages - virtualenv
+      pip:
+        name: "{{item}}"
+        state: present
+        virtualenv: "{{ remnux_pip_virtualenv }}"
+      with_items: "{{ [ 'setuptools', 'pip', 'pycrypto', 'pyparsing', 'appdirs' ] + remnux_pip_packages }}"
+  when: remnux_pip_virtualenv != ''
 
 - name: Install Ruby Gems
   gem: name={{item.n}} version={{ item.v }} state=present user_install=no

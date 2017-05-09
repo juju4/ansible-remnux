@@ -24,6 +24,9 @@ remnux_public_keys: []
 vm: true
 
 
+## if empty, will install globally. might get conflict on six with sift/trusty
+#remnux_pip_virtualenv: ''
+remnux_pip_virtualenv: /usr/local/env-remnux
 remnux_pip_packages:
     - distorm3
 #    - git+https://github.com/gdabah/distorm#egg=distorm3
@@ -41,7 +44,8 @@ remnux_pip_packages:
     - pylzma
     - pyelftools
     - bitstring
-    - requesocks
+## FIXME! ImportError: cannot import name filterfalse
+#    - requesocks
     - rarfile
     - fuzzywuzzy
     - docker-py
