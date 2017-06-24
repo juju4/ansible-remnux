@@ -10,7 +10,8 @@ rolesdir=$(dirname $0)/..
 fi
 
 [ ! -d $rolesdir/geerlingguy.java ] && git clone https://github.com/geerlingguy/ansible-role-java.git $rolesdir/geerlingguy.java
-[ ! -d $rolesdir/ernestas-poskus.docker ] && git clone https://github.com/ernestas-poskus/ansible-role-docker.git $rolesdir/ernestas-poskus.docker
+#[ ! -d $rolesdir/ernestas-poskus.docker ] && git clone https://github.com/ernestas-poskus/ansible-role-docker.git $rolesdir/ernestas-poskus.docker
+[ ! -d $rolesdir/ernestas-poskus.docker ] && git clone https://github.com/jgeusebroek/ansible-role-docker.git $rolesdir/ernestas-poskus.docker
 ## galaxy naming: kitchen fails to transfer symlink folder
 #[ ! -e $rolesdir/juju4.remnux ] && ln -s ansible-remnux $rolesdir/juju4.remnux
 [ ! -e $rolesdir/juju4.remnux ] && cp -R $rolesdir/ansible-remnux $rolesdir/juju4.remnux
