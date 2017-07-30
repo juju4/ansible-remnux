@@ -1,5 +1,6 @@
 ---
 
+remnux_gem_exec: '/usr/bin/gem2.0'
 remnux_ruby_gems:
     - { n: therubyracer, v: 0.12.2 }
 ## origami 2.0.0 requires ruby 2.1 not available by default on trusty

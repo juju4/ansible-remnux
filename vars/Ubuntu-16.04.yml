@@ -1,10 +1,9 @@
 ---
 
-
+remnux_gem_exec: '/usr/bin/gem'
 remnux_ruby_gems:
     - { n: therubyracer, v: 0.12.2 }
-## origami 2.0.0 requires ruby 2.1 not available by default on trusty
-    - { n: origami, v: 2.0.0 }
+    - { n: origami, v: 2.0.3 }
     - { n: pedump, v: 0.5.2 }
 
 remnux_packages:
@@ -93,10 +92,9 @@ remnux_packages:
     - python-dev
     - automake
     - python-pip
+## 2.3
     - ruby
     - ruby-dev
-    - ruby2.0
-    - ruby2.0-dev
     - git
     - subversion
     - mercurial
@@ -149,69 +147,69 @@ remnux_packages:
     - python-yara
     - python-pyasn1
     - python-capstone
-    - remnux-config
-    - remnux-rules
-    - remnux-volatility-plugins
-    - remnux-pylibemu
-    - remnux-pyv8
-    - remnux-v8
     - python-pefile
-    - remnux-python-ssdeep
-    - remnux-libdasm
-    - remnux-scripts
-    - remnux-officedissector
-    - remnux-didier
-    - remnux-xorsearch
-    - remnux-xorstrings
-    - remnux-ioc-writer
-    - remnux-findaes
-    - remnux-nsrllookup
-    - remnux-balbuzard
-    - remnux-signsrch
-    - remnux-bokken
-    - remnux-viper
-    - remnux-pdfxray-lite
-    - remnux-thug
-    - remnux-trid
-    - remnux-rule-editor
-    - remnux-peepdf
-    - remnux-mastiff
-    - remnux-udis86
-    - remnux-vivisect
-    - remnux-edb-debugger
-    - remnux-peframe
-    - remnux-rabcdasm
-    - remnux-jad
-    - remnux-jd-gui
-    - remnux-automater
-    - remnux-network-miner
-    - remnux-python-chilkat
-    - remnux-androwarn
-    - remnux-androguard
-    - remnux-pev
-    - remnux-bashacks
-    - remnux-pype32
-    - remnux-ratdecoders
-    - remnux-procdot
-    - remnux-densityscout
-    - remnux-ragpicker
-    - remnux-vttool
-    - remnux-bytehist
     - libolecf-tools
-    - remnux-burpsuite-free
     - scite
-    - remnux-js-didier
-    - remnux-python-pdns
-    - remnux-flare
-    - remnux-oletools
-    - remnux-captipper
-    - remnux-cfr
-    - remnux-pycdc
-    - remnux-virustotalapi
-    - remnux-dc3-mwcp
     - libemail-outlook-message-perl
     - python-dnspython
-    - remnux-ioc-parser
     - unzip
     - menu-xdg
     - lxterminal
+#    - remnux-config
+#    - remnux-rules
+#    - remnux-volatility-plugins
+#    - remnux-pylibemu
+#    - remnux-pyv8
+#    - remnux-v8
+#    - remnux-python-ssdeep
+#    - remnux-libdasm
+#    - remnux-scripts
+#    - remnux-officedissector
+#    - remnux-didier
+#    - remnux-xorsearch
+#    - remnux-xorstrings
+#    - remnux-ioc-writer
+#    - remnux-findaes
+#    - remnux-nsrllookup
+#    - remnux-balbuzard
+#    - remnux-signsrch
+#    - remnux-bokken
+#    - remnux-viper
+#    - remnux-pdfxray-lite
+#    - remnux-thug
+#    - remnux-trid
+#    - remnux-rule-editor
+#    - remnux-peepdf
+#    - remnux-mastiff
+#    - remnux-udis86
+#    - remnux-vivisect
+#    - remnux-edb-debugger
+#    - remnux-peframe
+#    - remnux-rabcdasm
+#    - remnux-jad
+#    - remnux-jd-gui
+#    - remnux-automater
+#    - remnux-network-miner
+#    - remnux-python-chilkat
+#    - remnux-androwarn
+#    - remnux-androguard
+#    - remnux-pev
+#    - remnux-bashacks
+#    - remnux-pype32
+#    - remnux-ratdecoders
+#    - remnux-procdot
+#    - remnux-densityscout
+#    - remnux-ragpicker
+#    - remnux-vttool
+#    - remnux-bytehist
+#    - remnux-burpsuite-free
+#    - remnux-js-didier
+#    - remnux-python-pdns
+#    - remnux-flare
+#    - remnux-oletools
+#    - remnux-captipper
+#    - remnux-cfr
+#    - remnux-pycdc
+#    - remnux-virustotalapi
+#    - remnux-dc3-mwcp
+#    - remnux-ioc-parser

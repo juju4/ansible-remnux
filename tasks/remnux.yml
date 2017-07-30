@@ -15,7 +15,8 @@
 
 - name: adding REMnux repository
   apt_repository: repo='ppa:remnux/stable' state=present
-  when: ansible_distribution == 'Ubuntu'
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'trusty'
+
 - name: adding Inetsim archive signing key
 ## inetsim.org seems unreliable
 #  apt_key: url=http://www.inetsim.org/inetsim-archive-signing-key.asc state=present
@@ -25,19 +26,23 @@
 - name: adding Inetsim repository
   apt_repository: repo='deb http://www.inetsim.org/debian/ binary/' state=present
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
 - name: adding SIFT repository
   apt_repository: repo='ppa:sift/stable' state=present
   when: ansible_distribution == 'Ubuntu'
+
 ## Alternative: trusty-backports?
 - name: adding Draios repository (sysdig)
   apt_repository: repo='deb http://download.draios.com/stable/deb stable-$(ARCH)/' state=present
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
 - name: install draios apt gpg key
   apt_key: url=https://s3.amazonaws.com/download.draios.com/DRAIOS-GPG-KEY.public state=present
 # These repositories are needed for REMnux, but are disabled on some Ubuntu 14.04 base builds, so enable them.
+
 - name: Enabling Universe repository
   apt_repository: repo='deb http://archive.ubuntu.com/ubuntu trusty universe' state=present
-  when: ansible_distribution == 'Ubuntu'
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'trusty'
 - replace: dest=/etc/apt/sources.list regexp='^#(\.*)multiverse$' replace='\1multiverse' backup=yes
   when: ansible_distribution == 'Ubuntu'
 
@@ -49,6 +54,7 @@
 ## Note: sometimes can be longer than 1h ...
   async: 7200
   poll: 300
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'trusty'
 
 - block:
     - name: REMNUX | nginx packages install
@@ -94,7 +100,11 @@
   gem: name={{item.n}} version={{ item.v }} state=present user_install=no
   with_items: "{{ remnux_ruby_gems }}"
 - name: Install Ruby Gems - v2
-  gem: name={{item}} state=present user_install=no executable=/usr/bin/gem2.0
+  gem:
+    name: "{{item}}"
+    state: present
+    user_install: no
+    executable: "{{ remnux_gem_exec }}"
   with_items:
     - passivedns-client
 
