@@ -148,7 +148,7 @@ remnux_packages:
     - python-pyasn1
     - python-capstone
     - python-pefile
-    - libolecf-tools
+    - libolecf-utils
     - scite
     - libemail-outlook-message-perl
     - python-dnspython
