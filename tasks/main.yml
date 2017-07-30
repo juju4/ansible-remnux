@@ -53,8 +53,9 @@
 - name: Review some limits
   lineinfile: dest=/etc/security/limits.d/openfiles regexp="^{{ remnux_user }}\t\thard\tnofiles\t\t2048" line="{{ remnux_user }}\t\thard\tnofiles\t\t2048" state=present create=yes
 
-- name: disable GUI upgrade prompt
+- name: Trusty | disable GUI upgrade prompt
   replace: dest=/etc/update-manager/release-upgrades regexp='^Prompt=.*' replace='Prompt=never'
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'trusty'
 
 - name: check ruby spec permissions
   file: "dest=/home/{{ remnux_user }}/.gem/specs state=directory mode=0755 owner={{ remnux_user }}"
