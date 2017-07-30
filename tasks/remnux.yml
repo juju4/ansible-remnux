@@ -66,7 +66,12 @@
       replace:
         dest=/etc/nginx/sites-enabled/default regexp='^\s.*location \/ {' replace='\tlocation \/ {\n\t\tautoindex on;'
 #      lineinfile: "dest=/etc/nginx/sites-enabled/default line='\t\tautoindex on;' insertafter='^\\s.*location \\/ {'"
-    - file: src=/usr/share/remnux/fake-forms dest=/var/www/fake-forms state=link
+    - name: symlink remnux fake-forms into webserver root tree
+      file:
+        src: /usr/share/remnux/fake-forms
+        dest: /var/www/fake-forms
+        state: link
+        force: yes
   when: remnux_webserver is defined and remnux_webserver == 'nginx'
 
 
@@ -113,6 +118,7 @@
     dest=/home/{{ remnux_user }}/.passivedns-client owner={{ remnux_user }} group={{ remnux_user }} mode=600 state=touch
   when: not passivednsclient.stat.exists
 
+## FIXME! use juju4.firefox-config role
 - name: Downloading Firefox extensions
   get_url: url={{ item.url }} dest={{ item.dest }}
   with_items:
@@ -133,7 +139,8 @@
 - name: Installing Firefox extensions
   command: unzip -q -d /usr/lib/firefox/browser/extensions/{E6C1199F-E687-42da-8C24-E7770CC3AE66} /tmp/addon-1237-latest.xpi
   when: not addon1237.stat.exists
-- command: unzip -q -d /usr/lib/firefox/browser/extensions/firebug@software.joehewitt.com /tmp/addon-1843-latest.xpi
+- name: Uncompress firebug firefox extension
+  command: unzip -q -d /usr/lib/firefox/browser/extensions/firebug@software.joehewitt.com /tmp/addon-1843-latest.xpi
   when: not addon1843.stat.exists
 
 - name: Updating REMnux documentation
