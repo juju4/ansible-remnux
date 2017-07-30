@@ -112,7 +112,7 @@ remnux_packages:
     - libtool
     - bison
     - flex
-    - libboost1.54-all-dev
+    - libboost-all-dev
     - libncurses5-dev
     - python-setuptools
     - python-magic
