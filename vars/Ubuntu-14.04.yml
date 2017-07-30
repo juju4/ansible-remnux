@@ -62,7 +62,8 @@ remnux_packages:
     - python-volatility
     - ssdeep
 #    - docker.io	## use latest docker-engine
-    - docker-engine
+#    - docker-engine
+    - docker-ce
     - libimage-exiftool-perl
     - scalpel
     - liblzma-dev

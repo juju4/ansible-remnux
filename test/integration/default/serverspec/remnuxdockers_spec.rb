@@ -3,7 +3,7 @@ require 'serverspec'
 # Required by serverspec
 set :backend, :exec
 
-describe package('docker-engine') do
+describe package('docker-ce') do
   it { should be_installed }
   its('version') { should >= '1.12' }
 end
