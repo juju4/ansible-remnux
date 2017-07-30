@@ -44,7 +44,7 @@
 ## Note: sometimes can be longer than 1h ...
   async: 7200
   poll: 300
-  when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'trusty'
+  when: ansible_distribution == 'Ubuntu'
 
 - include: inetsim.yml
   when: remnux_with_inetsim
