@@ -20,8 +20,8 @@ remnux_packages:
     - imagemagick
 ## sift is using gdb so keep same, else keep installing/removing
 ## but remnux-bashacks wants gdb-minimal and not gdb...
-    - gdb-minimal
-#    - gdb
+#    - gdb-minimal
+    - gdb
     - python-hachoir-core
     - python-hachoir-regex
     - python-hachoir-metadata
