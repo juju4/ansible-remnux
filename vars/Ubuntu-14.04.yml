@@ -43,7 +43,7 @@ remnux_packages:
     - bulk-extractor
     - ltrace
     - strace
-    - inetsim
+#    - inetsim
     - openssh-client
     - openssh-server
     - foremost

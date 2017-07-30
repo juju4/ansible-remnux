@@ -10,6 +10,11 @@
   apt_repository: repo='deb http://www.inetsim.org/debian/ binary/' state=present
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
+- name: Ensure Inetsim package is present
+  package:
+    name: inetsim
+    state: present
+
 - stat: path=/etc/inetsim/inetsim.conf
   register: inetsim
 - name: Configuring INetSim
