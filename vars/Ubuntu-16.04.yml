@@ -70,7 +70,7 @@ remnux_packages:
     - libwebkitgtk-1.0-0
     - lame
     - ibus
-    - libgif4
+    - libgif7
     - libgif-dev
     - libjpeg-turbo8
     - libjpeg-turbo8-dev
