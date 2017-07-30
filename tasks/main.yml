@@ -17,26 +17,8 @@
     "dest='/etc/hosts' regexp='^127.0.0.1       localhost' replace='127.0.0.1       localhost {{ remnux_hostname }}'"
   when: remnux_hostname is defined
 
-- name: Restrict sshd config
-  lineinfile: dest=/etc/ssh/sshd_config regexp="{{ item.regexp }}" line="{{ item.line }}" backup=yes
-  with_items:
-    - { regexp: '^PasswordAuthentication', line: 'PasswordAuthentication no' }
-    - { regexp: '^PermitRootLogin', line: 'PermitRootLogin without-password' }
-
-#- name: Include version-specific variables for Ubuntu.
-#  include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml"
-#  when: ansible_distribution == 'Ubuntu'
-
-## https://answers.launchpad.net/ubuntu/+source/snort/+question/262496
-- name: Ubuntu | snort noninteractive settings - dir
-  file: dest=/etc/snort state=directory mode=0755
-- name: Ubuntu | snort noninteractive settings - conf
-  lineinfile: dest=/etc/snort/snort.debian.conf line="{{ item }}" mode=0755 backup=yes create=yes
-  with_items:
-    - 'DEBIAN_SNORT_HOME_NET="any"'
-    - "DEBIAN_SNORT_INTERFACE=\"{{ ansible_default_ipv4.address }}\""
-
-- command: dpkg --print-foreign-architectures
+- name: Check support of foreign architectures
+  command: dpkg --print-foreign-architectures
   register: archi
   changed_when: False
   when: ansible_architecture == 'x86_64'
@@ -49,6 +31,21 @@
   when: remnux_do_remnux
   tags:
     - remnux
+
+- name: Restrict sshd config
+  lineinfile: dest=/etc/ssh/sshd_config regexp="{{ item.regexp }}" line="{{ item.line }}" backup=yes
+  with_items:
+    - { regexp: '^PasswordAuthentication', line: 'PasswordAuthentication no' }
+    - { regexp: '^PermitRootLogin', line: 'PermitRootLogin without-password' }
+
+## https://answers.launchpad.net/ubuntu/+source/snort/+question/262496
+- name: Ubuntu | snort noninteractive settings - dir
+  file: dest=/etc/snort state=directory mode=0755
+- name: Ubuntu | snort noninteractive settings - conf
+  lineinfile: dest=/etc/snort/snort.debian.conf line="{{ item }}" mode=0755 backup=yes create=yes
+  with_items:
+    - 'DEBIAN_SNORT_HOME_NET="any"'
+    - "DEBIAN_SNORT_INTERFACE=\"{{ ansible_default_ipv4.address }}\""
 
 - include: x11.yml
   when: remnux_do_x11 is defined and remnux_do_x11
