@@ -178,12 +178,14 @@
 - file: dest=/var/log/thug mode=777 state=directory
 - name: Disabling Tor
   service: name=tor state=stopped enabled=no
-- lineinfile: dest=/etc/ssh/sshd_config regexp='^UseDNS no' line='UseDNS no'
+- name: sshd | disable usedns
+  lineinfile: dest=/etc/ssh/sshd_config regexp='^UseDNS no' line='UseDNS no'
 - name: Stopping ClamAV daemons
   service: name={{ item }} state=stopped enabled=no
   with_items:
     - clamav-daemon
     - clamav-freshclam
+  ignore_errors: true
 
 - name: Stopping Docker daemon
   service: name=docker state=stopped enabled=no
