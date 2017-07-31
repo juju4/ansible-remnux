@@ -158,13 +158,16 @@
 - name: Map remnux docs inside webserver root
   file: src=/usr/share/remnux/docs path=/var/www/remnux-docs state=link
 
-- stat: path=/usr/share/remnux
-  register: remnuxshare
-- block:
-    - name: Map remnux docs on desktop
-      file: src=/usr/share/remnux/remnux-tools-sheet.html path='/home/{{ remnux_user }}/Desktop/REMnux Tools Sheet' state=link
-    - file: src=/usr/share/remnux/remnux-malware-analysis-tips.pdf path='/home/{{ remnux_user }}/Desktop/REMnux CheatSheet' state=link
-  when: remnuxshare.stat.exists
+- stat: path=/usr/share/remnux/remnux-tools-sheet.html
+  register: remnuxshare1
+- name: Map remnux tools sheet on desktop
+  file: src=/usr/share/remnux/remnux-tools-sheet.html path='/home/{{ remnux_user }}/Desktop/REMnux Tools Sheet' state=link
+  when: remnuxshare1.stat.exists
+- stat: path=/usr/share/remnux/remnux-malware-analysis-tips.pdf
+  register: remnuxshare2
+- name: Map remnux tips on desktop
+  file: src=/usr/share/remnux/remnux-malware-analysis-tips.pdf path='/home/{{ remnux_user }}/Desktop/REMnux CheatSheet' state=link
+  when: remnuxshare2.stat.exists
 
 - name: Creating mount points and other directories
   file:
