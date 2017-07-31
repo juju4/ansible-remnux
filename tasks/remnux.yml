@@ -19,7 +19,6 @@
 
 - name: adding SIFT repository
   apt_repository: repo='ppa:sift/stable' state=present
-  when: ansible_distribution == 'Ubuntu'
 
 ## Alternative: trusty-backports?
 - name: adding Draios repository (sysdig)
@@ -33,8 +32,8 @@
 - name: Enabling Universe repository
   apt_repository: repo='deb http://archive.ubuntu.com/ubuntu trusty universe' state=present
   when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'trusty'
-- replace: dest=/etc/apt/sources.list regexp='^#(\.*)multiverse$' replace='\1multiverse' backup=yes
-  when: ansible_distribution == 'Ubuntu'
+- name: Enabling multiverse repository
+  replace: dest=/etc/apt/sources.list regexp='^#(\.*)multiverse$' replace='\1multiverse' backup=yes
 
 - name: REMNUX | packages install
   apt: name={{item}} state=present update_cache=yes
@@ -44,7 +43,6 @@
 ## Note: sometimes can be longer than 1h ...
   async: 7200
   poll: 300
-  when: ansible_distribution == 'Ubuntu'
 
 - include: inetsim.yml
   when: remnux_with_inetsim
