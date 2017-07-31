@@ -152,10 +152,19 @@
     version=gh-pages
   when: not remnuxdocs.stat.exists
 - file: src=/usr/share/applications/show-remnux-docs.desktop path='/home/{{ remnux_user }}/Desktop/REMnux Docs' state=link force=yes
-- file: path=/var/www state=directory mode=0755
-- file: src=/usr/share/remnux/docs path=/var/www/remnux-docs state=link
-- file: src=/usr/share/remnux/remnux-tools-sheet.html path='/home/{{ remnux_user }}/Desktop/REMnux Tools Sheet' state=link
-- file: src=/usr/share/remnux/remnux-malware-analysis-tips.pdf path='/home/{{ remnux_user }}/Desktop/REMnux CheatSheet' state=link
+
+- name: Ensure /var/www directory exists
+  file: path=/var/www state=directory mode=0755
+- name: Map remnux docs inside webserver root
+  file: src=/usr/share/remnux/docs path=/var/www/remnux-docs state=link
+
+- stat: path=/usr/share/remnux
+  register: remnuxshare
+- block:
+    - name: Map remnux docs on desktop
+      file: src=/usr/share/remnux/remnux-tools-sheet.html path='/home/{{ remnux_user }}/Desktop/REMnux Tools Sheet' state=link
+    - file: src=/usr/share/remnux/remnux-malware-analysis-tips.pdf path='/home/{{ remnux_user }}/Desktop/REMnux CheatSheet' state=link
+  when: remnuxshare.stat.exists
 
 - name: Creating mount points and other directories
   file:
