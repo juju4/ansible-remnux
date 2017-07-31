@@ -38,13 +38,17 @@ remnux_packages:
     - torsocks
     - pdftk
     - libemu2
-    - clamav-daemon
-    - bulk-extractor
+#    - clamav-daemon
+    - clamav
+    - clamav-base
+    - clamav-freshclam
+#    - bulk-extractor
     - ltrace
     - strace
 #    - inetsim
     - openssh-client
     - openssh-server
+    - openssh-sftp-server
     - foremost
     - ngrep
     - unhide
@@ -68,6 +72,7 @@ remnux_packages:
     - scalpel
     - liblzma-dev
     - libwebkitgtk-1.0-0
+    - libenchant1c2a
     - lame
     - ibus
     - libgif7
@@ -79,7 +84,7 @@ remnux_packages:
     - libsm6:i386
     - lib32stdc++6
     - gtk2-engines:i386
-    - gtk2-engines-*:i386
+#    - gtk2-engines-*:i386
 #    - libgtkmm-2.4-1c2:i386
     - libcanberra-gtk-module:i386
     - libxslt1-dev
@@ -91,6 +96,7 @@ remnux_packages:
     - python
     - python-dev
     - automake
+    - autoconf
     - python-pip
 ## 2.3
     - ruby
@@ -151,6 +157,13 @@ remnux_packages:
     - libolecf-utils
     - scite
     - libemail-outlook-message-perl
+    - libemail-mime-contenttype-perl
+    - libemail-mime-perl
+    - libemail-sender-perl
+    - libemail-simple-perl
+    - libio-all-perl
+    - libio-string-perl
+    - libole-storage-lite-perl
     - python-dnspython
     - unzip
     - menu-xdg
