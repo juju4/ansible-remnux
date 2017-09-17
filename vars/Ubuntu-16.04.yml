@@ -168,6 +168,7 @@ remnux_packages:
     - unzip
     - menu-xdg
     - lxterminal
+    - kmod
 #    - remnux-config
 #    - remnux-rules
 #    - remnux-volatility-plugins

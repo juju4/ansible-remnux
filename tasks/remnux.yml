@@ -180,8 +180,13 @@
 
 - debug: var=ansible_virtualization_type
 - name: Modules exclusions for VM
-#  lineinfile: dest=/etc/modprobe.d/blacklist.conf regexp={{ item.regexp }} line="{{ item.line }}" state={{ item.state | default("present") }}
-  lineinfile: dest=/etc/modprobe.d/blacklist.conf regexp="{{ item.regexp }}" line="{{ item.line }}"
+  lineinfile:
+    dest: /etc/modprobe.d/blacklist.conf
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    state: present
+    create: yes
+    backup: yes
   with_items:
     - { regexp: "^blacklist i2c-piix4", line: "blacklist i2c-piix4" }
     - { regexp: "^blacklist intel_rapl", line: "blacklist intel_rapl" }
