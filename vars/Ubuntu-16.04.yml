@@ -154,7 +154,8 @@ remnux_packages:
     - python-pyasn1
     - python-capstone
     - python-pefile
-    - libolecf-utils
+## disabling as potential conflict with gift ppa
+#    - libolecf-utils
     - scite
     - libemail-outlook-message-perl
     - libemail-mime-contenttype-perl

@@ -197,7 +197,8 @@ remnux_packages:
     - remnux-ragpicker
     - remnux-vttool
     - remnux-bytehist
-    - libolecf-tools
+## disabling as potential conflict with gift ppa
+#    - libolecf-tools
     - remnux-burpsuite-free
     - scite
     - remnux-js-didier
