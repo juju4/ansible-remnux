@@ -215,10 +215,19 @@
     - CAP_NET_RAW+eip
     - CAP_NET_ADMIN+eip
 - name: Configuring sudo
-  lineinfile: "dest=/etc/sudoers regexp='^{{ remnux_user }} ALL=NOPASSWD: ALL' line='{{ remnux_user }} ALL=NOPASSWD: ALL'"
+  lineinfile:
+    dest: /etc/sudoers
+    regexp: "^{{ remnux_user }} ALL=NOPASSWD: ALL"
+    line: "{{ remnux_user }} ALL=NOPASSWD: ALL"
+    backup: yes
+    validate: 'visudo -cf %s'
 ## why ?
 - replace:
-    dest='/etc/sudoers' regexp='^Defaults        secure_path=' replace='#Defaults       secure_path='
+    dest: '/etc/sudoers'
+    regexp: '^Defaults        secure_path='
+    replace: '#Defaults       secure_path='
+    backup: yes
+    validate: 'visudo -cf %s'
 
 #- name: Setting up aliases
 #  lineinfile: dest=/home/{{ remnux_user }}/.bash_aliases regexp={{ item.regexp }} line="{{ item.line }}" state={{ item.state | default("present") }}
