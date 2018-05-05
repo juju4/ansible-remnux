@@ -1,0 +1,23 @@
+---
+
+- name: Stopping Docker daemon
+  service: name=docker state=stopped enabled=no
+
+- name: Configure docker in manual mode
+  lineinfile: dest=/etc/init/docker.override regexp='^manual' line='manual'
+
+- name: Adding remnux account to docker group
+  user: name={{ remnux_user }} groups=docker append=yes
+
+- block:
+    - name: Ensure docker service is enabled and started
+      service: name=docker state=started
+      when: remnux_docker_images != []
+
+## https://remnux.org/docs/containers/malware-analysis/
+    - name: pre-download Remnux docker images
+    #  docker_image: name="{{ item }}"
+      command: "docker pull {{ item }}"
+      with_items: "{{ remnux_docker_images }}"
+      ignore_errors: true
+  when: not (ansible_virtualization_type is defined and ansible_virtualization_type == "docker")

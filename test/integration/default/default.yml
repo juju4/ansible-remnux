@@ -1,6 +1,12 @@
 ---
 
 - hosts: all
+  vars:
+    - remnux_docker_enable: false
+  pre_tasks:
+    - set_fact:
+        remnux_docker_images: []
+      when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == '18.04'
   roles:
     - juju4.remnux
 

@@ -14,10 +14,11 @@ It was tested on the following versions:
  * 1.9
  * 2.0
  * 2.2
+ * 2.5
 
 ### Operating systems
 
-Tested with vagrant only on Ubuntu 14.04 for now but should work on 12.04 and similar debian based systems (at the exception of some ppa dependencies)
+Tested on Ubuntu 14.04 for now but should work on 12.04 and similar debian based systems (at the exception of some ppa dependencies), Ubuntu 16.04 and pre-support of 18.04 (missing upstream repositories)
 
 ## Example Playbook
 

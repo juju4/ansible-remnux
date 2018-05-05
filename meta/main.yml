@@ -7,8 +7,9 @@ galaxy_info:
   platforms:
   - name: Ubuntu
     versions:
-  #  - precise
     - trusty
+    - xenial
+    - bionic
   galaxy_tags:
   - system
   - security
@@ -17,4 +18,4 @@ dependencies:
   - geerlingguy.java
 ## use external role for docker-engine repository
 #  - ernestas-poskus.docker
-  - jgeusebroek.docker
+#  - jgeusebroek.docker
