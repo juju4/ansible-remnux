@@ -229,3 +229,5 @@ remnux_packages:
 #    - remnux-virustotalapi
 #    - remnux-dc3-mwcp
 #    - remnux-ioc-parser
+# To ensure ansible_default_ipv4 is populated
+    - iproute2

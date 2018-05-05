@@ -41,6 +41,9 @@
 ## https://answers.launchpad.net/ubuntu/+source/snort/+question/262496
 - name: Ubuntu | snort noninteractive settings - dir
   file: dest=/etc/snort state=directory mode=0755
+- name: Ensure ansible variable is populated
+  setup:
+    filter: ansible_default_ipv4
 - name: Ubuntu | snort noninteractive settings - conf
   lineinfile: dest=/etc/snort/snort.debian.conf line="{{ item }}" mode=0755 backup=yes create=yes
   with_items:
