@@ -60,7 +60,7 @@ remnux_packages:
     - libmozjs-24-bin
     - rhino
     - python-crypto
-    - python-volatility
+#    - python-volatility
     - ssdeep
 #    - docker.io	## use latest docker-engine
 #    - docker-engine
