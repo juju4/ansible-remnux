@@ -123,6 +123,7 @@ remnux_packages:
     - libpcre++-dev
     - automake
     - openssl
+    - libssl-dev
     - python-qt4
     - libzmq3-dev
     - libc6-dev-i386
