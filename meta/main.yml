@@ -18,4 +18,4 @@ dependencies:
   - geerlingguy.java
 ## use external role for docker-engine repository
 #  - ernestas-poskus.docker
-  - jgeusebroek.docker
+#  - jgeusebroek.docker
