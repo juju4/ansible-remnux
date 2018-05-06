@@ -40,7 +40,7 @@ remnux_packages:
     - pdftk
     - libemu2
     - clamav-daemon
-    - bulk-extractor
+#    - bulk-extractor
     - ltrace
     - strace
 #    - inetsim
