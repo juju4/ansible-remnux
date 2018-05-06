@@ -17,9 +17,15 @@
   file: src=/usr/share/remnux/remnux-malware-analysis-tips.pdf path='/home/{{ remnux_user }}/Desktop/REMnux CheatSheet' state=link
   when: remnuxshare2.stat.exists
 
-- name: Setting up symlinks, permissions and options for useful tools
+- name: Check if vol.py exists
+  stat:
+    path: /usr/bin/vol.py
+  register: volpy
+- name: Setting up symlinks - vol.py
   file: src=/usr/bin/vol.py dest=/usr/bin/vol state=link
-- file: src=/dev/null dest=/etc/inspircd/inspircd.motd
+  when: volpy.stat.exists
+- name: Setting up symlinks, permissions and options for useful tools
+  file: src=/dev/null dest=/etc/inspircd/inspircd.motd
 - file: src=/usr/share/remnux/inspircd.conf dest=/etc/inspircd/inspircd.conf
 - replace: dest=/etc/epic5/servers regexp='^irc.debian.org:6667' replace='localhost:6667'
 - file: src=/usr/share/remnux/scalpel.conf dest=/etc/scalpel/scalpel.conf
