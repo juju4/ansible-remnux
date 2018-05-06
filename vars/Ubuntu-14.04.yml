@@ -151,7 +151,7 @@ remnux_packages:
     - python-capstone
     - remnux-config
     - remnux-rules
-    - remnux-volatility-plugins
+#    - remnux-volatility-plugins
     - remnux-pylibemu
     - remnux-pyv8
     - remnux-v8
