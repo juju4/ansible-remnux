@@ -53,9 +53,17 @@ remnux_pip_packages:
     - rarfile
     - fuzzywuzzy
     - docker-py
-
-remnux_pip_packages_version:
-    - { name: cryptography, version: 2.0.3 }
+    - r2pipe
+    - pypdns
+    - pypssl
+    - ipwhois
+    - shodan
+    - pygeoip
+    - docker-compose
+    - ndg-httpsclient
+    - dnslib
+    - netfilterqueue
+    - pydivert
 
 remnux_docker_images:
     - remnux/thug

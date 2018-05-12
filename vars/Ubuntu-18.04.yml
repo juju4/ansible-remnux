@@ -231,3 +231,6 @@ remnux_packages:
 #    - remnux-ioc-parser
 # To ensure ansible_default_ipv4 is populated
     - iproute2
+
+remnux_pip_packages_version:
+    - { name: cryptography, version: 2.2.2 }

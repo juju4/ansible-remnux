@@ -228,3 +228,6 @@ remnux_packages:
 #    - remnux-virustotalapi
 #    - remnux-dc3-mwcp
 #    - remnux-ioc-parser
+
+remnux_pip_packages_version:
+    - { name: cryptography, version: 2.2.2 }
