@@ -217,6 +217,8 @@ remnux_packages:
     - unzip
     - menu-xdg
     - lxterminal
+# pip: netfilterqueue
+    - libnetfilter-queue-dev
 
 remnux_pip_packages_version:
     - { name: cryptography, version: 2.0.3 }
