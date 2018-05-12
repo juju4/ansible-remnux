@@ -32,38 +32,6 @@ vm: true
 ## if empty, will install globally. might get conflict on six with sift/trusty
 #remnux_pip_virtualenv: ''
 remnux_pip_virtualenv: /usr/local/env-remnux
-remnux_pip_packages:
-    - distorm3
-#    - git+https://github.com/gdabah/distorm#egg=distorm3
-    - pyelftools
-#    - rekall
-    - jsbeautifier
-    - xortool
-    - cybox
-    - olefile
-## FIXME! compilation fails on digitalocean: 'x86_64-linux-gnu-gcc -pthread -fno-strict-aliasing -DNDEBUG -g -fwrapv -O2 -Wall -Wstrict-prototypes -fPIC -I/usr/include/libxml2 -Isrc/lxml/includes -I/usr/include/python2.7 -c src/lxml/lxml.etree.c -o build/temp.linux-x86_64-2.7/src/lxml/lxml.etree.o -w\n\nx86_64-linux-gnu-gcc: internal compiler error: Killed (program cc1)'
-#    - mitmproxy
-    - pydeep
-    - bottle
-    - pylzma
-    - pyelftools
-    - bitstring
-## FIXME! ImportError: cannot import name filterfalse
-#    - requesocks
-    - rarfile
-    - fuzzywuzzy
-    - docker-py
-    - r2pipe
-    - pypdns
-    - pypssl
-    - ipwhois
-    - shodan
-    - pygeoip
-    - docker-compose
-    - ndg-httpsclient
-    - dnslib
-    - netfilterqueue
-    - pydivert
 
 remnux_docker_images:
     - remnux/thug
