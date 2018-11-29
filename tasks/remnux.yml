@@ -125,31 +125,6 @@
     dest=/home/{{ remnux_user }}/.passivedns-client owner={{ remnux_user }} group={{ remnux_user }} mode=600 state=touch
   when: not passivednsclient.stat.exists
 
-## FIXME! use juju4.firefox-config role
-- name: Downloading Firefox extensions
-  get_url: url={{ item.url }} dest={{ item.dest }}
-  with_items:
-    - { url: 'https://addons.mozilla.org/firefox/downloads/latest/1237/addon-1237-latest.xpi', dest: '/tmp/addon-1237-latest.xpi' }
-    - { url: 'https://addons.mozilla.org/firefox/downloads/latest/1843/addon-1843-latest.xpi', dest: '/tmp/addon-1843-latest.xpi' }
-## Not figured how to do em:id extraction directly from ansible...
-#- name: Installing Firefox extensions
-#  command: "{{ item }}"
-#  with_items:
-#    - unzip -q -d /usr/lib/firefox/browser/extensions/{E6C1199F-E687-42da-8C24-E7770CC3AE66} /tmp/addon-1237-latest.xpi
-#    - unzip -q -d /usr/lib/firefox/browser/extensions/firebug@software.joehewitt.com /tmp/addon-1843-latest.xpi
-- file: dest=/usr/lib/firefox-addons/extensions state=directory mode=0755
-- file: src=/usr/lib/firefox-addons/extensions dest=/usr/lib/firefox/browser/extensions state=link
-- stat: path=/usr/lib/firefox/browser/extensions/{E6C1199F-E687-42da-8C24-E7770CC3AE66}
-  register: addon1237
-- stat: path=/usr/lib/firefox/browser/extensions/firebug@software.joehewitt.com
-  register: addon1843
-- name: Installing Firefox extensions
-  command: unzip -q -d /usr/lib/firefox/browser/extensions/{E6C1199F-E687-42da-8C24-E7770CC3AE66} /tmp/addon-1237-latest.xpi
-  when: not addon1237.stat.exists
-- name: Uncompress firebug firefox extension
-  command: unzip -q -d /usr/lib/firefox/browser/extensions/firebug@software.joehewitt.com /tmp/addon-1843-latest.xpi
-  when: not addon1843.stat.exists
-
 - name: Updating REMnux documentation
   file: path=/home/{{ remnux_user }}/Desktop owner={{ remnux_user }} state=directory mode=0700
 - stat: path=/usr/share/remnux/docs/sitemap.xml
