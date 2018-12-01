@@ -135,7 +135,7 @@
   file: path=/home/{{ remnux_user }}/.config/lxpanel/LXDE/panels state=directory mode=0755 owner={{ remnux_user }}
 - name: Configure remnux app-launch-bar.conf
   copy:
-    src: "/usr/share/remnux/app-launch-bar.conf
+    src: "/usr/share/remnux/app-launch-bar.conf"
     dest: "/home/{{ remnux_user }}/.config/lxpanel/LXDE/panels/panel"
     owner: "{{ remnux_user }}"
 # Disable console messages that are shown when the system boots up and shuts down
