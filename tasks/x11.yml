@@ -1,12 +1,12 @@
 ---
 
 - name: Debian | x11 packages install
-  apt: name={{item}} state=present
+  apt: name={{ item }} state=present
   with_items:
     - xinit
 
 - name: Debian | REMNUX x11 packages install (lxde)
-  apt: name={{item}} state=present
+  apt: name={{ item }} state=present
   with_items:
     - xinit
 #    - lubuntu-desktop
@@ -31,4 +31,3 @@
 - name: ensure lxdm service is started and enabled
   service: name=lxdm state=started enabled=yes
   when: remnux_x11_env is defined and remnux_x11_env
-

@@ -1,6 +1,7 @@
 ---
 
-- fail: msg="This role is only compatible with Ubuntu x86_64"
+- name: FATAL
+  fail: msg="This role is only compatible with Ubuntu x86_64"
   when: ansible_distribution != 'Ubuntu' or ansible_architecture != 'x86_64'
 
 - name: Include version-specific variables for Ubuntu.
@@ -68,4 +69,3 @@
 
 - name: check ruby spec permissions
   file: "dest=/home/{{ remnux_user }}/.gem/specs state=directory mode=0755 owner={{ remnux_user }}"
-

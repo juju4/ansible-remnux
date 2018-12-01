@@ -59,9 +59,11 @@
     - name: Configuring Web Server
       replace:
         dest=/etc/nginx/nginx.conf regexp='worker_processes 4' replace='worker_processes 1'
-    - stat: path=/var/www
+    - name: Check if /var/www exists
+      stat: path=/var/www
       register: www
-    - file: dest=/var/www owner=www-data group=www-data mode=0755 state=directory
+    - name: Ensure /var/www exists
+      file: dest=/var/www owner=www-data group=www-data mode=0755 state=directory
     - name: enable autoindex inside nginx
       replace:
         dest=/etc/nginx/sites-enabled/default regexp='^\s.*location \/ {' replace='\tlocation \/ {\n\t\tautoindex on;'
@@ -116,13 +118,14 @@
 - name: Tweaking Ruby Gems Configuration
   file:
 # This is needed for Origami PDF Walker
-    dest=/home/{{ remnux_user }}/.local/share owner={{ remnux_user }} group={{ remnux_user }} mode=700 state=directory
+    dest=/home/{{ remnux_user }}/.local/share owner={{ remnux_user }} group={{ remnux_user }} mode=0700 state=directory
 # This is needed for passivedns-client
-- stat: path=/home/{{ remnux_user }}/.passivedns-client
+- name: Check if user passivedns-client config exists
+  stat: path=/home/{{ remnux_user }}/.passivedns-client
   register: passivednsclient
 - name: Review permissions for passivedns client
   file:
-    dest=/home/{{ remnux_user }}/.passivedns-client owner={{ remnux_user }} group={{ remnux_user }} mode=600 state=touch
+    dest=/home/{{ remnux_user }}/.passivedns-client owner={{ remnux_user }} group={{ remnux_user }} mode=0600 state=touch
   when: not passivednsclient.stat.exists
 
 ## FIXME! use juju4.firefox-config role
@@ -152,7 +155,8 @@
 
 - name: Updating REMnux documentation
   file: path=/home/{{ remnux_user }}/Desktop owner={{ remnux_user }} state=directory mode=0700
-- stat: path=/usr/share/remnux/docs/sitemap.xml
+- name: Check /usr/share/remnux/docs/sitemap.xml exists
+  stat: path=/usr/share/remnux/docs/sitemap.xml
   register: remnuxdocs
 - name: git clone Remnux docs
   git:
@@ -160,7 +164,8 @@
     dest=/usr/share/remnux/docs
     version=gh-pages
   when: not remnuxdocs.stat.exists
-- file: src=/usr/share/applications/show-remnux-docs.desktop path='/home/{{ remnux_user }}/Desktop/REMnux Docs' state=link force=yes
+- name: Symlink remnux docs on desktop
+  file: src=/usr/share/applications/show-remnux-docs.desktop path='/home/{{ remnux_user }}/Desktop/REMnux Docs' state=link force=yes
 
 - name: Ensure /var/www directory exists
   file: path=/var/www state=directory mode=0755
@@ -169,11 +174,12 @@
 
 - name: Creating mount points and other directories
   file:
-    dest={{ item }} mode=755 state=directory
+    dest={{ item }} mode=0755 state=directory
   with_items:
     - /mnt/cdrom
     - /opt
-- file: dest=/var/log/thug mode=777 state=directory
+- name: Ensure /var/log/thug directory exists
+  file: dest=/var/log/thug mode=0777 state=directory
 - name: Disabling Tor
   service: name=tor state=stopped enabled=no
 - name: sshd | disable usedns
@@ -203,7 +209,7 @@
   when: vm is defined and vm
 
 - name: Debian | Remove some packages
-  apt: name={{item}} state=absent
+  apt: name={{ item }} state=absent
   with_items:
     - xscreensaver
     - xscreensaver-data
@@ -232,7 +238,8 @@
     backup: yes
     validate: 'visudo -cf %s'
 ## why ?
-- replace:
+- name: Disable sudoers secure_path
+  replace:
     dest: '/etc/sudoers'
     regexp: '^Defaults        secure_path='
     replace: '#Defaults       secure_path='
@@ -252,7 +259,8 @@
   replace:
     dest=/etc/environment regexp='^PATH="/usr/local/sbin' replace='PATH="/opt/remnux-procdot:/opt/remnux-ratdecoders:/opt/remnux-rabcdasm:/opt/remnux-vivisect:/opt/remnux-peepdf:/opt/remnux-thug/src:/opt/remnux-pdfxray-lite:/opt/remnux-viper:/opt/remnux-oletools:/opt/remnux-balbuzard:/opt/remnux-didier:/opt/remnux-scripts:/usr/local/sbin'
 
-- stat: path=/etc/apt/apt.conf.d/10periodic
+- name: Check if /etc/apt/apt.conf.d/10periodic exists
+  stat: path=/etc/apt/apt.conf.d/10periodic
   register: apt10periodic
 - name: disable automatic updates
   replace:
@@ -280,8 +288,8 @@
   command: apt-get autoremove -qq -y
   when: "'packages will be REMOVED' in check_autoremove.stdout"
 #- command: apt-get clean
-- stat: path=/usr/share/remnux
+- name: Check /usr/share/remnux exists
+  stat: path=/usr/share/remnux
   register: shareremnux
 - debug: msg="Some REMnux packages didn't install."
   when: not shareremnux.stat.isdir
-

@@ -15,7 +15,8 @@
     name: inetsim
     state: present
 
-- stat: path=/etc/inetsim/inetsim.conf
+- name: Check /etc/inetsim/inetsim.conf is present
+  stat: path=/etc/inetsim/inetsim.conf
   register: inetsim
 - name: Configuring INetSim
   replace:
@@ -28,7 +29,8 @@
 #      sed -i -e "/start_service $INETSIM_SERVICE/ s/^#*/#/" /etc/inetsim/inetsim.conf
 #    done
 
-- stat: path=/var/log/inetsim/main.log
+- name: Check /var/log/inetsim/main.log is present
+  stat: path=/var/log/inetsim/main.log
   register: inetsimlog
 - name: Configuring INetSim logs
   file: dest="{{ item }}" mode=0664 state=touch

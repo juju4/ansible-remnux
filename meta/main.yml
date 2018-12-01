@@ -1,5 +1,6 @@
 ---
 galaxy_info:
+  role_name: remnux
   author: juju4
   description: Remnux role for Ubuntu-based system
   license: BSD

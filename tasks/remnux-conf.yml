@@ -6,12 +6,14 @@
     dest: /var/www/fake-forms
     state: link
 
-- stat: path=/usr/share/remnux/remnux-tools-sheet.html
+- name: Check /usr/share/remnux/remnux-tools-sheet.html exists
+  stat: path=/usr/share/remnux/remnux-tools-sheet.html
   register: remnuxshare1
 - name: Map remnux tools sheet on desktop
   file: src=/usr/share/remnux/remnux-tools-sheet.html path='/home/{{ remnux_user }}/Desktop/REMnux Tools Sheet' state=link
   when: remnuxshare1.stat.exists
-- stat: path=/usr/share/remnux/remnux-malware-analysis-tips.pdf
+- name: Check /usr/share/remnux/remnux-malware-analysis-tips.pdf exists
+  stat: path=/usr/share/remnux/remnux-malware-analysis-tips.pdf
   register: remnuxshare2
 - name: Map remnux tips on desktop
   file: src=/usr/share/remnux/remnux-malware-analysis-tips.pdf path='/home/{{ remnux_user }}/Desktop/REMnux CheatSheet' state=link
@@ -26,40 +28,62 @@
   when: volpy.stat.exists
 - name: Setting up symlinks, permissions and options for useful tools
   file: src=/dev/null dest=/etc/inspircd/inspircd.motd
-- file: src=/usr/share/remnux/inspircd.conf dest=/etc/inspircd/inspircd.conf
-- replace: dest=/etc/epic5/servers regexp='^irc.debian.org:6667' replace='localhost:6667'
-- file: src=/usr/share/remnux/scalpel.conf dest=/etc/scalpel/scalpel.conf
-- file: path=/home/{{ remnux_user }}/.wireshark owner={{ remnux_user }} state=directory mode=0700
-- command: "rsync -ci --chown={{ remnux_user }} /usr/share/remnux/wireshark-preferences /home/{{ remnux_user }}/.wireshark/preferences"
-  register: rsync_result
-  changed_when: 'rsync_result.stdout != ""'
-- file: path=/home/{{ remnux_user }}/.procdot owner={{ remnux_user }} state=directory mode=0700
-- command: "rsync -ci --chown={{ remnux_user }} /usr/share/remnux/procdot.conf /home/{{ remnux_user }}/.procdot/.procdot"
-  register: rsync_result
-  changed_when: 'rsync_result.stdout != ""'
-- stat: path=/home/{{ remnux_user }}/.procdot/default.pd
+- name: Configure remnux /etc/inspircd/inspircd.conf
+  file: src=/usr/share/remnux/inspircd.conf dest=/etc/inspircd/inspircd.conf
+- name: Ensure epic5 configured with localhost
+  replace: dest=/etc/epic5/servers regexp='^irc.debian.org:6667' replace='localhost:6667'
+- name: Configure remnux scalpel.conf
+  file: src=/usr/share/remnux/scalpel.conf dest=/etc/scalpel/scalpel.conf
+- name: Ensure wireshark user config directory exists
+  file: path=/home/{{ remnux_user }}/.wireshark owner={{ remnux_user }} state=directory mode=0700
+- name: Configure remnux wireshark user config
+  copy:
+    src: /usr/share/remnux/wireshark-preferences
+    dest: "/home/{{ remnux_user }}/.wireshark/preferences"
+    owner: "{{ remnux_user }}"
+- name: Ensure procdot user directory exists
+  file: path=/home/{{ remnux_user }}/.procdot owner={{ remnux_user }} state=directory mode=0700
+  copy:
+    src: /usr/share/remnux/procdot.conf
+    dest: "/home/{{ remnux_user }}/.procdot/.procdot"
+    owner: "{{ remnux_user }}"
+- name: Check user procdot config exists
+  stat: path=/home/{{ remnux_user }}/.procdot/default.pd
   register: procdot
-- file: dest=/home/{{ remnux_user }}/.procdot/default.pd owner={{ remnux_user }} state=touch
+- name: touch user procdot config
+  file: dest=/home/{{ remnux_user }}/.procdot/default.pd owner={{ remnux_user }} state=touch
   when: not procdot.stat.exists
 - name: use remnux scite user configuration
-  command: "rsync -ci --chown={{ remnux_user }} /usr/share/remnux/scite.conf /home/{{ remnux_user }}/.SciTEUser.properties"
-  register: rsync_result
-  changed_when: 'rsync_result.stdout != ""'
-- file: path=/var/log/network-miner state=directory mode=1777
-- file: src=/var/log/network-miner dest=/opt/remnux-network-miner/AssembledFiles state=link force=yes
-- file: path=/opt/remnux-network-miner/Captures state=directory mode=1777
-- file: path=/home/{{ remnux_user }}/.config/codef00.com state=directory mode=755 owner={{ remnux_user }}
-- stat: path=/usr/share/remnux/edb.conf
+  copy:
+    src: /usr/share/remnux/scite.conf
+    dest: "/home/{{ remnux_user }}/.SciTEUser.properties"
+    owner: "{{ remnux_user }}"
+- name: Check /var/log/network-miner directory exists
+  file: path=/var/log/network-miner state=directory mode=1777
+- name: Symlink network-miner log directory
+  file: src=/var/log/network-miner dest=/opt/remnux-network-miner/AssembledFiles state=link force=yes
+- name: Check /opt/remnux-network-miner/Captures directory exists
+  file: path=/opt/remnux-network-miner/Captures state=directory mode=1777
+- name: Check user edb config directory exists
+  file: path=/home/{{ remnux_user }}/.config/codef00.com state=directory mode=0755 owner={{ remnux_user }}
+- name: Check /usr/share/remnux/edb.conf is present
+  stat: path=/usr/share/remnux/edb.conf
   register: edb
-- stat: path="/home/{{ remnux_user }}/.config/codef00.com/edb.conf"
+- name: Check user edb config is present
+  stat: path="/home/{{ remnux_user }}/.config/codef00.com/edb.conf"
   register: edbu
-- command: "rsync -ci --chown={{ remnux_user }} /usr/share/remnux/edb.conf /home/{{ remnux_user }}/.config/codef00.com/edb.conf"
-  register: rsync_result
-  changed_when: 'rsync_result.stdout != ""'
+- name: Configure remnux edb config
+  copy:
+    src: /usr/share/remnux/edb.conf
+    dest: "/home/{{ remnux_user }}/.config/codef00.com/edb.conf"
+    owner: "{{ remnux_user }}"
   when: edb.stat.exists and not edbu.stat.exists
-- file: path=/home/{{ remnux_user }}/.config/codef00.com/edb-symbols state=directory mode=755 owner={{ remnux_user }}
-- file: path=/home/{{ remnux_user }}/.config/codef00.com/edb-session state=directory mode=755 owner={{ remnux_user }}
-- replace: dest="/home/{{ remnux_user }}/.config/codef00.com/edb.conf" regexp="{{ item.regexp }}" replace="{{ item.replace }}"
+- name: Ensure user edb symbols directory exists
+  file: path=/home/{{ remnux_user }}/.config/codef00.com/edb-symbols state=directory mode=0755 owner={{ remnux_user }}
+- name: Ensure user edb session directory exists
+  file: path=/home/{{ remnux_user }}/.config/codef00.com/edb-session state=directory mode=0755 owner={{ remnux_user }}
+- name: Check user edb configuration
+   replace: dest="/home/{{ remnux_user }}/.config/codef00.com/edb.conf" regexp="{{ item.regexp }}" replace="{{ item.replace }}"
   with_items:
     - { regexp: /usr/bin/xterm, replace: /usr/bin/lxterminal }
     - { regexp: '^directory.symbol.path=$', replace: 'directory.symbol.path=/home/{{ remnux_user }}/.config/codef00.com/edb-symbols' }
@@ -67,18 +91,22 @@
     - { regexp: '^directory.plugin.path=$', replace: 'directory.plugin.path=/lib64/edb' }
     - { regexp: '^directory.plugin.path=$HOME$', replace: 'directory.plugin.path=/lib64/edb' }
 # Allow non-privileged users to write to Androwarn's Reports directory
-- command: chown -R {{ remnux_user }}:{{ remnux_user }} /opt/remnux-androwarn/Report
-- file: src=/usr/bin/js24 dest=/etc/alternatives/js state=link
+- name: validate recursively permissions of /opt/remnux-androwarn/Report
+  command: chown -R {{ remnux_user }}:{{ remnux_user }} /opt/remnux-androwarn/Report
+- name: Symlink js24 in /etc/alternatives/hs
+  file: src=/usr/bin/js24 dest=/etc/alternatives/js state=link
 - name: use remnux wget configuration
-  command: "rsync -ci --chown={{ remnux_user }} /usr/share/remnux/wget.conf /home/{{ remnux_user }}/.wgetrc"
-  register: rsync_result
-  changed_when: 'rsync_result.stdout != ""'
+  copy:
+    src: /usr/share/remnux/wget.conf
+    dest: "/home/{{ remnux_user }}/.wgetrc"
+    owner: "{{ remnux_user }}"
 - name: ensure permission of wget user configuration
   file: dest="/home/{{ remnux_user }}/.wgetrc" owner="{{ remnux_user }}"
 - name: use remnux curl configuration
-  command: "rsync -ci --chown={{ remnux_user }} /usr/share/remnux/curl.conf /home/{{ remnux_user }}/.curlrc"
-  register: rsync_result
-  changed_when: 'rsync_result.stdout != ""'
+  copy:
+    src: /usr/share/remnux/curl.conf
+    dest: "/home/{{ remnux_user }}/.curlrc"
+    owner: "{{ remnux_user }}"
 - name: ensure permission of curl user configuration
   file: dest="/home/{{ remnux_user }}/.curlrc" owner="{{ remnux_user }}"
 - name: disable update check of wxHexEditor
@@ -86,42 +114,65 @@
 
 - name: Setting LXDE options
 # Set up LXTerminal to start automatically when the user logs in
-  file: path=/home/{{ remnux_user }}/.config/autostart state=directory mode=700 owner={{ remnux_user }}
-- command: "rsync -ci --chown={{ remnux_user }} /var/lib/menu-xdg/applications/menu-xdg/X-Debian-Applications-Terminal-Emulators-lxterminal.desktop /home/{{ remnux_user }}/.config/autostart/X-Debian-Applications-Terminal-Emulators-lxterminal.desktop"
-  register: rsync_result
-  changed_when: 'rsync_result.stdout != ""'
-- file: path=/home/{{ remnux_user }}/.config/lxterminal state=directory mode=755 owner={{ remnux_user }}
-- command: "rsync -ci --chown={{ remnux_user }} /usr/share/remnux/lxterminal.conf /home/{{ remnux_user }}/.config/lxterminal/lxterminal.conf"
-  register: rsync_result
-  changed_when: 'rsync_result.stdout != ""'
+  file: path=/home/{{ remnux_user }}/.config/autostart state=directory mode=0700 owner={{ remnux_user }}
+- name: Configure lxterminal autostart
+  copy:
+    owner: "{{ remnux_user }}"
+    src: /var/lib/menu-xdg/applications/menu-xdg/X-Debian-Applications-Terminal-Emulators-lxterminal.desktop
+    dest: "/home/{{ remnux_user }}/.config/autostart/X-Debian-Applications-Terminal-Emulators-lxterminal.desktop"
+- name: Ensure user lxterminal directory exists
+  file: path=/home/{{ remnux_user }}/.config/lxterminal state=directory mode=0755 owner={{ remnux_user }}
+- name: Configure remnux lxterminal.conf
+  copy:
+    src: /usr/share/remnux/lxterminal.conf
+    dest: "/home/{{ remnux_user }}/.config/lxterminal/lxterminal.conf"
+    owner: "{{ remnux_user }}"
 # Set up LXDE app launch bar options, including which icons should be displayed there
-- file: path=/home/{{ remnux_user }}/.config/lxpanel/LXDE/panels state=directory mode=755 owner={{ remnux_user }}
-- command: "rsync -ci --chown={{ remnux_user }} /usr/share/remnux/app-launch-bar.conf /home/{{ remnux_user }}/.config/lxpanel/LXDE/panels/panel"
-  register: rsync_result
-  changed_when: 'rsync_result.stdout != ""'
+- name: Ensure user LXDE panels directory exists
+  file: path=/home/{{ remnux_user }}/.config/lxpanel/LXDE/panels state=directory mode=0755 owner={{ remnux_user }}
+- name: Configure remnux app-launch-bar.conf
+  copy:
+    src: "/usr/share/remnux/app-launch-bar.conf
+    dest: "/home/{{ remnux_user }}/.config/lxpanel/LXDE/panels/panel"
+    owner: "{{ remnux_user }}"
 # Disable console messages that are shown when the system boots up and shuts down
-- replace: dest=/etc/init/rc.conf regexp='^console output' replace='#console output'
+- name: Disable console output in rc.conf
+  replace: dest=/etc/init/rc.conf regexp='^console output' replace='#console output'
 
 # Set up the desktop to user the REMnux logo
-- file: path=/home/{{ remnux_user }}/.config/pcmanfm/LXDE/panels state=directory mode=755 owner={{ remnux_user }}
-- stat: path=/home/{{ remnux_user }}/.config/pcmanfm/LXDE/pcmanfm.conf
+- name: Ensure LXDE panels directory exists
+  file: path=/home/{{ remnux_user }}/.config/pcmanfm/LXDE/panels state=directory mode=0755 owner={{ remnux_user }}
+- name: Check src pcmanfm.conf exists
+  stat: path=/home/{{ remnux_user }}/.config/pcmanfm/LXDE/pcmanfm.conf
   register: pcmanfmconf
-- stat: path=/usr/share/remnux/pcmanfm.conf
+- name: Check target pcmanfm.conf
+  stat: path=/usr/share/remnux/pcmanfm.conf
   register: pcmanfmconforig
-- command: "rsync -ci --chown={{ remnux_user }} /usr/share/remnux/pcmanfm.conf /home/{{ remnux_user }}/.config/pcmanfm/LXDE/pcmanfm.conf"
-  register: rsync_result
-  changed_when: 'rsync_result.stdout != ""'
+- name: Install Remnux pcmanfm config
+  copy:
+    src: /usr/share/remnux/pcmanfm.conf
+    dest: "/home/{{ remnux_user }}/.config/pcmanfm/LXDE/pcmanfm.conf"
+    owner: "{{ remnux_user }}"
   when: not pcmanfmconf.stat.exists and pcmanfmconforig.stat.exists and remnux_x11_background is defined and remnux_x11_background
 
 # Set up links to match the setup of older REMnux versions
 - name: Applying REMnux backwards compatibility settings
-  file: path=/usr/local/etc state=directory mode=755
-- file: src=/usr/share/remnux/objects.js dest=/usr/local/etc/def.js state=link
-- file: path=/usr/local/MalwareCrawler state=directory mode=755
-- file: src=/opt/remnux-ragpicker dest=/usr/local/MalwareCrawler/src state=link
-- stat: path=/media/cdrom
+  file: path=/usr/local/etc state=directory mode=0755
+
+- name: Symlink objects.js
+  file: src=/usr/share/remnux/objects.js dest=/usr/local/etc/def.js state=link
+
+- name: Ensure MalwareCrawler directory exists
+  file: path=/usr/local/MalwareCrawler state=directory mode=0755
+
+- name: Symlink ragpicker
+  file: src=/opt/remnux-ragpicker dest=/usr/local/MalwareCrawler/src state=link
+
+- name: Check /media/cdrom
+  stat: path=/media/cdrom
   register: mcdrom
 - file: src=/mnt/cdrom dest=/media/cdrom state=link
   when: not mcdrom.stat.exists
-- file: src=/opt/remnux-balbuzard dest=/usr/local/balbuzard state=link
 
+- name: Symlink balbuzard
+  file: src=/opt/remnux-balbuzard dest=/usr/local/balbuzard state=link
