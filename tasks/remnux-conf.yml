@@ -83,7 +83,10 @@
 - name: Ensure user edb session directory exists
   file: path=/home/{{ remnux_user }}/.config/codef00.com/edb-session state=directory mode=0755 owner={{ remnux_user }}
 - name: Check user edb configuration
-   replace: dest="/home/{{ remnux_user }}/.config/codef00.com/edb.conf" regexp="{{ item.regexp }}" replace="{{ item.replace }}"
+  replace:
+    dest: "/home/{{ remnux_user }}/.config/codef00.com/edb.conf"
+    regexp: "{{ item.regexp }}"
+    replace: "{{ item.replace }}"
   with_items:
     - { regexp: /usr/bin/xterm, replace: /usr/bin/lxterminal }
     - { regexp: '^directory.symbol.path=$', replace: 'directory.symbol.path=/home/{{ remnux_user }}/.config/codef00.com/edb-symbols' }
