@@ -3,8 +3,15 @@
 - name: Stopping Docker daemon
   service: name=docker state=stopped enabled=no
 
-- name: Configure docker in manual mode
+- name: Configure docker in manual mode - non-systemd
   lineinfile: dest=/etc/init/docker.override regexp='^manual' line='manual'
+  when: ansible_service_mgr != 'systemd'
+
+- name: Configure docker in manual mode - systemd
+  systemd:
+    name: docker
+    enabled: false
+  when: ansible_service_mgr == 'systemd'
 
 - name: Adding remnux account to docker group
   user: name={{ remnux_user }} groups=docker append=yes
