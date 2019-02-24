@@ -4,5 +4,4 @@
   vars:
     sift_user: travis
   roles:
-    - remnux
-
+    - juju4.remnux

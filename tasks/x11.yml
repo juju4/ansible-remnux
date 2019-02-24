@@ -1,9 +1,9 @@
 ---
 
 - name: Debian | x11 packages install
-  apt: name={{ item }} state=present
-  with_items:
-    - xinit
+  apt: name=xinit state=present
+  register: pkg_result
+  until: pkg_result is success
 
 - name: Debian | REMNUX x11 packages install (lxde)
   apt: name={{ item }} state=present
@@ -14,12 +14,17 @@
     - lxde
     - lxdm
   when: remnux_x11_env is defined and remnux_x11_env
+  register: pkg_result
+  until: pkg_result is success
 
 - include: menus-lxde.yml
   when: remnux_x11_env is defined and remnux_x11_env
 
 - name: Setting up auto-login for user {{ remnux_user }}
-  replace: dest='/etc/lxdm/lxdm.conf' regexp='^#\ autologin=dgod' replace="autologin={{ remnux_user }}"
+  replace:
+    dest: '/etc/lxdm/lxdm.conf'
+    regexp: '^#\ autologin=dgod'
+    replace: "autologin={{ remnux_user }}"
   when: remnux_x11_env is defined and remnux_x11_env
 - name: disable user list at lxdm greeter
   replace: dest='/etc/lxdm/lxdm.conf' regexp='^disable=\d+$' replace='disable=1'

@@ -10,7 +10,7 @@
   authorized_key:
     "user='{{ remnux_user }}' key='{{ item }}'"
   with_file: "{{ remnux_public_keys }}"
-  when: remnux_public_keys is defined and remnux_public_keys != ""
+  when: remnux_public_keys is defined and remnux_public_keys
   become: yes
 
 - name: adding REMnux repository
@@ -19,41 +19,50 @@
 
 - name: adding SIFT repository
   apt_repository: repo='ppa:sift/stable' state=present
-  when: ansible_distribution == 'Ubuntu' and (ansible_distribution_release == 'trusty' and ansible_distribution_release == 'xenial')
+  when: >
+    ansible_distribution == 'Ubuntu' and
+    (ansible_distribution_release == 'trusty' and ansible_distribution_release == 'xenial')
 
 ## Alternative: trusty-backports?
 - name: install draios apt gpg key
   apt_key: url=https://s3.amazonaws.com/download.draios.com/DRAIOS-GPG-KEY.public state=present
+  register: pkg_result
+  until: pkg_result is success
 
 - name: adding Draios repository (sysdig)
   apt_repository: repo='deb http://download.draios.com/stable/deb stable-$(ARCH)/' state=present
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+  register: pkg_result
+  until: pkg_result is success
 
 # These repositories are needed for REMnux, but are disabled on some Ubuntu 14.04 base builds, so enable them.
 
 - name: Enabling Universe repository
   apt_repository: repo='deb http://archive.ubuntu.com/ubuntu trusty universe' state=present
   when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'trusty'
+  register: pkg_result
+  until: pkg_result is success
 - name: Enabling multiverse repository
   replace: dest=/etc/apt/sources.list regexp='^#(\.*)multiverse$' replace='\1multiverse' backup=yes
 
 - name: REMNUX | packages install
-  apt: name={{item}} state=present update_cache=yes
-  with_items: "{{ remnux_packages }}"
+  apt: name={{ remnux_packages }} state=present update_cache=yes
   notify:
     - Updating ClamAV Signatures
 ## Note: sometimes can be longer than 1h ...
   async: 7200
   poll: 300
+  register: pkg_result
+  until: pkg_result is success
 
 - include: inetsim.yml
   when: remnux_with_inetsim
 
 - block:
     - name: REMNUX | nginx packages install
-      apt: name={{item}} state=present update_cache=yes cache_valid_time=3600
-      with_items:
-        - nginx
+      apt: name=nginx state=present update_cache=yes cache_valid_time=3600
+      register: pkg_result
+      until: pkg_result is success
     - name: Stopping Nginx daemon
       service: name=nginx state=stopped enabled=no
     - name: Configuring Web Server
@@ -78,16 +87,19 @@
         version: "{{ item.version }}"
         state: present
       with_items: "{{ remnux_pip_packages_version }}"
+      register: pkg_result
+      until: pkg_result is success
     - name: Install pip packages
       pip:
-        name: "{{item}}"
+        name: "{{ remnux_pip_packages }}"
         state: present
-      with_items: "{{ remnux_pip_packages }}"
+      register: pkg_result
+      until: pkg_result is success
   when: remnux_pip_virtualenv == ''
 - block:
     - name: Install pip packages - required version
       pip:
-        name: "{{item.name}}"
+        name: "{{ item.name }}"
         version: "{{ item.version }}"
         state: present
         virtualenv: "{{ remnux_pip_virtualenv }}"
@@ -97,23 +109,27 @@
 ## https://github.com/pypa/pip/issues/2931#issuecomment-151074766
     - name: Install pip packages - virtualenv
       pip:
-        name: "{{item}}"
+        name: "{{ item }}"
         state: present
         virtualenv: "{{ remnux_pip_virtualenv }}"
       with_items: "{{ [ 'setuptools', 'pip', 'pycrypto', 'pyparsing', 'appdirs' ] + remnux_pip_packages }}"
+      register: pkg_result
+      until: pkg_result is success
   when: remnux_pip_virtualenv != ''
 
 - name: Install Ruby Gems
-  gem: name={{item.n}} version={{ item.v }} state=present user_install=no
+  gem: name={{ item.n }} version={{ item.v }} state=present user_install=no
   with_items: "{{ remnux_ruby_gems }}"
+  register: pkg_result
+  until: pkg_result is success
 - name: Install Ruby Gems - v2
   gem:
-    name: "{{item}}"
+    name: passivedns-client
     state: present
     user_install: no
     executable: "{{ remnux_gem_exec }}"
-  with_items:
-    - passivedns-client
+  register: pkg_result
+  until: pkg_result is success
 
 - name: Tweaking Ruby Gems Configuration
   file:
@@ -125,7 +141,11 @@
   register: passivednsclient
 - name: Review permissions for passivedns client
   file:
-    dest=/home/{{ remnux_user }}/.passivedns-client owner={{ remnux_user }} group={{ remnux_user }} mode=0600 state=touch
+    dest: "/home/{{ remnux_user }}/.passivedns-client"
+    owner: "{{ remnux_user }}"
+    group: "{{ remnux_user }}"
+    mode: '0600'
+    state: touch
   when: not passivednsclient.stat.exists
 
 - name: Updating REMnux documentation
@@ -140,7 +160,11 @@
     version=gh-pages
   when: not remnuxdocs.stat.exists
 - name: Symlink remnux docs on desktop
-  file: src=/usr/share/applications/show-remnux-docs.desktop path='/home/{{ remnux_user }}/Desktop/REMnux Docs' state=link force=yes
+  file:
+    src: /usr/share/applications/show-remnux-docs.desktop
+    path: "/home/{{ remnux_user }}/Desktop/REMnux Docs"
+    state: link
+    force: yes
 
 - name: Ensure /var/www directory exists
   file: path=/var/www state=directory mode=0755
@@ -232,14 +256,18 @@
 
 - name: Configuring global PATH
   replace:
-    dest=/etc/environment regexp='^PATH="/usr/local/sbin' replace='PATH="/opt/remnux-procdot:/opt/remnux-ratdecoders:/opt/remnux-rabcdasm:/opt/remnux-vivisect:/opt/remnux-peepdf:/opt/remnux-thug/src:/opt/remnux-pdfxray-lite:/opt/remnux-viper:/opt/remnux-oletools:/opt/remnux-balbuzard:/opt/remnux-didier:/opt/remnux-scripts:/usr/local/sbin'
+    dest: /etc/environment
+    regexp: '^PATH="/usr/local/sbin'
+    replace: 'PATH="/opt/remnux-procdot:/opt/remnux-ratdecoders:/opt/remnux-rabcdasm:/opt/remnux-vivisect:/opt/remnux-peepdf:/opt/remnux-thug/src:/opt/remnux-pdfxray-lite:/opt/remnux-viper:/opt/remnux-oletools:/opt/remnux-balbuzard:/opt/remnux-didier:/opt/remnux-scripts:/usr/local/sbin'
 
 - name: Check if /etc/apt/apt.conf.d/10periodic exists
   stat: path=/etc/apt/apt.conf.d/10periodic
   register: apt10periodic
 - name: disable automatic updates
   replace:
-    dest=/etc/apt/apt.conf.d/10periodic regexp='^APT::Periodic::Update-Package-Lists \"1\"' replace='APT::Periodic::Update-Package-Lists \"0\";'
+    dest: /etc/apt/apt.conf.d/10periodic
+    regexp: '^APT::Periodic::Update-Package-Lists \"1\"'
+    replace: 'APT::Periodic::Update-Package-Lists \"0\";'
   when: apt10periodic.stat.exists
 
 - include: remnux-conf.yml
@@ -262,7 +290,6 @@
 - name: Autoremove unused packages
   command: apt-get autoremove -qq -y
   when: "'packages will be REMOVED' in check_autoremove.stdout"
-#- command: apt-get clean
 - name: Check /usr/share/remnux exists
   stat: path=/usr/share/remnux
   register: shareremnux

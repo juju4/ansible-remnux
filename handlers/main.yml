@@ -1,4 +1,5 @@
 ---
+
 - name: restart sshd
   service: name=ssh state=restarted
 
@@ -17,4 +18,3 @@
 
 - name: run ldconfig
   command: ldconfig
-

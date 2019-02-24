@@ -10,13 +10,19 @@
   stat: path=/usr/share/remnux/remnux-tools-sheet.html
   register: remnuxshare1
 - name: Map remnux tools sheet on desktop
-  file: src=/usr/share/remnux/remnux-tools-sheet.html path='/home/{{ remnux_user }}/Desktop/REMnux Tools Sheet' state=link
+  file:
+    src: /usr/share/remnux/remnux-tools-sheet.html
+    path: "/home/{{ remnux_user }}/Desktop/REMnux Tools Sheet"
+    state: link
   when: remnuxshare1.stat.exists
 - name: Check /usr/share/remnux/remnux-malware-analysis-tips.pdf exists
   stat: path=/usr/share/remnux/remnux-malware-analysis-tips.pdf
   register: remnuxshare2
 - name: Map remnux tips on desktop
-  file: src=/usr/share/remnux/remnux-malware-analysis-tips.pdf path='/home/{{ remnux_user }}/Desktop/REMnux CheatSheet' state=link
+  file:
+    src: /usr/share/remnux/remnux-malware-analysis-tips.pdf
+    path: "/home/{{ remnux_user }}/Desktop/REMnux CheatSheet"
+    state: link
   when: remnuxshare2.stat.exists
 
 - name: Check if vol.py exists
@@ -60,11 +66,11 @@
     dest: "/home/{{ remnux_user }}/.SciTEUser.properties"
     owner: "{{ remnux_user }}"
 - name: Check /var/log/network-miner directory exists
-  file: path=/var/log/network-miner state=directory mode=1777
+  file: path=/var/log/network-miner state=directory mode=01777
 - name: Symlink network-miner log directory
   file: src=/var/log/network-miner dest=/opt/remnux-network-miner/AssembledFiles state=link force=yes
 - name: Check /opt/remnux-network-miner/Captures directory exists
-  file: path=/opt/remnux-network-miner/Captures state=directory mode=1777
+  file: path=/opt/remnux-network-miner/Captures state=directory mode=01777
 - name: Check user edb config directory exists
   file: path=/home/{{ remnux_user }}/.config/codef00.com state=directory mode=0755 owner={{ remnux_user }}
 - name: Check /usr/share/remnux/edb.conf is present
@@ -90,8 +96,12 @@
     replace: "{{ item.replace }}"
   with_items:
     - { regexp: /usr/bin/xterm, replace: /usr/bin/lxterminal }
-    - { regexp: '^directory.symbol.path=$', replace: 'directory.symbol.path=/home/{{ remnux_user }}/.config/codef00.com/edb-symbols' }
-    - { regexp: '^directory.session.path=$', replace: 'directory.session.path=/home/{{ remnux_user }}/.config/codef00.com/edb-session' }
+    - { regexp: '^directory.symbol.path=$',
+        replace: 'directory.symbol.path=/home/{{ remnux_user }}/.config/codef00.com/edb-symbols'
+      }
+    - { regexp: '^directory.session.path=$',
+        replace: 'directory.session.path=/home/{{ remnux_user }}/.config/codef00.com/edb-session'
+      }
     - { regexp: '^directory.plugin.path=$', replace: 'directory.plugin.path=/lib64/edb' }
     - { regexp: '^directory.plugin.path=$HOME$', replace: 'directory.plugin.path=/lib64/edb' }
 # Allow non-privileged users to write to Androwarn's Reports directory
@@ -105,7 +115,9 @@
     dest: "/home/{{ remnux_user }}/.wgetrc"
     owner: "{{ remnux_user }}"
 - name: ensure permission of wget user configuration
-  file: dest="/home/{{ remnux_user }}/.wgetrc" owner="{{ remnux_user }}"
+  file:
+    dest: "/home/{{ remnux_user }}/.wgetrc"
+    owner: "{{ remnux_user }}"
 - name: use remnux curl configuration
   copy:
     src: /usr/share/remnux/curl.conf
@@ -114,7 +126,12 @@
 - name: ensure permission of curl user configuration
   file: dest="/home/{{ remnux_user }}/.curlrc" owner="{{ remnux_user }}"
 - name: disable update check of wxHexEditor
-  lineinfile: dest=/home/{{ remnux_user }}/.wxHexEditor regexp='^UpdateCheck=.*' line='UpdateCheck=0' owner={{ remnux_user }} create=yes
+  lineinfile:
+    dest: "/home/{{ remnux_user }}/.wxHexEditor"
+    regexp: "^UpdateCheck=.*"
+    line: 'UpdateCheck=0'
+    owner: "{{ remnux_user }}"
+    create: yes
 
 - name: Setting LXDE options
 # Set up LXTerminal to start automatically when the user logs in
@@ -157,7 +174,9 @@
     src: /usr/share/remnux/pcmanfm.conf
     dest: "/home/{{ remnux_user }}/.config/pcmanfm/LXDE/pcmanfm.conf"
     owner: "{{ remnux_user }}"
-  when: not pcmanfmconf.stat.exists and pcmanfmconforig.stat.exists and remnux_x11_background is defined and remnux_x11_background
+  when: >
+    not pcmanfmconf.stat.exists and pcmanfmconforig.stat.exists and
+    remnux_x11_background is defined and remnux_x11_background
 
 # Set up links to match the setup of older REMnux versions
 - name: Applying REMnux backwards compatibility settings
@@ -175,7 +194,8 @@
 - name: Check /media/cdrom
   stat: path=/media/cdrom
   register: mcdrom
-- file: src=/mnt/cdrom dest=/media/cdrom state=link
+- name: Symlink /media/cdrom to /mnt/cdrom
+  file: src=/mnt/cdrom dest=/media/cdrom state=link
   when: not mcdrom.stat.exists
 
 - name: Symlink balbuzard
