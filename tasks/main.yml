@@ -29,7 +29,7 @@
 
 ## https://remnux.org/docs/distro/get/#install-remnux-on-an-existing-system
 - include: remnux.yml
-  when: remnux_do_remnux
+  when: remnux_do_remnux|bool
   tags:
     - remnux
 

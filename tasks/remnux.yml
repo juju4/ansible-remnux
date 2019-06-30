@@ -56,7 +56,7 @@
   until: pkg_result is success
 
 - include: inetsim.yml
-  when: remnux_with_inetsim
+  when: remnux_with_inetsim|bool
 
 - block:
     - name: REMNUX | nginx packages install
