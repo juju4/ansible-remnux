@@ -19,7 +19,9 @@ remnux_with_inetsim: false
 remnux_webserver: nginx
 
 remnux_user: 'remnux'
-remnux_pass: 'malware'
+# mkpasswd --method=sha-512
+#remnux_pass: 'malware'
+remnux_pass: '$6$Xz6pg1MGRUR.dhf$u0CTKRAq.4elZw8cgzjG5coDvNKvDd/IhO.p505LjBKWC0QNgyE20eIGwYw1t6rJofKn0qMafIxBobFvRJ0xQ.'
 ## want ssh keys?
 remnux_public_keys: []
 #remnux_public_keys:
