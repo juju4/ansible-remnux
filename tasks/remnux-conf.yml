@@ -106,7 +106,11 @@
     - { regexp: '^directory.plugin.path=$HOME$', replace: 'directory.plugin.path=/lib64/edb' }
 # Allow non-privileged users to write to Androwarn's Reports directory
 - name: validate recursively permissions of /opt/remnux-androwarn/Report
-  command: chown -R {{ remnux_user }}:{{ remnux_user }} /opt/remnux-androwarn/Report
+  file:
+    dest: /opt/remnux-androwarn/Report
+    owner: "{{ remnux_user }}"
+    group: "{{ remnux_user }}"
+    recurse: yes
 - name: Symlink js24 in /etc/alternatives/hs
   file: src=/usr/bin/js24 dest=/etc/alternatives/js state=link
 - name: use remnux wget configuration

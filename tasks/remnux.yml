@@ -83,7 +83,7 @@
 - block:
     - name: Install pip packages - required version
       pip:
-        name: "{{item.name}}"
+        name: "{{ item.name }}"
         version: "{{ item.version }}"
         state: present
       with_items: "{{ remnux_pip_packages_version }}"
