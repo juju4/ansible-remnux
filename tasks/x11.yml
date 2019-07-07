@@ -6,13 +6,14 @@
   until: pkg_result is success
 
 - name: Debian | REMNUX x11 packages install (lxde)
-  apt: name={{ item }} state=present
-  with_items:
-    - xinit
-#    - lubuntu-desktop
-#    - lightgdm
-    - lxde
-    - lxdm
+  apt:
+    name:
+      - xinit
+#      - lubuntu-desktop
+#      - lightgdm
+      - lxde
+      - lxdm
+    state: present
   when: remnux_x11_env is defined and remnux_x11_env
   register: pkg_result
   until: pkg_result is success

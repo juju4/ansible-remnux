@@ -109,10 +109,9 @@
 ## https://github.com/pypa/pip/issues/2931#issuecomment-151074766
     - name: Install pip packages - virtualenv
       pip:
-        name: "{{ item }}"
+        name: "{{ [ 'setuptools', 'pip', 'pycrypto', 'pyparsing', 'appdirs' ] + remnux_pip_packages }}"
         state: present
         virtualenv: "{{ remnux_pip_virtualenv }}"
-      with_items: "{{ [ 'setuptools', 'pip', 'pycrypto', 'pyparsing', 'appdirs' ] + remnux_pip_packages }}"
       register: pkg_result
       until: pkg_result is success
   when: remnux_pip_virtualenv != ''
@@ -208,10 +207,11 @@
   when: vm is defined and vm
 
 - name: Debian | Remove some packages
-  apt: name={{ item }} state=absent
-  with_items:
-    - xscreensaver
-    - xscreensaver-data
+  apt:
+    name:
+      - xscreensaver
+      - xscreensaver-data
+    state: absent
 
 #- name: Setting up /etc/fstab for CD-ROM
 #  #lineinfile: dest=/etc/fstab regexp={{ item.regexp }} line="{{ item.line }}" state={{ item.state | default("present") }}
@@ -283,13 +283,9 @@
   file: dest=/home/{{ remnux_user }} owner={{ remnux_user }} group={{ remnux_user }}
 
 ## cleanup
-- name: Check if packages need to be autoremoved
-  command: apt-get --dry-run autoremove
-  register: check_autoremove
-  changed_when: False
 - name: Autoremove unused packages
-  command: apt-get autoremove -qq -y
-  when: "'packages will be REMOVED' in check_autoremove.stdout"
+  apt:
+    autoremove: yes
 - name: Check /usr/share/remnux exists
   stat: path=/usr/share/remnux
   register: shareremnux
