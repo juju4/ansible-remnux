@@ -233,6 +233,7 @@ remnux_packages:
 
 remnux_pip_packages_version:
     - { name: cryptography, version: 2.2.2 }
+    - { name: setuptools, version: 44.0.0 }
 
 remnux_pip_packages:
     - distorm3
