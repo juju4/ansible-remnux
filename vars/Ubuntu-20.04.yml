@@ -29,7 +29,6 @@ remnux_packages:
     - tor
     - torsocks
 #    - pdftk
-    - libemu2
 #    - clamav-daemon
     - clamav
     - clamav-base
@@ -51,9 +50,8 @@ remnux_packages:
     - radare2
     - p7zip-full
     - upx-ucl
-    - swftools
-#    - libmozjs-38-0
     - libmozjs-52-0
+    - libmozjs-68-0
     - rhino
     - python3-crypto
 #    - volatility
@@ -64,7 +62,6 @@ remnux_packages:
     - libimage-exiftool-perl
     - scalpel
     - liblzma-dev
-    - libwebkitgtk-1.0-0
     - libenchant1c2a
     - lame
     - ibus
@@ -132,7 +129,6 @@ remnux_packages:
     - python3-utidylib
     - rsakeyfind
     - aeskeyfind
-    - pyew
     - ruby-gtk2
     - libjavassist-java
     - tcpflow
@@ -256,5 +252,4 @@ remnux_pip_packages:
     - docker-compose
     - ndg-httpsclient
     - dnslib
-    - netfilterqueue
     - pydivert
