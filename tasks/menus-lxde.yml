@@ -9,10 +9,11 @@
 - name: ensure right permissions on ~/.local/share/applications
   file: dest=/home/{{ remnux_user }}/.local/share/applications mode=0700 owner={{ remnux_user }} state=directory
 
+# This replace the whole menu.
 - name: Adding submenus in LXDE
   copy:
     src: lxde-applications.menu
-    dest: "/home/{{ remnux_user }}/.config/menus/lxde-applications.menu"
+    dest: "/home/{{ remnux_user }}/.config/menus/lxde-applications.menu.disabled"
     mode: '0644'
     owner: "{{ remnux_user }}"
 
