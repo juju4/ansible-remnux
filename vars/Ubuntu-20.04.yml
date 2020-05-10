@@ -15,21 +15,13 @@ remnux_packages:
     - binutils
     - curl
     - exfat-utils
-    - xpdf
     - stunnel4
     - imagemagick
 ## sift is using gdb so keep same, else keep installing/removing
 ## but remnux-bashacks wants gdb-minimal and not gdb...
 #    - gdb-minimal
     - gdb
-    - python-hachoir-core
-    - python-hachoir-regex
-    - python-hachoir-metadata
-    - python-hachoir-parser
-    - python-hachoir-subfile
-    - python-hachoir-urwid
-    - python-hachoir-wx
-    - python-virtualenv
+    - python3-virtualenv
     - firefox
     - xmlstarlet
     - inspircd
@@ -63,7 +55,7 @@ remnux_packages:
 #    - libmozjs-38-0
     - libmozjs-52-0
     - rhino
-    - python-crypto
+    - python3-crypto
 #    - volatility
 #    - volatility-tools
     - ssdeep
@@ -94,11 +86,11 @@ remnux_packages:
     - libyaml-dev
     - bundler
     - build-essential
-    - python
-    - python-dev
+    - python3
+    - python3-dev
     - automake
     - autoconf
-    - python-pip
+    - python3-pip
 ## 2.3
     - ruby
     - ruby-dev
@@ -112,7 +104,7 @@ remnux_packages:
     - dos2unix
     - tcpxtract
     - libsqlite3-dev
-    - python-pydot
+    - python3-pydot
     - libncurses5:i386
     - automake
     - libmagic-dev
@@ -121,26 +113,23 @@ remnux_packages:
     - flex
     - libboost-all-dev
     - libncurses5-dev
-    - python-setuptools
-    - python-magic
+    - python3-setuptools
+    - python3-magic
     - libpcre3
     - libpcre3-dev
     - libpcre++-dev
     - automake
     - openssl
-    - python-qt4
     - libzmq3-dev
     - libc6-dev-i386
     - usbmount
-    - python-numpy
-    - python-scipy
-    - python-levenshtein
-    - python-pil
-    - python-gtksourceview2
-    - python-gtk2
+    - python3-numpy
+    - python3-scipy
+    - python3-levenshtein
+    - python3-pil
     - libfuzzy-dev
     - graphviz
-    - python-utidylib
+    - python3-utidylib
     - rsakeyfind
     - aeskeyfind
     - pyew
@@ -151,10 +140,10 @@ remnux_packages:
 #    - sysdig
     - yara
     - libyara3
-    - python-yara
-    - python-pyasn1
-    - python-capstone
-    - python-pefile
+    - python3-yara
+    - python3-pyasn1
+    - python3-capstone
+    - python3-pefile
 ## disabling as potential conflict with gift ppa
 #    - libolecf-utils
     - scite
@@ -166,7 +155,7 @@ remnux_packages:
     - libio-all-perl
     - libio-string-perl
     - libole-storage-lite-perl
-    - python-dnspython
+    - python3-dnspython
     - unzip
     - menu-xdg
     - lxterminal
@@ -235,7 +224,7 @@ remnux_packages:
     - libnetfilter-queue-dev
 
 remnux_pip_packages_version:
-    - { name: cryptography, version: 2.2.2 }
+    - { name: cryptography, version: 2.9.2 }
 
 remnux_pip_packages:
     - distorm3
