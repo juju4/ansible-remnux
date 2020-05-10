@@ -7,7 +7,6 @@ env:
     version: 20.04
     init: /lib/systemd/systemd
     run_opts: "'--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro'"
-    if: branch branch =~ /^devel*/
   - distribution: ubuntu
     version: 18.04
     init: /lib/systemd/systemd
