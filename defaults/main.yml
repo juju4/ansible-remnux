@@ -37,16 +37,8 @@ remnux_pip_virtualenv: /usr/local/env-remnux
 
 remnux_docker_images:
     - remnux/thug
-    - remnux/v8
-    - remnux/crits
+    - remnux/retdec
     - remnux/viper
-    - remnux/rekall
     - remnux/jsdetox
-## remnux or upstream?
     - remnux/radare2
     - radare/radare2
-    - remnux/pescanner
-    - remnux/volatility
-    - remnux/mastiff
-    - remnux/maltrieve
-    - remnux/metasploit
