@@ -1,7 +1,11 @@
 ---
 
 - name: Stopping Docker daemon
-  service: name=docker state=stopped enabled=no
+  service:
+    name: "{{ docker_svc | default('docker') }}"
+    state: stopped
+    enabled: no
+  ignore_errors: true
 
 - name: Configure docker in manual mode - non-systemd
   lineinfile: dest=/etc/init/docker.override regexp='^manual' line='manual'
@@ -9,22 +13,27 @@
 
 - name: Configure docker in manual mode - systemd
   systemd:
-    name: docker
+    name: "{{ docker_svc | default('docker') }}"
     enabled: false
   when: ansible_service_mgr == 'systemd'
+  ignore_errors: true
 
 - name: Adding remnux account to docker group
   user: name={{ remnux_user }} groups=docker append=yes
 
 - block:
     - name: Ensure docker service is enabled and started
-      service: name=docker state=started
+      service:
+        name: "{{ docker_svc | default('docker') }}"
+        state: started
       when: remnux_docker_images != []
+      ignore_errors: true
 
 ## https://remnux.org/docs/containers/malware-analysis/
     - name: pre-download Remnux docker images
-    #  docker_image: name="{{ item }}"
-      command: "docker pull {{ item }}"
+      docker_image:
+        name: "{{ item }}"
+        source: pull
       with_items: "{{ remnux_docker_images }}"
       ignore_errors: true
   when: not (ansible_virtualization_type is defined and ansible_virtualization_type == "docker")
