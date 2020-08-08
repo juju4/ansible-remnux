@@ -154,9 +154,9 @@
   register: remnuxdocs
 - name: git clone Remnux docs
   git:
-    repo=https://github.com/REMnux/docs.git
-    dest=/usr/share/remnux/docs
-    version=gh-pages
+    repo: https://github.com/REMnux/docs.git
+    dest: /usr/share/remnux/docs
+    version: "{{ remnux_docs_version | default('41d4e5f97dc1d37544213c034348046b9745677e') }}"
   when: not remnuxdocs.stat.exists
 - name: Symlink remnux docs on desktop
   file:
