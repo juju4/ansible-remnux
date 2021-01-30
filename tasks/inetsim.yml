@@ -1,9 +1,11 @@
 ---
 
 - name: adding Inetsim archive signing key
-## inetsim.org seems unreliable
-#  apt_key: url=http://www.inetsim.org/inetsim-archive-signing-key.asc state=present
-  apt_key: data="{{ lookup('file', 'inetsim-archive-signing-key.asc') }}" state=present
+  ## inetsim.org seems unreliable
+  # apt_key: url=http://www.inetsim.org/inetsim-archive-signing-key.asc state=present
+  apt_key:
+    data: "{{ lookup('file', 'inetsim-archive-signing-key.asc') }}"
+    state: present
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
 - name: adding Inetsim repository
@@ -22,7 +24,10 @@
   register: inetsim
 - name: Configuring INetSim
   replace:
-    dest=/etc/inetsim/inetsim.conf regexp={{ item.regexp }} replace="{{ item.replace }}"
+    dest: /etc/inetsim/inetsim.conf
+    regexp: "{{ item.regexp }}"
+    replace: "{{ item.replace }}"
+    mode: '0644'
   with_items:
     - { regexp: "toto", replace: "tata" }
   when: inetsim.stat.exists
@@ -35,7 +40,10 @@
   stat: path=/var/log/inetsim/main.log
   register: inetsimlog
 - name: Configuring INetSim logs
-  file: dest="{{ item }}" mode=0664 state=touch
+  file:
+    dest: "{{ item }}"
+    mode: 0664
+    state: touch
   with_items:
     - /var/log/inetsim/service.log
     - /var/log/inetsim/debug.log

@@ -1,3 +1,4 @@
+---
 # adapted from get-remnux.sh "REMnux-v6-116"
 ## or from inventory as seen http://www.stavros.io/posts/example-provisioning-and-deployment-ansible/
 
@@ -43,13 +44,18 @@
   register: pkg_result
   until: pkg_result is success
 - name: Enabling multiverse repository
-  replace: dest=/etc/apt/sources.list regexp='^#(\.*)multiverse$' replace='\1multiverse' backup=yes
+  replace:
+    dest: /etc/apt/sources.list
+    regexp: '^#(\.*)multiverse$'
+    replace: '\1multiverse'
+    mode: '0644'
+    backup: yes
 
 - name: REMNUX | packages install
   apt: name={{ remnux_packages }} state=present update_cache=yes
   notify:
     - Updating ClamAV Signatures
-## Note: sometimes can be longer than 1h ...
+  ## Note: sometimes can be longer than 1h ...
   async: 7200
   poll: 300
   register: pkg_result
@@ -67,7 +73,10 @@
       service: name=nginx state=stopped enabled=no
     - name: Configuring Web Server
       replace:
-        dest=/etc/nginx/nginx.conf regexp='worker_processes 4' replace='worker_processes 1'
+        dest: /etc/nginx/nginx.conf
+        regexp: 'worker_processes 4'
+        replace: 'worker_processes 1'
+        mode: '0644'
     - name: Check if /var/www exists
       stat: path=/var/www
       register: www
@@ -75,10 +84,12 @@
       file: dest=/var/www owner=www-data group=www-data mode=0755 state=directory
     - name: enable autoindex inside nginx
       replace:
-        dest=/etc/nginx/sites-enabled/default regexp='^\s.*location \/ {' replace='\tlocation \/ {\n\t\tautoindex on;'
-#      lineinfile: "dest=/etc/nginx/sites-enabled/default line='\t\tautoindex on;' insertafter='^\\s.*location \\/ {'"
+        dest: /etc/nginx/sites-enabled/default
+        regexp: '^\s.*location \/ {'
+        replace: '\tlocation \/ {\n\t\tautoindex on;'
+        mode: '0644'
+        # lineinfile: "dest=/etc/nginx/sites-enabled/default line='\t\tautoindex on;' insertafter='^\\s.*location \\/ {'"
   when: remnux_webserver is defined and remnux_webserver == 'nginx'
-
 
 - block:
     - name: Install pip packages - required version
@@ -95,7 +106,7 @@
         state: present
       register: pkg_result
       until: pkg_result is success
-  when: remnux_pip_virtualenv == ''
+  when: not remnux_pip_virtualenv|string
 - block:
     - name: Install pip packages - required version
       pip:
@@ -104,9 +115,9 @@
         state: present
         virtualenv: "{{ remnux_pip_virtualenv }}"
       with_items: "{{ remnux_pip_packages_version }}"
-## avoid conflict on six when installed along sift/trusty
-## if get 'setuptools must be installed to install from a source distribution', try to erase virtualenv and replay
-## https://github.com/pypa/pip/issues/2931#issuecomment-151074766
+    ## avoid conflict on six when installed along sift/trusty
+    ## if get 'setuptools must be installed to install from a source distribution', try to erase virtualenv and replay
+    ## https://github.com/pypa/pip/issues/2931#issuecomment-151074766
     - name: Install pip packages - virtualenv
       pip:
         name: "{{ [ 'setuptools', 'pip', 'pycrypto', 'pyparsing', 'appdirs' ] + remnux_pip_packages }}"
@@ -114,7 +125,7 @@
         virtualenv: "{{ remnux_pip_virtualenv }}"
       register: pkg_result
       until: pkg_result is success
-  when: remnux_pip_virtualenv != ''
+  when: remnux_pip_virtualenv|string
 
 - name: Install Ruby Gems
   gem: name={{ item.n }} version={{ item.v }} state=present user_install=no
@@ -132,8 +143,12 @@
 
 - name: Tweaking Ruby Gems Configuration
   file:
-# This is needed for Origami PDF Walker
-    dest=/home/{{ remnux_user }}/.local/share owner={{ remnux_user }} group={{ remnux_user }} mode=0700 state=directory
+    # This is needed for Origami PDF Walker
+    dest: "/home/{{ remnux_user }}/.local/share"
+    owner: "{{ remnux_user }}"
+    group: "{{ remnux_user }}"
+    mode: '0700'
+    state: directory
 # This is needed for passivedns-client
 - name: Check if user passivedns-client config exists
   stat: path=/home/{{ remnux_user }}/.passivedns-client
@@ -162,13 +177,18 @@
   file:
     src: /usr/share/applications/show-remnux-docs.desktop
     path: "/home/{{ remnux_user }}/Desktop/REMnux Docs"
+    mode: '0777'
     state: link
     force: yes
 
 - name: Ensure /var/www directory exists
   file: path=/var/www state=directory mode=0755
 - name: Map remnux docs inside webserver root
-  file: src=/usr/share/remnux/docs path=/var/www/remnux-docs state=link
+  file:
+    src: /usr/share/remnux/docs
+    path: /var/www/remnux-docs
+    mode: '0777'
+    state: link
 
 - name: Creating mount points and other directories
   file:
@@ -181,7 +201,11 @@
 - name: Disabling Tor
   service: name=tor state=stopped enabled=no
 - name: sshd | disable usedns
-  lineinfile: dest=/etc/ssh/sshd_config regexp='^UseDNS no' line='UseDNS no'
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: '^UseDNS no'
+    line: 'UseDNS no'
+    mode: '0644'
 - name: Stopping ClamAV daemons
   service: name={{ item }} state=stopped enabled=no
   with_items:
@@ -198,6 +222,7 @@
     dest: /etc/modprobe.d/blacklist.conf
     regexp: "{{ item.regexp }}"
     line: "{{ item.line }}"
+    mode: '0644'
     state: present
     create: yes
     backup: yes
@@ -213,19 +238,31 @@
       - xscreensaver-data
     state: absent
 
-#- name: Setting up /etc/fstab for CD-ROM
-#  #lineinfile: dest=/etc/fstab regexp={{ item.regexp }} line="{{ item.line }}" state={{ item.state | default("present") }}
-#  lineinfile: dest=/etc/fstab regexp={{ item.regexp }} line="{{ item.line }}" state=present
-#    - { regexp: '^/dev/sr0  /mnt/cdrom  udf,iso9660 user,noauto,exec,utf8   0   0', line: '/dev/sr0  /mnt/cdrom  udf,iso9660 user,noauto,exec,utf8   0   0' }
-#    - { regexp: '^/dev/fd0', line: '#/dev/fd0' }
+# - name: Setting up /etc/fstab for CD-ROM
+#   #lineinfile: dest=/etc/fstab regexp={{ item.regexp }} line="{{ item.line }}" state={{ item.state | default("present") }}
+#   lineinfile: dest=/etc/fstab regexp={{ item.regexp }} line="{{ item.line }}" state=present
+#     - { regexp: '^/dev/sr0  /mnt/cdrom  udf,iso9660 user,noauto,exec,utf8   0   0', line: '/dev/sr0  /mnt/cdrom  udf,iso9660 user,noauto,exec,utf8   0   0' }
+#     - { regexp: '^/dev/fd0', line: '#/dev/fd0' }
 - name: Setting up USB auto-mount options
-  lineinfile: dest=/etc/usbmount/usbmount.conf regexp='\"$' line=' ntfs exfat\"'
+  lineinfile:
+    dest: /etc/usbmount/usbmount.conf
+    regexp: '\"$'
+    line: ' ntfs exfat\"'
+    mode: '0644'
 - name: enforce noclobber in remnux user bashrc
-  lineinfile: dest=/home/{{ remnux_user }}/.bashrc regexp='^set -o noclobber' line='set -o noclobber' create=yes
+  lineinfile:
+    dest: "/home/{{ remnux_user }}/.bashrc"
+    regexp: '^set -o noclobber'
+    line: 'set -o noclobber'
+    mode: '0600'
+    create: yes
 - name: Configuring packet capture capabilities for non-root users
-#  command: setcap 'CAP_NET_RAW+eip CAP_NET_ADMIN+eip' /usr/bin/dumpcap     ## NOK
-#  capabilities: path=/usr/bin/dumpcap capability='CAP_NET_RAW+eip CAP_NET_ADMIN+eip' state=present     ## NOK
-  capabilities: path=/usr/bin/dumpcap capability="{{ item }}" state=present
+  # command: setcap 'CAP_NET_RAW+eip CAP_NET_ADMIN+eip' /usr/bin/dumpcap     ## NOK
+  # capabilities: path=/usr/bin/dumpcap capability='CAP_NET_RAW+eip CAP_NET_ADMIN+eip' state=present     ## NOK
+  capabilities:
+    path: /usr/bin/dumpcap
+    capability: "{{ item }}"
+    state: present
   with_items:
     - CAP_NET_RAW+eip
     - CAP_NET_ADMIN+eip
@@ -234,6 +271,7 @@
     dest: /etc/sudoers
     regexp: "^{{ remnux_user }} ALL=NOPASSWD: ALL"
     line: "{{ remnux_user }} ALL=NOPASSWD: ALL"
+    mode: '0440'
     backup: yes
     validate: 'visudo -cf %s'
 ## why ?
@@ -242,23 +280,25 @@
     dest: '/etc/sudoers'
     regexp: '^Defaults        secure_path='
     replace: '#Defaults       secure_path='
+    mode: '0440'
     backup: yes
     validate: 'visudo -cf %s'
 
-#- name: Setting up aliases
-#  lineinfile: dest=/home/{{ remnux_user }}/.bash_aliases regexp={{ item.regexp }} line="{{ item.line }}" state={{ item.state | default("present") }}
-#    - { regexp: "alias mountwin='mount -o ro,loop,show_sys_files,streams_interface=windows'", line: "alias mountwin='mount -o ro,loop,show_sys_files,streams_interface=windows" }
-#    - { regexp: '', line: '' }
-#- lineinfile: dest=/home/{{ remnux_user }}/.bashrc regexp={{ item.regexp }} line="{{ item.line }}" state={{ item.state | default("present") }}
-#    - { regexp: 'source /usr/share/remnux/remnux-aliases.sh', line: 'source /usr/share/remnux/remnux-aliases.sh' }
-#- lineinfile: dest=/root/bashrc regexp={{ item.regexp }} line="{{ item.line }}" state={{ item.state | default("present") }}
-#    - { regexp: 'source /usr/share/remnux/remnux-aliases.sh', line: 'source /usr/share/remnux/remnux-aliases.sh' }
+# - name: Setting up aliases
+#   lineinfile: dest=/home/{{ remnux_user }}/.bash_aliases regexp={{ item.regexp }} line="{{ item.line }}" state={{ item.state | default("present") }}
+#     - { regexp: "alias mountwin='mount -o ro,loop,show_sys_files,streams_interface=windows'", line: "alias mountwin='mount -o ro,loop,show_sys_files,streams_interface=windows" }
+#     - { regexp: '', line: '' }
+# - lineinfile: dest=/home/{{ remnux_user }}/.bashrc regexp={{ item.regexp }} line="{{ item.line }}" state={{ item.state | default("present") }}
+#     - { regexp: 'source /usr/share/remnux/remnux-aliases.sh', line: 'source /usr/share/remnux/remnux-aliases.sh' }
+# - lineinfile: dest=/root/bashrc regexp={{ item.regexp }} line="{{ item.line }}" state={{ item.state | default("present") }}
+#     - { regexp: 'source /usr/share/remnux/remnux-aliases.sh', line: 'source /usr/share/remnux/remnux-aliases.sh' }
 
 - name: Configuring global PATH
   replace:
     dest: /etc/environment
     regexp: '^PATH="/usr/local/sbin'
-    replace: 'PATH="/opt/remnux-procdot:/opt/remnux-ratdecoders:/opt/remnux-rabcdasm:/opt/remnux-vivisect:/opt/remnux-peepdf:/opt/remnux-thug/src:/opt/remnux-pdfxray-lite:/opt/remnux-viper:/opt/remnux-oletools:/opt/remnux-balbuzard:/opt/remnux-didier:/opt/remnux-scripts:/usr/local/sbin'
+    replace: 'PATH="/opt/remnux-procdot:/opt/remnux-ratdecoders:/opt/remnux-rabcdasm:/opt/remnux-vivisect:/opt/remnux-peepdf:/opt/remnux-thug/src:/opt/remnux-pdfxray-lite:/opt/remnux-viper:/opt/remnux-oletools:/opt/remnux-balbuzard:/opt/remnux-didier:/opt/remnux-scripts:/usr/local/sbin'  # noqa 204
+    mode: '0644'
 
 - name: Check if /etc/apt/apt.conf.d/10periodic exists
   stat: path=/etc/apt/apt.conf.d/10periodic
@@ -268,6 +308,7 @@
     dest: /etc/apt/apt.conf.d/10periodic
     regexp: '^APT::Periodic::Update-Package-Lists \"1\"'
     replace: 'APT::Periodic::Update-Package-Lists \"0\";'
+    mode: '0644'
   when: apt10periodic.stat.exists
 
 - include: remnux-conf.yml
@@ -280,7 +321,11 @@
 - debug: msg="Taking the dog for a walk"
 
 - name: Setting permissions for {{ remnux_user }}
-  file: dest=/home/{{ remnux_user }} owner={{ remnux_user }} group={{ remnux_user }}
+  file:
+    dest: "/home/{{ remnux_user }}"
+    owner: "{{ remnux_user }}"
+    group: "{{ remnux_user }}"
+    mode: '0700'
 
 ## cleanup
 - name: Autoremove unused packages

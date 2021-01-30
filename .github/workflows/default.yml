@@ -73,7 +73,6 @@ jobs:
         continue-on-error: true
       - name: After script - etc
         run: |
-        run: |
           ls -la /etc
           ls -la /etc/ssh/
         continue-on-error: true

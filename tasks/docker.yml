@@ -8,7 +8,11 @@
   ignore_errors: true
 
 - name: Configure docker in manual mode - non-systemd
-  lineinfile: dest=/etc/init/docker.override regexp='^manual' line='manual'
+  lineinfile:
+    dest: /etc/init/docker.override
+    regexp: '^manual'
+    line: 'manual'
+    mode: '0644'
   when: ansible_service_mgr != 'systemd'
 
 - name: Configure docker in manual mode - systemd
@@ -29,7 +33,7 @@
       when: remnux_docker_images != []
       ignore_errors: true
 
-## https://remnux.org/docs/containers/malware-analysis/
+    ## https://remnux.org/docs/containers/malware-analysis/
     - name: pre-download Remnux docker images
       docker_image:
         name: "{{ item }}"

@@ -15,7 +15,10 @@
   ignore_errors: true
 - name: Add new hostname in /etc/hosts (local resolv)
   replace:
-    "dest='/etc/hosts' regexp='^127.0.0.1       localhost' replace='127.0.0.1       localhost {{ remnux_hostname }}'"
+    dest: '/etc/hosts'
+    regexp: '^127.0.0.1       localhost'
+    replace: '127.0.0.1       localhost {{ remnux_hostname }}'
+    mode: '0644'
   when: remnux_hostname is defined
 
 - name: Check support of foreign architectures
@@ -34,7 +37,12 @@
     - remnux
 
 - name: Restrict sshd config
-  lineinfile: dest=/etc/ssh/sshd_config regexp="{{ item.regexp }}" line="{{ item.line }}" backup=yes
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    mode: '0644'
+    backup: yes
   with_items:
     - { regexp: '^PasswordAuthentication', line: 'PasswordAuthentication no' }
     - { regexp: '^PermitRootLogin', line: 'PermitRootLogin without-password' }
@@ -59,6 +67,7 @@
     dest: /etc/security/limits.d/openfiles
     regexp: "^{{ remnux_user }}\t\thard\tnofiles\t\t2048"
     line: "{{ remnux_user }}\t\thard\tnofiles\t\t2048"
+    mode: '0644'
     state: present
     create: yes
 
@@ -70,6 +79,7 @@
     dest: /etc/update-manager/release-upgrades
     regexp: '^Prompt=.*'
     replace: 'Prompt=never'
+    mode: '0644'
   when: rupgrades.stat.exists
 
 - name: check ruby spec permissions

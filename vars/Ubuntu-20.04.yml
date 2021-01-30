@@ -2,254 +2,254 @@
 
 remnux_gem_exec: '/usr/bin/gem'
 remnux_ruby_gems:
-    - { n: therubyracer, v: 0.12.2 }
-    - { n: origami, v: 2.0.3 }
-    - { n: pedump, v: 0.5.2 }
+  - { n: therubyracer, v: 0.12.2 }
+  - { n: origami, v: 2.0.3 }
+  - { n: pedump, v: 0.5.2 }
 
 remnux_packages:
-    - software-properties-common
-    - vbindiff
-    - wxhexeditor
-    - feh
-    - libffi-dev
-    - binutils
-    - curl
-    - exfat-utils
-    - stunnel4
-    - imagemagick
-## sift is using gdb so keep same, else keep installing/removing
-## but remnux-bashacks wants gdb-minimal and not gdb...
-#    - gdb-minimal
-    - gdb
-    - python3-virtualenv
-    - firefox
-    - xmlstarlet
-    - inspircd
-    - epic5
-    - tor
-    - torsocks
-#    - pdftk
-#    - clamav-daemon
-    - clamav
-    - clamav-base
-    - clamav-freshclam
-#    - bulk-extractor
-    - ltrace
-    - strace
-#    - inetsim
-    - openssh-client
-    - openssh-server
-    - openssh-sftp-server
-    - foremost
-    - ngrep
-    - unhide
-    - tcpdump
-    - default-jre
-    - tcpick
-    - wireshark
-    - radare2
-    - p7zip-full
-    - upx-ucl
-    - libmozjs-52-0
-    - libmozjs-68-0
-    - rhino
-    - python3-crypto
-#    - volatility
-#    - volatility-tools
-    - ssdeep
-## use upstream community docker repo
-#    - docker-ce
-    - libimage-exiftool-perl
-    - scalpel
-    - liblzma-dev
-    - libenchant1c2a
-    - lame
-    - ibus
-    - libgif7
-    - libgif-dev
-    - libjpeg-turbo8
-    - libjpeg-turbo8-dev
-    - libgtk2.0-0:i386
-    - libxxf86vm1:i386
-    - libsm6:i386
-    - lib32stdc++6
-    - gtk2-engines:i386
-#    - gtk2-engines-*:i386
-#    - libgtkmm-2.4-1c2:i386
-    - libcanberra-gtk-module:i386
-    - libxslt1-dev
-    - libxml2-dev
-    - zlib1g-dev
-    - libyaml-dev
-    - bundler
-    - build-essential
-    - python3
-    - python3-dev
-    - automake
-    - autoconf
-    - python3-pip
-## 2.3
-    - ruby
-    - ruby-dev
-    - git
-    - subversion
-    - mercurial
-    - bundler
-## msg: No package matching 'unrar' is available
-#    - unrar
-    - unrar-free
-    - dos2unix
-    - tcpxtract
-    - libsqlite3-dev
-    - python3-pydot
-    - libncurses5:i386
-    - automake
-    - libmagic-dev
-    - libtool
-    - bison
-    - flex
-    - libboost-all-dev
-    - libncurses5-dev
-    - python3-setuptools
-    - python3-magic
-    - libpcre3
-    - libpcre3-dev
-    - libpcre++-dev
-    - automake
-    - openssl
-    - libzmq3-dev
-    - libc6-dev-i386
-    - usbmount
-    - python3-numpy
-    - python3-scipy
-    - python3-levenshtein
-    - python3-pil
-    - libfuzzy-dev
-    - graphviz
-    - python3-utidylib
-    - rsakeyfind
-    - aeskeyfind
-    - ruby-gtk2
-    - libjavassist-java
-    - tcpflow
-    - geany
-#    - sysdig
-    - yara
-    - libyara3
-    - python3-yara
-    - python3-pyasn1
-    - python3-capstone
-    - python3-pefile
-## disabling as potential conflict with gift ppa
-#    - libolecf-utils
-    - scite
-    - libemail-outlook-message-perl
-    - libemail-mime-contenttype-perl
-    - libemail-mime-perl
-    - libemail-sender-perl
-    - libemail-simple-perl
-    - libio-all-perl
-    - libio-string-perl
-    - libole-storage-lite-perl
-    - python3-dnspython
-    - unzip
-    - menu-xdg
-    - lxterminal
-    - kmod
-#    - remnux-config
-#    - remnux-rules
-#    - remnux-volatility-plugins
-#    - remnux-pylibemu
-#    - remnux-pyv8
-#    - remnux-v8
-#    - remnux-python-ssdeep
-#    - remnux-libdasm
-#    - remnux-scripts
-#    - remnux-officedissector
-#    - remnux-didier
-#    - remnux-xorsearch
-#    - remnux-xorstrings
-#    - remnux-ioc-writer
-#    - remnux-findaes
-#    - remnux-nsrllookup
-#    - remnux-balbuzard
-#    - remnux-signsrch
-#    - remnux-bokken
-#    - remnux-viper
-#    - remnux-pdfxray-lite
-#    - remnux-thug
-#    - remnux-trid
-#    - remnux-rule-editor
-#    - remnux-peepdf
-#    - remnux-mastiff
-#    - remnux-udis86
-#    - remnux-vivisect
-#    - remnux-edb-debugger
-#    - remnux-peframe
-#    - remnux-rabcdasm
-#    - remnux-jad
-#    - remnux-jd-gui
-#    - remnux-automater
-#    - remnux-network-miner
-#    - remnux-python-chilkat
-#    - remnux-androwarn
-#    - remnux-androguard
-#    - remnux-pev
-#    - remnux-bashacks
-#    - remnux-pype32
-#    - remnux-ratdecoders
-#    - remnux-procdot
-#    - remnux-densityscout
-#    - remnux-ragpicker
-#    - remnux-vttool
-#    - remnux-bytehist
-#    - remnux-burpsuite-free
-#    - remnux-js-didier
-#    - remnux-python-pdns
-#    - remnux-flare
-#    - remnux-oletools
-#    - remnux-captipper
-#    - remnux-cfr
-#    - remnux-pycdc
-#    - remnux-virustotalapi
-#    - remnux-dc3-mwcp
-#    - remnux-ioc-parser
-# To ensure ansible_default_ipv4 is populated
-    - iproute2
-# pip: netfilterqueue
-    - libnetfilter-queue-dev
+  - software-properties-common
+  - vbindiff
+  - wxhexeditor
+  - feh
+  - libffi-dev
+  - binutils
+  - curl
+  - exfat-utils
+  - stunnel4
+  - imagemagick
+  ## sift is using gdb so keep same, else keep installing/removing
+  ## but remnux-bashacks wants gdb-minimal and not gdb...
+  # - gdb-minimal
+  - gdb
+  - python3-virtualenv
+  - firefox
+  - xmlstarlet
+  - inspircd
+  - epic5
+  - tor
+  - torsocks
+  # - pdftk
+  # - clamav-daemon
+  - clamav
+  - clamav-base
+  - clamav-freshclam
+  # - bulk-extractor
+  - ltrace
+  - strace
+  # - inetsim
+  - openssh-client
+  - openssh-server
+  - openssh-sftp-server
+  - foremost
+  - ngrep
+  - unhide
+  - tcpdump
+  - default-jre
+  - tcpick
+  - wireshark
+  - radare2
+  - p7zip-full
+  - upx-ucl
+  - libmozjs-52-0
+  - libmozjs-68-0
+  - rhino
+  - python3-crypto
+  # - volatility
+  # - volatility-tools
+  - ssdeep
+  ## use upstream community docker repo
+  # - docker-ce
+  - libimage-exiftool-perl
+  - scalpel
+  - liblzma-dev
+  - libenchant1c2a
+  - lame
+  - ibus
+  - libgif7
+  - libgif-dev
+  - libjpeg-turbo8
+  - libjpeg-turbo8-dev
+  - libgtk2.0-0:i386
+  - libxxf86vm1:i386
+  - libsm6:i386
+  - lib32stdc++6
+  - gtk2-engines:i386
+  # - gtk2-engines-*:i386
+  # - libgtkmm-2.4-1c2:i386
+  - libcanberra-gtk-module:i386
+  - libxslt1-dev
+  - libxml2-dev
+  - zlib1g-dev
+  - libyaml-dev
+  - bundler
+  - build-essential
+  - python3
+  - python3-dev
+  - automake
+  - autoconf
+  - python3-pip
+  ## 2.3
+  - ruby
+  - ruby-dev
+  - git
+  - subversion
+  - mercurial
+  - bundler
+  ## msg: No package matching 'unrar' is available
+  # - unrar
+  - unrar-free
+  - dos2unix
+  - tcpxtract
+  - libsqlite3-dev
+  - python3-pydot
+  - libncurses5:i386
+  - automake
+  - libmagic-dev
+  - libtool
+  - bison
+  - flex
+  - libboost-all-dev
+  - libncurses5-dev
+  - python3-setuptools
+  - python3-magic
+  - libpcre3
+  - libpcre3-dev
+  - libpcre++-dev
+  - automake
+  - openssl
+  - libzmq3-dev
+  - libc6-dev-i386
+  - usbmount
+  - python3-numpy
+  - python3-scipy
+  - python3-levenshtein
+  - python3-pil
+  - libfuzzy-dev
+  - graphviz
+  - python3-utidylib
+  - rsakeyfind
+  - aeskeyfind
+  - ruby-gtk2
+  - libjavassist-java
+  - tcpflow
+  - geany
+  # - sysdig
+  - yara
+  - libyara3
+  - python3-yara
+  - python3-pyasn1
+  - python3-capstone
+  - python3-pefile
+  ## disabling as potential conflict with gift ppa
+  # - libolecf-utils
+  - scite
+  - libemail-outlook-message-perl
+  - libemail-mime-contenttype-perl
+  - libemail-mime-perl
+  - libemail-sender-perl
+  - libemail-simple-perl
+  - libio-all-perl
+  - libio-string-perl
+  - libole-storage-lite-perl
+  - python3-dnspython
+  - unzip
+  - menu-xdg
+  - lxterminal
+  - kmod
+  # - remnux-config
+  # - remnux-rules
+  # - remnux-volatility-plugins
+  # - remnux-pylibemu
+  # - remnux-pyv8
+  # - remnux-v8
+  # - remnux-python-ssdeep
+  # - remnux-libdasm
+  # - remnux-scripts
+  # - remnux-officedissector
+  # - remnux-didier
+  # - remnux-xorsearch
+  # - remnux-xorstrings
+  # - remnux-ioc-writer
+  # - remnux-findaes
+  # - remnux-nsrllookup
+  # - remnux-balbuzard
+  # - remnux-signsrch
+  # - remnux-bokken
+  # - remnux-viper
+  # - remnux-pdfxray-lite
+  # - remnux-thug
+  # - remnux-trid
+  # - remnux-rule-editor
+  # - remnux-peepdf
+  # - remnux-mastiff
+  # - remnux-udis86
+  # - remnux-vivisect
+  # - remnux-edb-debugger
+  # - remnux-peframe
+  # - remnux-rabcdasm
+  # - remnux-jad
+  # - remnux-jd-gui
+  # - remnux-automater
+  # - remnux-network-miner
+  # - remnux-python-chilkat
+  # - remnux-androwarn
+  # - remnux-androguard
+  # - remnux-pev
+  # - remnux-bashacks
+  # - remnux-pype32
+  # - remnux-ratdecoders
+  # - remnux-procdot
+  # - remnux-densityscout
+  # - remnux-ragpicker
+  # - remnux-vttool
+  # - remnux-bytehist
+  # - remnux-burpsuite-free
+  # - remnux-js-didier
+  # - remnux-python-pdns
+  # - remnux-flare
+  # - remnux-oletools
+  # - remnux-captipper
+  # - remnux-cfr
+  # - remnux-pycdc
+  # - remnux-virustotalapi
+  # - remnux-dc3-mwcp
+  # - remnux-ioc-parser
+  # To ensure ansible_default_ipv4 is populated
+  - iproute2
+  # pip: netfilterqueue
+  - libnetfilter-queue-dev
 
 remnux_pip_packages_version:
-    - { name: cryptography, version: 2.9.2 }
+  - { name: cryptography, version: 2.9.2 }
 
 remnux_pip_packages:
-    - distorm3
-#    - git+https://github.com/gdabah/distorm#egg=distorm3
-    - pyelftools
-#    - rekall
-    - jsbeautifier
-    - xortool
-    - cybox
-    - olefile
-## FIXME! compilation fails on digitalocean: 'x86_64-linux-gnu-gcc -pthread -fno-strict-aliasing -DNDEBUG -g -fwrapv -O2 -Wall -Wstrict-prototypes -fPIC -I/usr/include/libxml2 -Isrc/lxml/includes -I/usr/include/python2.7 -c src/lxml/lxml.etree.c -o build/temp.linux-x86_64-2.7/src/lxml/lxml.etree.o -w\n\nx86_64-linux-gnu-gcc: internal compiler error: Killed (program cc1)'
-#    - mitmproxy
-    - pydeep
-    - bottle
-    - pylzma
-    - pyelftools
-    - bitstring
-## FIXME! ImportError: cannot import name filterfalse
-#    - requesocks
-    - rarfile
-    - fuzzywuzzy
-    - docker-py
-    - r2pipe
-    - pypdns
-    - pypssl
-    - ipwhois
-    - shodan
-    - pygeoip
-    - docker-compose
-    - ndg-httpsclient
-    - dnslib
-    - pydivert
+  - distorm3
+  # - git+https://github.com/gdabah/distorm#egg=distorm3
+  - pyelftools
+  # - rekall
+  - jsbeautifier
+  - xortool
+  - cybox
+  - olefile
+  ## FIXME! compilation fails on digitalocean: 'x86_64-linux-gnu-gcc -pthread -fno-strict-aliasing -DNDEBUG -g -fwrapv -O2 -Wall -Wstrict-prototypes -fPIC -I/usr/include/libxml2 -Isrc/lxml/includes -I/usr/include/python2.7 -c src/lxml/lxml.etree.c -o build/temp.linux-x86_64-2.7/src/lxml/lxml.etree.o -w\n\nx86_64-linux-gnu-gcc: internal compiler error: Killed (program cc1)'
+  # - mitmproxy
+  - pydeep
+  - bottle
+  - pylzma
+  - pyelftools
+  - bitstring
+  ## FIXME! ImportError: cannot import name filterfalse
+  # - requesocks
+  - rarfile
+  - fuzzywuzzy
+  - docker-py
+  - r2pipe
+  - pypdns
+  - pypssl
+  - ipwhois
+  - shodan
+  - pygeoip
+  - docker-compose
+  - ndg-httpsclient
+  - dnslib
+  - pydivert
