@@ -79,6 +79,6 @@ jobs:
       - name: After script - files
         run: |
           ls -lAR /usr/share/remnux
-          sudo ls -la "/home/remnux/Desktop/REMnux Tools Sheet"
+          sudo ls -la "/home/remnux/Desktop/REMnux Tools Sheet" || true
           ls -lA /usr/local/bin
         continue-on-error: true
