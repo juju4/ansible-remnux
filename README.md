@@ -11,6 +11,10 @@ Ansible role to setup Remnux on a box.
 It's basically a conversion of the shell scripts
 http://remnux.org/get-remnux.sh
 
+Remnux moved from above shell script to saltstack either directly, either through remnux-cli.
+remnux-cli installation is included in the role but not used by default as ideally, ansible role is synchronized with saltstack setup. Until fully done, you can use remnux-cli as needed.
+
+
 ## Requirements & Dependencies
 
 ### Ansible
@@ -23,7 +27,10 @@ It was tested on the following versions:
 
 ### Operating systems
 
-Tested on Ubuntu 14.04 for now but should work on 12.04 and similar debian based systems (at the exception of some ppa dependencies), Ubuntu 16.04 and pre-support of 18.04 (missing upstream repositories)
+* Ubuntu 14.04
+* Ubuntu 16.04
+* Ubuntu 18.04
+* Ubuntu 20.04
 
 ## Example Playbook
 

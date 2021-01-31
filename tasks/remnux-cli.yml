@@ -1,0 +1,30 @@
+---
+# latest https://docs.remnux.org/install-distro/install-from-scratch, Jan 2021
+# leveraging saltstack, upstream solution if want latest that is not mirrored by ansible role
+# /var/cache/remnux/cli/saltstack.log
+# /etc/remnux-config
+
+- name: Ensure gnupg present
+  package:
+    name: gnupg
+    state: present
+
+- name: Download remnux-cli
+  get_url:
+    url: https://REMnux.org/remnux-cli
+    dest: /usr/local/bin/remnux
+    mode: '0755'
+    owner: root
+    sha256sum: e335872b1026136102b6ca5d8b4fbf2f20cadd1ea5117955381c1520fd0843de
+
+- name: Execute remnux install
+  command: sudo remnux install
+  when: remnux_cli_install is defined and remnux_cli_install|bool
+
+- name: Execute remnux install cloud
+  command: sudo remnux install --mode=cloud
+  when: remnux_cli_install_cloud is defined and remnux_cli_install_cloud|bool
+
+- name: Execute remnux upgrade
+  command: sudo remnux upgrade
+  when: remnux_cli_upgrade is defined and remnux_cli_upgrade|bool

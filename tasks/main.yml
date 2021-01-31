@@ -84,3 +84,5 @@
 
 - name: check ruby spec permissions
   file: "dest=/home/{{ remnux_user }}/.gem/specs state=directory mode=0755 owner={{ remnux_user }}"
+
+- include: remnux-cli.yml
