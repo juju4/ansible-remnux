@@ -14,15 +14,26 @@
   when: remnux_public_keys is defined and remnux_public_keys
   become: yes
 
+# https://launchpad.net/~remnux/+archive/ubuntu/stable
 - name: adding REMnux repository
   apt_repository: repo='ppa:remnux/stable' state=present
-  when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'trusty'
+  when: >
+    ansible_distribution == 'Ubuntu' and (
+      ansible_distribution_release == 'trusty' or
+      ansible_distribution_release == 'bionic' or
+      ansible_distribution_release == 'focal'
+    )
 
+# https://launchpad.net/~sift/+archive/ubuntu/stable
 - name: adding SIFT repository
   apt_repository: repo='ppa:sift/stable' state=present
   when: >
-    ansible_distribution == 'Ubuntu' and
-    (ansible_distribution_release == 'trusty' and ansible_distribution_release == 'xenial')
+    ansible_distribution == 'Ubuntu' and (
+      ansible_distribution_release == 'trusty' or
+      ansible_distribution_release == 'xenial' or
+      ansible_distribution_release == 'bionic' or
+      ansible_distribution_release == 'focal'
+    )
 
 ## Alternative: trusty-backports?
 - name: install draios apt gpg key
