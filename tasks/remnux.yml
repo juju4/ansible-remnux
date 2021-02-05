@@ -23,6 +23,8 @@
       ansible_distribution_release == 'bionic' or
       ansible_distribution_release == 'focal'
     )
+  register: apt_result
+  until: apt_result is success
 
 # https://launchpad.net/~sift/+archive/ubuntu/stable
 - name: adding SIFT repository
@@ -34,6 +36,8 @@
       ansible_distribution_release == 'bionic' or
       ansible_distribution_release == 'focal'
     )
+  register: apt_result
+  until: apt_result is success
 
 ## Alternative: trusty-backports?
 - name: install draios apt gpg key
