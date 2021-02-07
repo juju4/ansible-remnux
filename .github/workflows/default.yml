@@ -10,10 +10,12 @@ on:
 jobs:
   build:
 
-    runs-on: [ 'ubuntu-20.04', 'ubuntu-18.04' ]
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       max-parallel: 4
+      matrix:
+        os: [ubuntu-20.04, ubuntu-18.04]
     env:
       ANSIBLE_CALLBACK_WHITELIST: profile_tasks
       ANSIBLE_EXTRA_VARS: ""
