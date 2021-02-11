@@ -32,6 +32,11 @@ jobs:
         run: |
           python3 -m pip install --upgrade pip
           pip3 install ansible-lint flake8 yamllint
+          which ansible
+          pip3 install ansible
+          ls -l $HOME/.local/bin
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+          which ansible
           ansible --version
           cd $GITHUB_WORKSPACE/juju4.remnux
           [ -f get-dependencies.sh ] && sh -x get-dependencies.sh
