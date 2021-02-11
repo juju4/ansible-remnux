@@ -62,7 +62,7 @@
 - include: x11.yml
   when: remnux_do_x11 is defined and remnux_do_x11
 
-- name: Review some limits
+- name: Review some limits  # noqa no-tabs
   lineinfile:
     dest: /etc/security/limits.d/openfiles
     regexp: "^{{ remnux_user }}\t\thard\tnofiles\t\t2048"
