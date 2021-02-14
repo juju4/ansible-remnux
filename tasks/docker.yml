@@ -25,6 +25,11 @@
 - name: Adding remnux account to docker group
   user: name={{ remnux_user }} groups=docker append=yes
 
+- name: Ensure docker pip is present
+  pip:
+    name: docker
+    state: present
+
 - block:
     - name: Ensure docker service is enabled and started
       service:
