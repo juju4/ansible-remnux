@@ -79,15 +79,18 @@ jobs:
           systemctl -l --no-pager status iptables || true
           systemd-analyze security || true
           rsyslogd -v
+        if: ${{ always() }}
         continue-on-error: true
       - name: After script - etc
         run: |
           ls -la /etc
           ls -la /etc/ssh/
+        if: ${{ always() }}
         continue-on-error: true
       - name: After script - files
         run: |
           ls -lAR /usr/share/remnux
           sudo ls -la "/home/remnux/Desktop/REMnux Tools Sheet" || true
           ls -lA /usr/local/bin
+        if: ${{ always() }}
         continue-on-error: true
