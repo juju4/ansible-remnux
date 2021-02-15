@@ -1,6 +1,8 @@
 ---
 driver:
   name: lxd_cli
+  config:
+    security.nesting: true
 
 transport:
   name: sftp
