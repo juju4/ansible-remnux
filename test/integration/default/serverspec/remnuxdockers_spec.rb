@@ -10,7 +10,7 @@ end
 
 ## https://remnux.org/docs/containers/malware-analysis/
 describe command('docker run --rm -it -v /tmp:/tmp remnux/thug thug -FZM -u win7ie90 -w 10 -T 60 -n /tmp/thuglogdir -o /tmp/thuglog.txt "http://www.google.com"') do
-  its(:stdout) { should match /Thug analysis logs saved at \/tmp\/thuglogdir/ }
+  #its(:stdout) { should match /Thug analysis logs saved at \/tmp\/thuglogdir/ }
   its(:stderr) { should_not match /operation not permitted/ }
   its(:exit_status) { should eq 0 }
 end
