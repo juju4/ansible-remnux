@@ -11,5 +11,5 @@
       - remnux/radare2
       # - radare/radare2
   roles:
-    # - { role: jgeusebroek.docker, when: ansible_distribution == 'Ubuntu' and ansible_distribution_release != '18.04' }
+    - { role: jgeusebroek.docker, when: ansible_distribution == 'Ubuntu' }
     - juju4.remnux
