@@ -1,14 +1,14 @@
 ---
 driver:
   name: lxd_cli
-  ## docker.io need specificl profile else 'PermissionError: [Errno 13] Permission denied: '/sys/kernel/security/apparmor/profiles''
-  ## https://www.stgraber.org/2016/04/13/lxd-2-0-docker-in-lxd-712/
-  profile: [ default, docker ]
-  config:
-    security.privileged: true
 
 transport:
   name: sftp
+
+driver_config:
+  customize:
+    # cpus: 2
+    memory: 1024
 
 provisioner:
   name: ansible_playbook
@@ -17,6 +17,7 @@ provisioner:
   # ansible_verbose: true
   ansible_verbose: false
   ansible_verbosity: 3
+  ansible_cfg_path: test/vagrant/ansible.cfg
   ansible_extra_flags: <%= ENV['ANSIBLE_EXTRA_FLAGS'] %>
   # require_chef_omnibus: false
   require_ansible_omnibus: true
