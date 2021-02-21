@@ -2,13 +2,14 @@
 
 - hosts: all
   vars:
-    - remnux_docker_enable: false
-  pre_tasks:
-    - name: Xenial | set fact
-      set_fact:
-        remnux_docker_enable: false
-        remnux_docker_images: []
-      when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == '18.04'
+    # selection per disk space limit of CI/CD
+    remnux_docker_images:
+      - remnux/thug
+      # - remnux/retdec
+      # - remnux/viper
+      # - remnux/jsdetox
+      - remnux/radare2
+      # - radare/radare2
   roles:
     # - { role: jgeusebroek.docker, when: ansible_distribution == 'Ubuntu' and ansible_distribution_release != '18.04' }
     - juju4.remnux

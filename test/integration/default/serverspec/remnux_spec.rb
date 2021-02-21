@@ -30,7 +30,7 @@ describe file('/usr/share/remnux') do
   it { should be_directory }
 end
 
-describe file('/home/remnux/Desktop/REMnux Tools Sheet') do
+describe file('/home/remnux/Desktop/REMnux Docs') do
   it { should be_symlink }
 end
 
