@@ -220,7 +220,7 @@ remnux_packages:
   # pip: netfilterqueue
   - libnetfilter-queue-dev
 
-remnux_pip_packages_version:
+_remnux_pip_packages_version:
   - { name: cryptography, version: 2.0.3 }
 
 remnux_pip_packages:

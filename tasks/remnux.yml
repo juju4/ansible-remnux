@@ -112,7 +112,7 @@
         name: "{{ item.name }}"
         version: "{{ item.version }}"
         state: present
-      with_items: "{{ remnux_pip_packages_version }}"
+      with_items: "{{ remnux_pip_packages_version | default(_remnux_pip_packages_version) }}"
       register: pkg_result
       until: pkg_result is success
     - name: Install pip packages
@@ -129,7 +129,7 @@
         version: "{{ item.version }}"
         state: present
         virtualenv: "{{ remnux_pip_virtualenv }}"
-      with_items: "{{ remnux_pip_packages_version }}"
+      with_items: "{{ remnux_pip_packages_version | default(_remnux_pip_packages_version) }}"
     ## avoid conflict on six when installed along sift/trusty
     ## if get 'setuptools must be installed to install from a source distribution', try to erase virtualenv and replay
     ## https://github.com/pypa/pip/issues/2931#issuecomment-151074766
