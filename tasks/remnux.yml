@@ -123,7 +123,7 @@
       until: pkg_result is success
   when: not remnux_pip_virtualenv|string
 - block:
-    - name: Install pip packages - required version
+    - name: Install pip packages - required version - virtualenv
       pip:
         name: "{{ item.name }}"
         version: "{{ item.version }}"
