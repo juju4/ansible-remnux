@@ -7,7 +7,7 @@
 
 - name: adding Microsoft prod packages repository
   apt_repository:
-    repo: "deb [arch=amd64] http://packages.microsoft.com/ubuntu/{{ ansible_distribution|lower }}/prod {{ ansible_distribution_release }} main"
+    repo: "deb [arch=amd64] http://packages.microsoft.com/ubuntu/{{ ansible_distribution_version }}/prod {{ ansible_distribution_release }} main"
     filename: microsoft.list
     state: present
 
