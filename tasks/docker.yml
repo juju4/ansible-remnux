@@ -1,25 +1,18 @@
 ---
 
-- name: Stopping Docker daemon
-  service:
-    name: "{{ docker_svc | default('docker') }}"
-    state: stopped
-    enabled: no
-  ignore_errors: true
-
 - name: Configure docker in manual mode - non-systemd
   lineinfile:
     dest: /etc/init/docker.override
     regexp: '^manual'
     line: 'manual'
     mode: '0644'
-  when: ansible_service_mgr != 'systemd'
+  when: ansible_service_mgr != 'systemd' and remnux_docker_service_manual
 
 - name: Configure docker in manual mode - systemd
   systemd:
     name: "{{ docker_svc | default('docker') }}"
     enabled: false
-  when: ansible_service_mgr == 'systemd'
+  when: ansible_service_mgr == 'systemd' and remnux_docker_service_manual
   ignore_errors: true
 
 - name: Adding remnux account to docker group
@@ -31,7 +24,7 @@
     state: present
 
 - block:
-    - name: Ensure docker service is enabled and started
+    - name: Ensure docker service is started before downloading images
       service:
         name: "{{ docker_svc | default('docker') }}"
         state: started

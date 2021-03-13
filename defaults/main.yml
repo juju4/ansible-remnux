@@ -35,6 +35,7 @@ vm: true
 # remnux_pip_virtualenv: ''
 remnux_pip_virtualenv: /usr/local/env-remnux
 
+remnux_docker_service_manual: false
 remnux_docker_images:
   - remnux/thug
   - remnux/retdec
