@@ -10,10 +10,3 @@
     repo: "deb [arch=amd64] http://packages.microsoft.com/ubuntu/{{ ansible_distribution_version }}/prod {{ ansible_distribution_release }} main"
     filename: microsoft.list
     state: present
-
-- name: Ensure microsoft-vscode package is present
-  package:
-    name: microsoft-vscode
-    state: present
-  register: pkg_result
-  until: pkg_result is success
