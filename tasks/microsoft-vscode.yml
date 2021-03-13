@@ -13,7 +13,7 @@
 
 - name: Ensure microsoft-vscode package is present
   package:
-    name: microsoft-vscode
+    name: code
     state: present
   register: pkg_result
   until: pkg_result is success
