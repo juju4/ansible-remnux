@@ -18,3 +18,4 @@ galaxy_info:
 
 dependencies:
   - geerlingguy.java
+  - geerlingguy.nodejs
