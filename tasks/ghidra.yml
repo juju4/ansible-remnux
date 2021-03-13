@@ -1,10 +1,17 @@
 ---
 
+- name: Ensure archives directory exists
+  file:
+    path: "{{ archives_dir }}"
+    state: directory
+    mode: '0755'
+
 - name: Download Ghidra
   get_url:
     url: "{{ remnux_ghidra_url }}"
     checksum: "{{ remnux_ghidra_checksum }}"
     dest: "{{ archives_dir }}/{{ remnux_ghidra_url | basename }}"
+    mode: '0644'
 
 - name: Unarchive Ghidra
   unarchive:
@@ -19,3 +26,4 @@
     src: "/usr/local/{{ remnux_ghidra_url | basename | regex_replace('.zip$', '') }}/ghidraRun"
     dest: /usr/local/bin/ghidra
     state: link
+    mode: '0755'
