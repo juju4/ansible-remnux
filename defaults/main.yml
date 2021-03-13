@@ -19,6 +19,10 @@ remnux_with_microsoft: true
 remnux_with_microsoftvscode: true
 remnux_with_mono: true
 
+remnux_with_ghidra: true
+remnux_ghidra_url: 'https://ghidra-sre.org/ghidra_9.2.2_PUBLIC_20201229.zip'
+remnux_ghidra_checksum: 'sha256:8cf8806dd5b8b7c7826f04fad8b86fc7e07ea380eae497f3035f8c974de72cf8'
+
 # remnux_webserver: apache2
 remnux_webserver: nginx
 
@@ -34,6 +38,7 @@ remnux_public_keys: []
 ## are you on a VM?
 vm: true
 
+archives_dir: /usr/local/src/remnux/files
 
 ## if empty, will install globally. might get conflict on six with sift/trusty
 # remnux_pip_virtualenv: ''

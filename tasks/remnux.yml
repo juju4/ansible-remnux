@@ -35,6 +35,9 @@
 - include: inetsim.yml
   when: remnux_with_inetsim|bool
 
+- import_tasks: ghidra.yml
+  when: remnux_with_ghidra|bool
+
 - block:
     - name: REMNUX | nginx packages install
       apt: name=nginx state=present update_cache=yes cache_valid_time=3600
