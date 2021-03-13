@@ -6,18 +6,44 @@ remnux_ruby_gems:
   - { n: origami, v: 2.0.3 }
   - { n: pedump, v: 0.5.2 }
 
+remnux_ppa_packages:
+  - android-project-creator
+  - baksmali
+  - bddisasm
+  - bearparser
+  - binee
+  - capa
+  - dex2jar
+  - edb-debugger
+  - flare-floss
+  - ilspycmd
+
+sift_ppa_packages:
+- bulk-extractor
+
 remnux_packages:
+  - apt-transport-https
   - software-properties-common
   - vbindiff
   - wxhexeditor
   - feh
   - libffi-dev
   - binutils
+  - binwalk
+  - cabextract
   - curl
+  - default-jre
+  - dialog
+  - enchant
+  - evince
   - exfat-utils
+  # - fakenet-ng TODO
+  - file
+  - galculator
   - xpdf
   - stunnel4
   - imagemagick
+  - ipython3
   ## sift is using gdb so keep same, else keep installing/removing
   ## but remnux-bashacks wants gdb-minimal and not gdb...
   # - gdb-minimal
@@ -38,11 +64,10 @@ remnux_packages:
   - torsocks
   # - pdftk
   - libemu2
-  # - clamav-daemon
+  - clamav-daemon
   - clamav
   - clamav-base
   - clamav-freshclam
-  # - bulk-extractor
   - ltrace
   - strace
   # - inetsim
@@ -231,8 +256,12 @@ remnux_packages:
   # - remnux-ioc-parser
   # To ensure ansible_default_ipv4 is populated
   - iproute2
+  - iptables
+  - iputils-ping
   # pip: netfilterqueue
   - libnetfilter-queue-dev
+  - "{{ remnux_ppa_packages }}"
+  - "{{ sift_ppa_packages }}"
 
 _remnux_pip_packages_version:
   - { name: cryptography, version: 2.2.2 }

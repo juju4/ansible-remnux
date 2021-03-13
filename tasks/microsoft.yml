@@ -10,3 +10,8 @@
     repo: "deb [arch=amd64] http://packages.microsoft.com/ubuntu/{{ ansible_distribution_version }}/prod {{ ansible_distribution_release }} main"
     filename: microsoft.list
     state: present
+
+- name: Ensure Microsoft packages are present
+  package:
+    name: dotnet-runtime-3.1
+    state: present
