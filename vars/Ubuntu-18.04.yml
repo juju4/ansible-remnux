@@ -19,7 +19,7 @@ remnux_ppa_packages:
   - ilspycmd
 
 sift_ppa_packages:
-- bulk-extractor
+  - bulk-extractor
 
 remnux_packages:
   - apt-transport-https
