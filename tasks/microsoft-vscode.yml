@@ -1,4 +1,5 @@
 ---
+# alternative: use snap?
 
 - name: adding Microsoft packages signing key
   apt_key:
