@@ -42,8 +42,8 @@ remnux_pip_virtualenv: /usr/local/env-remnux
 remnux_docker_service_manual: false
 remnux_docker_images:
   - remnux/thug
-  - remnux/retdec
-  - remnux/viper
+  # - remnux/retdec  # 6.2GB
+  - remnux/viper  # 1.2GB
   - remnux/jsdetox
-  - remnux/radare2
+  - remnux/radare2  # 1.1GB
   - radare/radare2
