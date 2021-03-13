@@ -1,0 +1,19 @@
+---
+
+- name: adding Xamarin Mono signing key
+  apt_key:
+    url: https://download.mono-project.com/repo/xamarin.gpg
+    state: present
+
+- name: adding Mono project repository
+  apt_repository:
+    repo: "deb [arch=amd64] https://download.mono-project.com/repo/ubuntu stable-{{ ansible_distribution_release }} main"
+    filename: mono-official-stable.list
+    state: present
+
+- name: Ensure mono-repo package is present
+  package:
+    name: mono-repo
+    state: present
+  register: pkg_result
+  until: pkg_result is success

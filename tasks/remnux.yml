@@ -15,6 +15,12 @@
   become: yes
 
 - import_tasks: remnux-repos.yml
+- import_tasks: mono.yml
+  when: remnux_with_mono|bool
+- import_tasks: microsoft.yml
+  when: remnux_with_microsoft|bool
+- import_tasks: microsoft-vscode.yml
+  when: remnux_with_microsoftvscode|bool
 
 - name: REMNUX | packages install
   apt: name={{ remnux_packages }} state=present update_cache=yes

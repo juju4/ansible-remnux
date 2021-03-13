@@ -15,6 +15,10 @@ remnux_docker_enable: true
 ## inetsim website/repo often down
 remnux_with_inetsim: false
 
+remnux_with_microsoft: true
+remnux_with_microsoftvscode: true
+remnux_with_mono: true
+
 # remnux_webserver: apache2
 remnux_webserver: nginx
 

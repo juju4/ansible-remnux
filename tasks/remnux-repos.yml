@@ -1,6 +1,13 @@
 ---
 # https://github.com/REMnux/salt-states/tree/master/remnux/repos
 
+- name: install Remnux gpg key
+  apt_key:
+    url: "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xbff45016788de115"
+    state: present
+  register: pkg_result
+  until: pkg_result is success
+
 # https://launchpad.net/~remnux/+archive/ubuntu/stable
 - name: adding REMnux repository
   apt_repository: repo='ppa:remnux/stable' state=present
@@ -26,7 +33,6 @@
   register: apt_result
   until: apt_result is success
 
-## Alternative: trusty-backports?
 - name: install draios apt gpg key
   apt_key: url=https://s3.amazonaws.com/download.draios.com/DRAIOS-GPG-KEY.public state=present
   register: pkg_result
@@ -38,13 +44,6 @@
   register: pkg_result
   until: pkg_result is success
 
-# These repositories are needed for REMnux, but are disabled on some Ubuntu 14.04 base builds, so enable them.
-
-- name: Enabling Universe repository
-  apt_repository: repo='deb http://archive.ubuntu.com/ubuntu trusty universe' state=present
-  when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'trusty'
-  register: pkg_result
-  until: pkg_result is success
 - name: Enabling multiverse repository
   replace:
     dest: /etc/apt/sources.list
@@ -52,3 +51,8 @@
     replace: '\1multiverse'
     mode: '0644'
     backup: yes
+
+- name: adding wireshark-dev ppa repository
+  apt_repository:
+    repo: 'ppa:wireshark-dev/stable'
+    state: present
