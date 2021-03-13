@@ -18,12 +18,12 @@
     src: "{{ archives_dir }}/{{ remnux_ghidra_url | basename }}"
     dest: "/usr/local"
     mode: '0755'
-    creates: "/usr/local/{{ remnux_ghidra_url | basename | regex_replace('.zip$', '') }}/ghidraRun"
+    creates: "/usr/local/{{ remnux_ghidra_url | basename | regex_replace('PUBLIC_\d+.zip$', 'PUBLIC') }}/ghidraRun"
     remote_src: true
 
 - name: Symlink for ghidra binary
   file:
-    src: "/usr/local/{{ remnux_ghidra_url | basename | regex_replace('.zip$', '') }}/ghidraRun"
+    src: "/usr/local/{{ remnux_ghidra_url | basename | regex_replace('PUBLIC_\d+.zip$', 'PUBLIC') }}/ghidraRun"
     dest: /usr/local/bin/ghidra
     state: link
     mode: '0755'
