@@ -18,13 +18,16 @@
     sha256sum: e335872b1026136102b6ca5d8b4fbf2f20cadd1ea5117955381c1520fd0843de
 
 - name: Execute remnux install
-  command: sudo remnux install
+  command: remnux install
+  become: yes
   when: remnux_cli_install is defined and remnux_cli_install|bool
 
-- name: Execute remnux install cloud
-  command: sudo remnux install --mode=cloud
+- name: Execute remnux install cloud - keeping ssh
+  command: remnux install --mode=cloud
+  become: yes
   when: remnux_cli_install_cloud is defined and remnux_cli_install_cloud|bool
 
 - name: Execute remnux upgrade
-  command: sudo remnux upgrade
+  command: remnux upgrade
+  become: yes
   when: remnux_cli_upgrade is defined and remnux_cli_upgrade|bool
