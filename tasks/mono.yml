@@ -11,9 +11,9 @@
     filename: mono-official-stable.list
     state: present
 
-- name: Ensure mono-repo package is present
+- name: Ensure mono-devel package is present
   package:
-    name: mono-repo
+    name: mono-devel
     state: present
   register: pkg_result
   until: pkg_result is success
