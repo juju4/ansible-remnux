@@ -187,7 +187,8 @@
 - name: Stopping InspIRCd daemon
   service: name=inspircd state=stopped enabled=no
 
-- debug: var=ansible_virtualization_type
+- name: Debug | ansible_virtualization_type var
+  debug: var=ansible_virtualization_type
 - name: Modules exclusions for VM
   lineinfile:
     dest: /etc/modprobe.d/blacklist.conf
@@ -288,9 +289,6 @@
 - include: docker.yml
   when: remnux_docker_enable
 
-# Just for fun
-- debug: msg="Taking the dog for a walk"
-
 - name: Setting permissions for {{ remnux_user }}
   file:
     dest: "/home/{{ remnux_user }}"
@@ -302,8 +300,3 @@
 - name: Autoremove unused packages
   apt:
     autoremove: yes
-- name: Check /usr/share/remnux exists
-  stat: path=/usr/share/remnux
-  register: shareremnux
-- debug: msg="Some REMnux packages didn't install."
-  when: not shareremnux.stat.isdir
