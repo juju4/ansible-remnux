@@ -17,6 +17,11 @@ remnux_ppa_packages:
   - edb-debugger
   - flare-floss
   - ilspycmd
+  - libemu
+  - libemu-dev
+
+gift_ppa_packages:
+  - libolecf
 
 sift_ppa_packages:
   - bulk-extractor
@@ -93,6 +98,15 @@ remnux_packages:
   - liblzma-dev
   - libenchant1c2a
   - lame
+  - libbcprov-java
+  - libboost-dev
+  - libboost-filesystem-dev
+  - libboost-program-options-dev
+  - libboost-python-dev
+  - libboost-regex-dev
+  - libboost-system-dev
+  - libcommons-lang3-java
+  - libdpkg-perl
   - ibus
   - libgif7
   - libgif-dev
@@ -101,7 +115,9 @@ remnux_packages:
   - libgtk2.0-0:i386
   - libxxf86vm1:i386
   - libsm6:i386
+  - libssl-dev
   - lib32stdc++6
+  - linux-headers-generic
   - gtk2-engines:i386
   # - gtk2-engines-*:i386
   # - libgtkmm-2.4-1c2:i386
@@ -135,6 +151,7 @@ remnux_packages:
   - automake
   - libmagic-dev
   - libtool
+  - libusb-1.0-0
   - bison
   - flex
   - libboost-all-dev
@@ -154,12 +171,16 @@ remnux_packages:
   - python3-levenshtein
   - python3-pil
   - libfuzzy-dev
+  - libfuzzy2
+  - libgraphviz-dev
   - graphviz
   - python3-utidylib
   - rsakeyfind
   - aeskeyfind
   - ruby-gtk2
   - libjavassist-java
+  - libjpeg-dev
+  - libjpeg8-dev
   - tcpflow
   - geany
   # - sysdig
@@ -249,6 +270,7 @@ remnux_packages:
   - iputils-ping
   # pip: netfilterqueue
   - libnetfilter-queue-dev
+  - libnfnetlink-dev
 
 _remnux_pip_packages_version:
   - { name: cryptography, version: 2.9.2 }
