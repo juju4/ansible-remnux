@@ -28,9 +28,19 @@ remnux_ppa_packages:
   - portex
   - procdot
   - pycdc
+  - sandfly-processdecloak
+  - scdbg
+  - signsrch
+  - swftools
+  - tcpflow
+  - upx-ucl
+  - xorsearch
+  - xorstrings
+  - yara
 
 gift_ppa_packages:
   - libolecf
+  - sleuthkit
 
 sift_ppa_packages:
   - bulk-extractor
@@ -90,6 +100,23 @@ remnux_packages:
   - python3-venv
   - python3-virtualenv
   - python3
+  - qpdf
+  - snap
+  - snapd
+  - sqlite3
+  - sudo
+  - swig
+  - tesseract-ocr
+  - tor
+  - tshark
+  - tzdata
+  - vim
+  - virtualenv
+  - wget
+  - wine-stable
+  - xdg-utils
+  - xmlstarlet
+  - xterm
   ## sift is using gdb so keep same, else keep installing/removing
   ## but remnux-bashacks wants gdb-minimal and not gdb...
   # - gdb-minimal
@@ -180,7 +207,6 @@ remnux_packages:
   - automake
   - autoconf
   - python-pip
-  ## 2.3
   - ruby
   - ruby-dev
   - git
@@ -232,7 +258,6 @@ remnux_packages:
   - libjavassist-java
   - libjpeg-dev
   - libjpeg8-dev
-  - tcpflow
   - geany
   # - sysdig
   - yara
@@ -257,64 +282,6 @@ remnux_packages:
   - menu-xdg
   - lxterminal
   - kmod
-  # - remnux-config
-  # - remnux-rules
-  # - remnux-volatility-plugins
-  # - remnux-pylibemu
-  # - remnux-pyv8
-  # - remnux-v8
-  # - remnux-python-ssdeep
-  # - remnux-libdasm
-  # - remnux-scripts
-  # - remnux-officedissector
-  # - remnux-didier
-  # - remnux-xorsearch
-  # - remnux-xorstrings
-  # - remnux-ioc-writer
-  # - remnux-findaes
-  # - remnux-nsrllookup
-  # - remnux-balbuzard
-  # - remnux-signsrch
-  # - remnux-bokken
-  # - remnux-viper
-  # - remnux-pdfxray-lite
-  # - remnux-thug
-  # - remnux-trid
-  # - remnux-rule-editor
-  # - remnux-peepdf
-  # - remnux-mastiff
-  # - remnux-udis86
-  # - remnux-vivisect
-  # - remnux-edb-debugger
-  # - remnux-peframe
-  # - remnux-rabcdasm
-  # - remnux-jad
-  # - remnux-jd-gui
-  # - remnux-automater
-  # - remnux-network-miner
-  # - remnux-python-chilkat
-  # - remnux-androwarn
-  # - remnux-androguard
-  # - remnux-pev
-  # - remnux-bashacks
-  # - remnux-pype32
-  # - remnux-ratdecoders
-  # - remnux-procdot
-  # - remnux-densityscout
-  # - remnux-ragpicker
-  # - remnux-vttool
-  # - remnux-bytehist
-  # - remnux-burpsuite-free
-  # - remnux-js-didier
-  # - remnux-python-pdns
-  # - remnux-flare
-  # - remnux-oletools
-  # - remnux-captipper
-  # - remnux-cfr
-  # - remnux-pycdc
-  # - remnux-virustotalapi
-  # - remnux-dc3-mwcp
-  # - remnux-ioc-parser
   # To ensure ansible_default_ipv4 is populated
   - iproute2
   - iptables
