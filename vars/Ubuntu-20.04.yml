@@ -78,13 +78,12 @@ remnux_packages:
   - python-numpy
   - python-pil
   - python-pyasn1
-  - python-pyqt5.qtwebkit
-  - python-pyqt5
   - python2
   - python2-dev
   - python3-netifaces
   - python3-pip
   - python3-pyqt5
+  - python3-pyqt5.qtwebkit
   - python3-tk
   - python3-urwid
   - python3-venv
