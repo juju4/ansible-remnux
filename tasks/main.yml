@@ -30,16 +30,6 @@
     - name: Ensure both i386/x86_64 architecture support for packages
       command: dpkg --add-architecture i386
       when: archi.stdout.find('i386') == -1
-    - name: Ensure i386 packages are present
-      package:
-        name:
-          - libc6:i386
-          - libstdc++6:i386
-          - libncurses5:i386
-          - zlib1g:i386
-        state: present
-        update_cache: yes
-        cache_valid_time: 3600
   when: ansible_architecture == 'x86_64'
 
 ## https://remnux.org/docs/distro/get/#install-remnux-on-an-existing-system

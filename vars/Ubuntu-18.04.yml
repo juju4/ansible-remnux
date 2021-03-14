@@ -28,6 +28,10 @@ remnux_packages:
   - wxhexeditor
   - feh
   - libffi-dev
+  - libc6:i386
+  - libstdc++6:i386
+  - libncurses5:i386
+  - zlib1g:i386
   - binutils
   - binwalk
   - cabextract
