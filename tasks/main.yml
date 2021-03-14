@@ -37,7 +37,6 @@
           - libncurses5:i386
           - zlib1g:i386
         state: present
-      ignore_errors: true
   when: ansible_architecture == 'x86_64' and archi.stdout.find('i386') == -1
 
 ## https://remnux.org/docs/distro/get/#install-remnux-on-an-existing-system
