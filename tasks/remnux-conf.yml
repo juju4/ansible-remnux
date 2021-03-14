@@ -64,24 +64,9 @@
     dest: "/home/{{ remnux_user }}/.wireshark/preferences"
     owner: "{{ remnux_user }}"
     mode: '0600'
-- name: Ensure procdot user directory exists
-  file: path=/home/{{ remnux_user }}/.procdot owner={{ remnux_user }} state=directory mode=0700
-- name: Use remnux procdot user config
-  copy:
-    src: /usr/share/remnux/procdot.conf
-    dest: "/home/{{ remnux_user }}/.procdot/.procdot"
-    owner: "{{ remnux_user }}"
-    mode: '0600'
-- name: Check user procdot config exists
-  stat: path=/home/{{ remnux_user }}/.procdot/default.pd
-  register: procdot
-- name: touch user procdot config
-  file:
-    dest: "/home/{{ remnux_user }}/.procdot/default.pd"
-    mode: '0600'
-    owner: "{{ remnux_user }}"
-    state: touch
-  when: not procdot.stat.exists
+
+- import_tasks: procdot.yml
+
 - name: use remnux scite user configuration
   copy:
     src: /usr/share/remnux/scite.conf
