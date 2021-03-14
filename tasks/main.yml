@@ -29,6 +29,7 @@
 - block:
     - name: Ensure both i386/x86_64 architecture support for packages
       command: dpkg --add-architecture i386
+      when: archi.stdout.find('i386') == -1
     - name: Ensure i386 packages are present
       package:
         name:
@@ -37,7 +38,7 @@
           - libncurses5:i386
           - zlib1g:i386
         state: present
-  when: ansible_architecture == 'x86_64' and archi.stdout.find('i386') == -1
+  when: ansible_architecture == 'x86_64'
 
 ## https://remnux.org/docs/distro/get/#install-remnux-on-an-existing-system
 - include: remnux.yml
