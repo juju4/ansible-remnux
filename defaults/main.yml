@@ -44,6 +44,13 @@ archives_dir: /usr/local/src/remnux/files
 # remnux_pip_virtualenv: ''
 remnux_pip_virtualenv: /usr/local/env-remnux
 
+remnux_services_disable:
+  - clamav-daemon
+  - clamav-freshclam
+  - inspircd
+  - postgresql
+  - tor
+
 remnux_docker_service_manual: false
 remnux_docker_images:
   - remnux/thug

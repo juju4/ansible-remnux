@@ -178,23 +178,20 @@
     - /opt
 - name: Ensure /var/log/thug directory exists
   file: dest=/var/log/thug mode=0777 state=directory
-- name: Disabling Tor
-  service: name=tor state=stopped enabled=no
+
 - name: sshd | disable usedns
   lineinfile:
     dest: /etc/ssh/sshd_config
     regexp: '^UseDNS no'
     line: 'UseDNS no'
     mode: '0644'
-- name: Stopping ClamAV daemons
-  service: name={{ item }} state=stopped enabled=no
-  with_items:
-    - clamav-daemon
-    - clamav-freshclam
-  ignore_errors: true
 
-- name: Stopping InspIRCd daemon
-  service: name=inspircd state=stopped enabled=no
+- name: Stopping and disabling daemons for on-demand usage
+  service:
+    name: "{{ item }}"
+    state: stopped
+    enabled: no
+  with_items: "{{ remnux_services_disable }}"
 
 - name: Debug | ansible_virtualization_type var
   debug: var=ansible_virtualization_type
