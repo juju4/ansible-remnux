@@ -32,6 +32,17 @@
   register: pkg_result
   until: pkg_result is success
 
+- name: REMNUX | remnux+sift ppa packages install
+  apt:
+    name:
+      - "{{ remnux_ppa_packages }}"
+      - "{{ sift_ppa_packages }}"
+    state: present
+  async: 7200
+  poll: 300
+  register: pkg_result
+  until: pkg_result is success
+
 - include: inetsim.yml
   when: remnux_with_inetsim|bool
 

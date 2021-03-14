@@ -260,8 +260,6 @@ remnux_packages:
   - iputils-ping
   # pip: netfilterqueue
   - libnetfilter-queue-dev
-  - "{{ remnux_ppa_packages }}"
-  - "{{ sift_ppa_packages }}"
 
 _remnux_pip_packages_version:
   - { name: cryptography, version: 2.2.2 }
