@@ -26,9 +26,8 @@
   apt: name={{ remnux_packages }} state=present update_cache=yes
   notify:
     - Updating ClamAV Signatures
-  ## Note: sometimes can be longer than 1h ...
-  async: 7200
-  poll: 300
+  async: 3600
+  poll: 60
   register: pkg_result
   until: pkg_result is success
 
@@ -36,8 +35,6 @@
   apt:
     name: "{{ remnux_ppa_packages + sift_ppa_packages }}"
     state: present
-  async: 7200
-  poll: 300
   register: pkg_result
   until: pkg_result is success
 
