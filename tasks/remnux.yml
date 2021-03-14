@@ -34,9 +34,7 @@
 
 - name: REMNUX | remnux+sift ppa packages install
   apt:
-    name:
-      - "{{ remnux_ppa_packages }}"
-      - "{{ sift_ppa_packages }}"
+    name: "{{ remnux_ppa_packages + sift_ppa_packages }}"
     state: present
   async: 7200
   poll: 300
