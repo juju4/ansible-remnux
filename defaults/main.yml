@@ -18,6 +18,7 @@ remnux_with_inetsim: false
 remnux_with_microsoft: true
 remnux_with_microsoftvscode: true
 remnux_with_mono: true
+remnux_with_xamarin_mono: false
 
 remnux_with_ghidra: true
 remnux_ghidra_url: 'https://ghidra-sre.org/ghidra_9.2.2_PUBLIC_20201229.zip'
