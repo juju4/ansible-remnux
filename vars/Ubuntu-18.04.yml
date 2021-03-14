@@ -83,14 +83,13 @@ remnux_packages:
   - postgresql
   - procyon-decompiler
   - python-crypto
-  - python-dev
   - python-dnspython
   - python-magic
   - python-numpy
   - python-pil
   - python-pyasn1
   - python
-  - python2-dev
+  - python-dev
   - python3-netifaces
   - python3-pip
   - python3-pyqt5
