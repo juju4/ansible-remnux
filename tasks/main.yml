@@ -38,6 +38,8 @@
           - libncurses5:i386
           - zlib1g:i386
         state: present
+        update_cache: yes
+        cache_valid_time: 3600
   when: ansible_architecture == 'x86_64'
 
 ## https://remnux.org/docs/distro/get/#install-remnux-on-an-existing-system
