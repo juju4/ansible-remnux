@@ -59,12 +59,6 @@ jobs:
           pwd
           env
           find -ls
-      - name: yamllint
-        run: |
-          cd $GITHUB_WORKSPACE/juju4.remnux && yamllint .
-      - name: ansible-lint
-        run: |
-          cd $GITHUB_WORKSPACE/juju4.remnux && ansible-lint
       - name: Install lxd requirements
         run: |
           sudo apt-get update -qq
