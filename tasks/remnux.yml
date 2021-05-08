@@ -155,11 +155,10 @@
   when: not remnuxdocs.stat.exists
 - name: Symlink remnux docs on desktop
   file:
-    src: /usr/share/applications/show-remnux-docs.desktop
-    path: "/home/{{ remnux_user }}/Desktop/REMnux Docs"
-    mode: '0777'
+    src: /usr/share/remnux/docs/README.md
+    path: "/home/{{ remnux_user }}/Desktop/REMnux-README.md"
+    mode: '0644'
     state: link
-    force: yes
 
 - name: Ensure /var/www directory exists
   file: path=/var/www state=directory mode=0755
