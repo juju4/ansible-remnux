@@ -15,9 +15,6 @@
   when: ansible_service_mgr == 'systemd' and remnux_docker_service_manual
   ignore_errors: true
 
-- name: Adding remnux account to docker group
-  user: name={{ remnux_user }} groups=docker append=yes
-
 - name: Ensure docker pip is present
   pip:
     name: docker

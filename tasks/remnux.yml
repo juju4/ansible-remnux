@@ -5,7 +5,7 @@
 - name: Creating remnux group
   group: name={{ remnux_user }}
 - name: Creating remnux generic account
-  user: name={{ remnux_user }} password={{ remnux_pass }} groups={{ remnux_user }},sudo append=yes shell=/bin/bash
+  user: name={{ remnux_user }} password={{ remnux_pass }} groups={{ remnux_user }},sudo,docker append=yes shell=/bin/bash
 
 - name: Add authorized keys for {{ remnux_user }} user
   authorized_key:
