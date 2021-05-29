@@ -33,4 +33,3 @@ end
 describe file('/home/remnux/Desktop/REMnux Docs') do
   it { should be_symlink }
 end
-

@@ -5,4 +5,3 @@
 cd /etc/ansible/roles
 git clone https://github.com/geerlingguy/ansible-role-java.git geerlingguy.java
 #git clone https://github.com/juju4/ansible-sift.git sift
-
