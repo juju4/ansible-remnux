@@ -278,7 +278,7 @@ remnux_packages:
   - libnfnetlink-dev
 
 _remnux_pip_packages_version:
-  - { name: cryptography, version: 2.9.2 }
+  - { name: cryptography, version: 3.4.7 }
 
 remnux_pip_packages:
   - distorm3
