@@ -15,7 +15,7 @@ describe command('docker run --rm -it -v /tmp:/tmp remnux/thug thug -FZM -u win7
   its(:exit_status) { should eq 0 }
 end
 describe command('docker run --rm -it remnux/radare2 r2 -v') do
-	its(:stdout) { should match /radare2 5.1.1 1 @ linux-x86-64 git./ }
+  its(:stdout) { should match /radare2 .* @ linux-x86-64 git./ }
   its(:stderr) { should_not match /operation not permitted/ }
   its(:exit_status) { should eq 0 }
 end
