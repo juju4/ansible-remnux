@@ -18,7 +18,7 @@
   register: pkg_result
   until: pkg_result is success
 
-- include: menus-lxde.yml
+- import_tasks: menus-lxde.yml
   when: remnux_x11_env is defined and remnux_x11_env
 
 - name: Setting up auto-login for user {{ remnux_user }}

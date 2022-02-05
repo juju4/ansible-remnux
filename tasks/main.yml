@@ -33,7 +33,7 @@
   when: ansible_architecture == 'x86_64'
 
 ## https://remnux.org/docs/distro/get/#install-remnux-on-an-existing-system
-- include: remnux.yml
+- import_tasks: remnux.yml
   when: remnux_do_remnux|bool
   tags:
     - remnux
@@ -61,7 +61,7 @@
     - 'DEBIAN_SNORT_HOME_NET="any"'
     - "DEBIAN_SNORT_INTERFACE=\"{{ ansible_default_ipv4.address }}\""
 
-- include: x11.yml
+- import_tasks: x11.yml
   when: remnux_do_x11 is defined and remnux_do_x11
 
 - name: Review some limits  # noqa no-tabs
@@ -87,4 +87,4 @@
 - name: check ruby spec permissions
   file: "dest=/home/{{ remnux_user }}/.gem/specs state=directory mode=0755 owner={{ remnux_user }}"
 
-- include: remnux-cli.yml
+- import_tasks: remnux-cli.yml

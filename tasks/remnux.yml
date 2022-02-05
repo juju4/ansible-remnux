@@ -38,7 +38,7 @@
   register: pkg_result
   until: pkg_result is success
 
-- include: inetsim.yml
+- import_tasks: inetsim.yml
   when: remnux_with_inetsim|bool
 
 - import_tasks: ghidra.yml
@@ -288,10 +288,10 @@
     mode: '0644'
   when: apt10periodic.stat.exists
 
-- include: remnux-conf.yml
+- import_tasks: remnux-conf.yml
   when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'trusty'
 
-- include: docker.yml
+- import_tasks: docker.yml
   when: remnux_docker_enable
 
 - name: Setting permissions for {{ remnux_user }}
