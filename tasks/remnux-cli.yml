@@ -15,7 +15,7 @@
     dest: /usr/local/bin/remnux
     mode: '0755'
     owner: root
-    sha256sum: "{{ remnux_cli_sha256 | default('8193df477c0e0f14b53d018db141b969ab48f8da550384ef6d6e51482ebdda9d') }}"
+    checksum: "sha256:{{ remnux_cli_sha256 | default('8193df477c0e0f14b53d018db141b969ab48f8da550384ef6d6e51482ebdda9d') }}"
 
 - name: Execute remnux install
   command: "remnux install --user={{ remnux_user }}"
