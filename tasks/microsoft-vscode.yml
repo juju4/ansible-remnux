@@ -2,18 +2,18 @@
 # alternative: use snap?
 
 - name: adding Microsoft packages signing key
-  apt_key:
+  ansible.builtin.apt_key:
     url: https://packages.microsoft.com/keys/microsoft.asc
     state: present
 
 - name: adding Microsoft packages repository
-  apt_repository:
+  ansible.builtin.apt_repository:
     repo: 'deb [arch=amd64] http://packages.microsoft.com/repos/vscode stable main'
     filename: vscode.list
     state: present
 
 - name: Ensure microsoft-vscode package is present
-  package:
+  ansible.builtin.package:
     name: code
     state: present
   register: pkg_result

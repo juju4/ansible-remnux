@@ -1,20 +1,20 @@
 ---
 
 - name: Ensure archives directory exists
-  file:
+  ansible.builtin.file:
     path: "{{ archives_dir }}"
     state: directory
     mode: '0755'
 
 - name: Download Ghidra
-  get_url:
+  ansible.builtin.get_url:
     url: "{{ remnux_ghidra_url }}"
     checksum: "{{ remnux_ghidra_checksum }}"
     dest: "{{ archives_dir }}/{{ remnux_ghidra_url | basename }}"
     mode: '0644'
 
 - name: Unarchive Ghidra
-  unarchive:
+  ansible.builtin.unarchive:
     src: "{{ archives_dir }}/{{ remnux_ghidra_url | basename }}"
     dest: "/usr/local"
     mode: '0755'
@@ -22,7 +22,7 @@
     remote_src: true
 
 - name: Symlink for ghidra binary
-  file:
+  ansible.builtin.file:
     src: "/usr/local/{{ remnux_ghidra_url | basename | regex_replace('PUBLIC_[0-9]+.zip$', 'PUBLIC') }}/ghidraRun"
     dest: /usr/local/bin/ghidra
     state: link

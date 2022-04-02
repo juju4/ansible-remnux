@@ -1,7 +1,7 @@
 ---
 
 - name: procdot | lib symlink
-  file:
+  ansible.builtin.file:
     src: /usr/lib/x86_64-linux-gnu/libwebkitgtk-3.0.so.0
     dest: /usr/lib/x86_64-linux-gnu/libwebkit2gtk-4.0.so.37
     state: link
@@ -9,23 +9,23 @@
   when: ansible_distribution_release == 'focal'
 
 - name: Ensure procdot user directory exists
-  file:
+  ansible.builtin.file:
     path: "/home/{{ remnux_user }}/.procdot"
     owner: "{{ remnux_user }}"
     state: directory
     mode: '0700'
 - name: Use remnux procdot user config
-  copy:
+  ansible.builtin.copy:
     src: /usr/share/remnux/procdot.conf
     dest: "/home/{{ remnux_user }}/.procdot/.procdot"
     owner: "{{ remnux_user }}"
     mode: '0600'
 - name: Check user procdot config exists
-  stat:
+  ansible.builtin.stat:
     path: "/home/{{ remnux_user }}/.procdot/default.pd"
   register: procdot
 - name: touch user procdot config
-  file:
+  ansible.builtin.file:
     dest: "/home/{{ remnux_user }}/.procdot/default.pd"
     mode: '0600'
     owner: "{{ remnux_user }}"

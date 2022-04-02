@@ -3,12 +3,12 @@
 ## or from inventory as seen http://www.stavros.io/posts/example-provisioning-and-deployment-ansible/
 
 - name: Creating remnux group
-  group: name={{ remnux_user }}
+  ansible.builtin.group: name={{ remnux_user }}
 - name: Creating remnux generic account
-  user: name={{ remnux_user }} password={{ remnux_pass }} groups={{ remnux_user }},sudo,docker append=yes shell=/bin/bash
+  ansible.builtin.user: name={{ remnux_user }} password={{ remnux_pass }} groups={{ remnux_user }},sudo,docker append=yes shell=/bin/bash
 
 - name: Add authorized keys for {{ remnux_user }} user
-  authorized_key:
+  ansible.builtin.authorized_key:
     "user='{{ remnux_user }}' key='{{ item }}'"
   with_file: "{{ remnux_public_keys }}"
   when: remnux_public_keys is defined and remnux_public_keys
@@ -23,7 +23,7 @@
   when: remnux_with_microsoftvscode|bool
 
 - name: REMNUX | packages install
-  apt: name={{ remnux_packages }} state=present update_cache=yes
+  ansible.builtin.apt: name={{ remnux_packages }} state=present update_cache=yes
   notify:
     - Updating ClamAV Signatures
   async: 3600
@@ -32,7 +32,7 @@
   until: pkg_result is success
 
 - name: REMNUX | remnux+sift ppa packages install
-  apt:
+  ansible.builtin.apt:
     name: "{{ remnux_ppa_packages + sift_ppa_packages }}"
     state: present
   register: pkg_result
@@ -46,24 +46,24 @@
 
 - block:
     - name: REMNUX | nginx packages install
-      apt: name=nginx state=present update_cache=yes cache_valid_time=3600
+      ansible.builtin.apt: name=nginx state=present update_cache=yes cache_valid_time=3600
       register: pkg_result
       until: pkg_result is success
     - name: Stopping Nginx daemon
-      service: name=nginx state=stopped enabled=no
+      ansible.builtin.service: name=nginx state=stopped enabled=no
     - name: Configuring Web Server
-      replace:
+      ansible.builtin.replace:
         dest: /etc/nginx/nginx.conf
         regexp: 'worker_processes 4'
         replace: 'worker_processes 1'
         mode: '0644'
     - name: Check if /var/www exists
-      stat: path=/var/www
+      ansible.builtin.stat: path=/var/www
       register: www
     - name: Ensure /var/www exists
-      file: dest=/var/www owner=www-data group=www-data mode=0755 state=directory
+      ansible.builtin.file: dest=/var/www owner=www-data group=www-data mode=0755 state=directory
     - name: enable autoindex inside nginx
-      replace:
+      ansible.builtin.replace:
         dest: /etc/nginx/sites-enabled/default
         regexp: '^\s.*location \/ {'
         replace: '\tlocation \/ {\n\t\tautoindex on;'
@@ -73,7 +73,7 @@
 
 - block:
     - name: Install pip packages - required version
-      pip:
+      ansible.builtin.pip:
         name: "{{ item.name }}"
         version: "{{ item.version }}"
         state: present
@@ -81,7 +81,7 @@
       register: pkg_result
       until: pkg_result is success
     - name: Install pip packages
-      pip:
+      ansible.builtin.pip:
         name: "{{ remnux_pip_packages }}"
         state: present
       register: pkg_result
@@ -89,7 +89,7 @@
   when: not remnux_pip_virtualenv|string
 - block:
     - name: Install pip packages - required version - virtualenv
-      pip:
+      ansible.builtin.pip:
         name: "{{ item.name }}"
         version: "{{ item.version }}"
         state: present
@@ -99,7 +99,7 @@
     ## if get 'setuptools must be installed to install from a source distribution', try to erase virtualenv and replay
     ## https://github.com/pypa/pip/issues/2931#issuecomment-151074766
     - name: Install pip packages - virtualenv
-      pip:
+      ansible.builtin.pip:
         name: "{{ [ 'setuptools', 'pip', 'pycrypto', 'pyparsing', 'appdirs' ] + remnux_pip_packages }}"
         state: present
         virtualenv: "{{ remnux_pip_virtualenv }}"
@@ -108,12 +108,12 @@
   when: remnux_pip_virtualenv|string
 
 - name: Install Ruby Gems
-  gem: name={{ item.n }} version={{ item.v }} state=present user_install=no
+  ansible.builtin.gem: name={{ item.n }} version={{ item.v }} state=present user_install=no
   with_items: "{{ remnux_ruby_gems }}"
   register: pkg_result
   until: pkg_result is success
 - name: Install Ruby Gems - v2
-  gem:
+  ansible.builtin.gem:
     name: passivedns-client
     state: present
     user_install: no
@@ -122,7 +122,7 @@
   until: pkg_result is success
 
 - name: Tweaking Ruby Gems Configuration
-  file:
+  ansible.builtin.file:
     # This is needed for Origami PDF Walker
     dest: "/home/{{ remnux_user }}/.local/share"
     owner: "{{ remnux_user }}"
@@ -131,10 +131,10 @@
     state: directory
 # This is needed for passivedns-client
 - name: Check if user passivedns-client config exists
-  stat: path=/home/{{ remnux_user }}/.passivedns-client
+  ansible.builtin.stat: path=/home/{{ remnux_user }}/.passivedns-client
   register: passivednsclient
 - name: Review permissions for passivedns client
-  file:
+  ansible.builtin.file:
     dest: "/home/{{ remnux_user }}/.passivedns-client"
     owner: "{{ remnux_user }}"
     group: "{{ remnux_user }}"
@@ -143,59 +143,59 @@
   when: not passivednsclient.stat.exists
 
 - name: Updating REMnux documentation
-  file: path=/home/{{ remnux_user }}/Desktop owner={{ remnux_user }} state=directory mode=0700
+  ansible.builtin.file: path=/home/{{ remnux_user }}/Desktop owner={{ remnux_user }} state=directory mode=0700
 - name: Check /usr/share/remnux/docs/sitemap.xml exists
-  stat: path=/usr/share/remnux/docs/sitemap.xml
+  ansible.builtin.stat: path=/usr/share/remnux/docs/sitemap.xml
   register: remnuxdocs
 - name: git clone Remnux docs
-  git:
+  ansible.builtin.git:
     repo: https://github.com/REMnux/docs.git
     dest: /usr/share/remnux/docs
     version: "{{ remnux_docs_version | default('41d4e5f97dc1d37544213c034348046b9745677e') }}"
   when: not remnuxdocs.stat.exists
 - name: Symlink remnux docs on desktop
-  file:
+  ansible.builtin.file:
     src: /usr/share/remnux/docs/README.md
     path: "/home/{{ remnux_user }}/Desktop/REMnux-README.md"
     mode: '0644'
     state: link
 
 - name: Ensure /var/www directory exists
-  file: path=/var/www state=directory mode=0755
+  ansible.builtin.file: path=/var/www state=directory mode=0755
 - name: Map remnux docs inside webserver root
-  file:
+  ansible.builtin.file:
     src: /usr/share/remnux/docs
     path: /var/www/remnux-docs
     mode: '0777'
     state: link
 
 - name: Creating mount points and other directories
-  file:
+  ansible.builtin.file:
     dest={{ item }} mode=0755 state=directory
   with_items:
     - /mnt/cdrom
     - /opt
 - name: Ensure /var/log/thug directory exists
-  file: dest=/var/log/thug mode=0777 state=directory
+  ansible.builtin.file: dest=/var/log/thug mode=0777 state=directory
 
 - name: sshd | disable usedns
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/ssh/sshd_config
     regexp: '^UseDNS no'
     line: 'UseDNS no'
     mode: '0644'
 
 - name: Stopping and disabling daemons for on-demand usage
-  service:
+  ansible.builtin.service:
     name: "{{ item }}"
     state: stopped
     enabled: no
   with_items: "{{ remnux_services_disable }}"
 
 - name: Debug | ansible_virtualization_type var
-  debug: var=ansible_virtualization_type
+  ansible.builtin.debug: var=ansible_virtualization_type
 - name: Modules exclusions for VM
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/modprobe.d/blacklist.conf
     regexp: "{{ item.regexp }}"
     line: "{{ item.line }}"
@@ -209,7 +209,7 @@
   when: vm is defined and vm
 
 - name: Debian | Remove some packages
-  apt:
+  ansible.builtin.apt:
     name:
       - xscreensaver
       - xscreensaver-data
@@ -221,13 +221,13 @@
 #     - { regexp: '^/dev/sr0  /mnt/cdrom  udf,iso9660 user,noauto,exec,utf8   0   0', line: '/dev/sr0  /mnt/cdrom  udf,iso9660 user,noauto,exec,utf8   0   0' }
 #     - { regexp: '^/dev/fd0', line: '#/dev/fd0' }
 - name: Setting up USB auto-mount options
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/usbmount/usbmount.conf
     regexp: '\"$'
     line: ' ntfs exfat\"'
     mode: '0644'
 - name: enforce noclobber in remnux user bashrc
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: "/home/{{ remnux_user }}/.bashrc"
     regexp: '^set -o noclobber'
     line: 'set -o noclobber'
@@ -244,7 +244,7 @@
     - CAP_NET_RAW+eip
     - CAP_NET_ADMIN+eip
 - name: Configuring sudo
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/sudoers
     regexp: "^{{ remnux_user }} ALL=NOPASSWD: ALL"
     line: "{{ remnux_user }} ALL=NOPASSWD: ALL"
@@ -253,7 +253,7 @@
     validate: 'visudo -cf %s'
 ## why ?
 - name: Disable sudoers secure_path
-  replace:
+  ansible.builtin.replace:
     dest: '/etc/sudoers'
     regexp: '^Defaults        secure_path='
     replace: '#Defaults       secure_path='
@@ -271,17 +271,17 @@
 #     - { regexp: 'source /usr/share/remnux/remnux-aliases.sh', line: 'source /usr/share/remnux/remnux-aliases.sh' }
 
 - name: Configuring global PATH
-  replace:
+  ansible.builtin.replace:
     dest: /etc/environment
     regexp: '^PATH="/usr/local/sbin'
     replace: 'PATH="/opt/remnux-procdot:/opt/remnux-ratdecoders:/opt/remnux-rabcdasm:/opt/remnux-vivisect:/opt/remnux-peepdf:/opt/remnux-thug/src:/opt/remnux-pdfxray-lite:/opt/remnux-viper:/opt/remnux-oletools:/opt/remnux-balbuzard:/opt/remnux-didier:/opt/remnux-scripts:/usr/local/sbin'  # noqa 204
     mode: '0644'
 
 - name: Check if /etc/apt/apt.conf.d/10periodic exists
-  stat: path=/etc/apt/apt.conf.d/10periodic
+  ansible.builtin.stat: path=/etc/apt/apt.conf.d/10periodic
   register: apt10periodic
 - name: disable automatic updates
-  replace:
+  ansible.builtin.replace:
     dest: /etc/apt/apt.conf.d/10periodic
     regexp: '^APT::Periodic::Update-Package-Lists \"1\"'
     replace: 'APT::Periodic::Update-Package-Lists \"0\";'
@@ -295,7 +295,7 @@
   when: remnux_docker_enable
 
 - name: Setting permissions for {{ remnux_user }}
-  file:
+  ansible.builtin.file:
     dest: "/home/{{ remnux_user }}"
     owner: "{{ remnux_user }}"
     group: "{{ remnux_user }}"
@@ -303,5 +303,5 @@
 
 ## cleanup
 - name: Autoremove unused packages
-  apt:
+  ansible.builtin.apt:
     autoremove: yes

@@ -1,38 +1,38 @@
 ---
 
 - name: ensure menus tree exists with right permissions
-  file: dest=/home/{{ remnux_user }}/.config/menus mode=0700 owner={{ remnux_user }} state=directory
+  ansible.builtin.file: dest=/home/{{ remnux_user }}/.config/menus mode=0700 owner={{ remnux_user }} state=directory
 
 - name: ensure right permissions on ~/.local/share/desktop-directories
-  file: dest=/home/{{ remnux_user }}/.local/share/desktop-directories mode=0700 owner={{ remnux_user }} state=directory
+  ansible.builtin.file: dest=/home/{{ remnux_user }}/.local/share/desktop-directories mode=0700 owner={{ remnux_user }} state=directory
 
 - name: ensure right permissions on ~/.local/share/applications
-  file: dest=/home/{{ remnux_user }}/.local/share/applications mode=0700 owner={{ remnux_user }} state=directory
+  ansible.builtin.file: dest=/home/{{ remnux_user }}/.local/share/applications mode=0700 owner={{ remnux_user }} state=directory
 
 # This replace the whole menu.
 - name: Adding submenus in LXDE
-  copy:
+  ansible.builtin.copy:
     src: lxde-applications.menu
     dest: "/home/{{ remnux_user }}/.config/menus/lxde-applications.menu.disabled"
     mode: '0644'
     owner: "{{ remnux_user }}"
 
 - name: Adding remnux.directory to desktop
-  copy:
+  ansible.builtin.copy:
     src: remnux.directory
     dest: "/home/{{ remnux_user }}/.local/share/desktop-directories/remnux.directory"
     mode: '0644'
     owner: "{{ remnux_user }}"
 
 - name: Adding ruleeditor to desktop
-  copy:
+  ansible.builtin.copy:
     src: ruleeditor.desktop
     dest: "/home/{{ remnux_user }}/.local/share/applications/ruleeditor.desktop"
     mode: '0644'
     owner: "{{ remnux_user }}"
 
 - name: Adding androgui to desktop
-  copy:
+  ansible.builtin.copy:
     src: androgui.desktop
     dest: "/home/{{ remnux_user }}/.local/share/applications/androgui.desktop"
     mode: '0644'

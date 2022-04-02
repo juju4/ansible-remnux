@@ -1,20 +1,20 @@
 ---
 
 - name: FATAL
-  fail: msg="This role is only compatible with Ubuntu x86_64"
+  ansible.builtin.fail: msg="This role is only compatible with Ubuntu x86_64"
   when: ansible_distribution != 'Ubuntu' or ansible_architecture != 'x86_64'
 
 - name: Include version-specific variables for Ubuntu.
-  include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml"
+  ansible.builtin.include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml"
   when: ansible_distribution == 'Ubuntu'
 
 ## fails under lxd+systemd, https://github.com/ansible/ansible-modules-core/issues/5582
 - name: set remnux hostname
-  hostname: name={{ remnux_hostname }}
+  ansible.builtin.hostname: name={{ remnux_hostname }}
   when: remnux_hostname is defined
   ignore_errors: true
 - name: Add new hostname in /etc/hosts (local resolv)
-  replace:
+  ansible.builtin.replace:
     dest: '/etc/hosts'
     regexp: '^127.0.0.1       localhost'
     replace: '127.0.0.1       localhost {{ remnux_hostname }}'
@@ -22,13 +22,13 @@
   when: remnux_hostname is defined
 
 - name: Check support of foreign architectures
-  command: dpkg --print-foreign-architectures
+  ansible.builtin.command: dpkg --print-foreign-architectures
   register: archi
   changed_when: False
   when: ansible_architecture == 'x86_64'
 - block:
     - name: Ensure both i386/x86_64 architecture support for packages
-      command: dpkg --add-architecture i386
+      ansible.builtin.command: dpkg --add-architecture i386
       when: archi.stdout.find('i386') == -1
   when: ansible_architecture == 'x86_64'
 
@@ -39,7 +39,7 @@
     - remnux
 
 - name: Restrict sshd config
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/ssh/sshd_config
     regexp: "{{ item.regexp }}"
     line: "{{ item.line }}"
@@ -51,12 +51,12 @@
 
 ## https://answers.launchpad.net/ubuntu/+source/snort/+question/262496
 - name: Ubuntu | snort noninteractive settings - dir
-  file: dest=/etc/snort state=directory mode=0755
+  ansible.builtin.file: dest=/etc/snort state=directory mode=0755
 - name: Ensure ansible variable is populated
-  setup:
+  ansible.builtin.setup:
     filter: ansible_default_ipv4
 - name: Ubuntu | snort noninteractive settings - conf
-  lineinfile: dest=/etc/snort/snort.debian.conf line="{{ item }}" mode=0755 backup=yes create=yes
+  ansible.builtin.lineinfile: dest=/etc/snort/snort.debian.conf line="{{ item }}" mode=0755 backup=yes create=yes
   with_items:
     - 'DEBIAN_SNORT_HOME_NET="any"'
     - "DEBIAN_SNORT_INTERFACE=\"{{ ansible_default_ipv4.address }}\""
@@ -65,7 +65,7 @@
   when: remnux_do_x11 is defined and remnux_do_x11
 
 - name: Review some limits  # noqa no-tabs
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/security/limits.d/openfiles
     regexp: "^{{ remnux_user }}\t\thard\tnofiles\t\t2048"
     line: "{{ remnux_user }}\t\thard\tnofiles\t\t2048"
@@ -74,10 +74,10 @@
     create: yes
 
 - name: Check if release-upgrades file exist
-  stat: path=/etc/update-manager/release-upgrades
+  ansible.builtin.stat: path=/etc/update-manager/release-upgrades
   register: rupgrades
 - name: disable GUI upgrade prompt
-  replace:
+  ansible.builtin.replace:
     dest: /etc/update-manager/release-upgrades
     regexp: '^Prompt=.*'
     replace: 'Prompt=never'
@@ -85,6 +85,6 @@
   when: rupgrades.stat.exists
 
 - name: check ruby spec permissions
-  file: "dest=/home/{{ remnux_user }}/.gem/specs state=directory mode=0755 owner={{ remnux_user }}"
+  ansible.builtin.file: "dest=/home/{{ remnux_user }}/.gem/specs state=directory mode=0755 owner={{ remnux_user }}"
 
 - import_tasks: remnux-cli.yml

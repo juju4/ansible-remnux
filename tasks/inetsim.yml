@@ -3,27 +3,27 @@
 - name: adding Inetsim archive signing key
   ## inetsim.org seems unreliable
   # apt_key: url=http://www.inetsim.org/inetsim-archive-signing-key.asc state=present
-  apt_key:
+  ansible.builtin.apt_key:
     data: "{{ lookup('file', 'inetsim-archive-signing-key.asc') }}"
     state: present
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
 - name: adding Inetsim repository
-  apt_repository: repo='deb http://www.inetsim.org/debian/ binary/' state=present
+  ansible.builtin.apt_repository: repo='deb http://www.inetsim.org/debian/ binary/' state=present
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
 - name: Ensure Inetsim package is present
-  package:
+  ansible.builtin.package:
     name: inetsim
     state: present
   register: pkg_result
   until: pkg_result is success
 
 - name: Check /etc/inetsim/inetsim.conf is present
-  stat: path=/etc/inetsim/inetsim.conf
+  ansible.builtin.stat: path=/etc/inetsim/inetsim.conf
   register: inetsim
 - name: Configuring INetSim
-  replace:
+  ansible.builtin.replace:
     dest: /etc/inetsim/inetsim.conf
     regexp: "{{ item.regexp }}"
     replace: "{{ item.replace }}"
@@ -37,10 +37,10 @@
 #    done
 
 - name: Check /var/log/inetsim/main.log is present
-  stat: path=/var/log/inetsim/main.log
+  ansible.builtin.stat: path=/var/log/inetsim/main.log
   register: inetsimlog
 - name: Configuring INetSim logs
-  file:
+  ansible.builtin.file:
     dest: "{{ item }}"
     mode: 0664
     state: touch

@@ -2,7 +2,7 @@
 # https://github.com/REMnux/salt-states/tree/master/remnux/repos
 
 - name: install Remnux gpg key
-  apt_key:
+  ansible.builtin.apt_key:
     url: "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xbff45016788de115"
     state: present
   register: pkg_result
@@ -10,7 +10,7 @@
 
 # https://launchpad.net/~remnux/+archive/ubuntu/stable
 - name: adding REMnux repository
-  apt_repository: repo='ppa:remnux/stable' state=present
+  ansible.builtin.apt_repository: repo='ppa:remnux/stable' state=present
   when: >
     ansible_distribution == 'Ubuntu' and (
       ansible_distribution_release == 'trusty' or
@@ -22,7 +22,7 @@
 
 # https://launchpad.net/~sift/+archive/ubuntu/stable
 - name: adding SIFT repository
-  apt_repository: repo='ppa:sift/stable' state=present
+  ansible.builtin.apt_repository: repo='ppa:sift/stable' state=present
   when: >
     ansible_distribution == 'Ubuntu' and (
       ansible_distribution_release == 'trusty' or
@@ -34,18 +34,18 @@
   until: apt_result is success
 
 - name: install draios apt gpg key
-  apt_key: url=https://s3.amazonaws.com/download.draios.com/DRAIOS-GPG-KEY.public state=present
+  ansible.builtin.apt_key: url=https://s3.amazonaws.com/download.draios.com/DRAIOS-GPG-KEY.public state=present
   register: pkg_result
   until: pkg_result is success
 
 - name: adding Draios repository (sysdig)
-  apt_repository: repo='deb http://download.draios.com/stable/deb stable-$(ARCH)/' state=present
+  ansible.builtin.apt_repository: repo='deb http://download.draios.com/stable/deb stable-$(ARCH)/' state=present
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
   register: pkg_result
   until: pkg_result is success
 
 - name: Enabling multiverse repository
-  replace:
+  ansible.builtin.replace:
     dest: /etc/apt/sources.list
     regexp: '^#(\.*)multiverse$'
     replace: '\1multiverse'
@@ -53,6 +53,6 @@
     backup: yes
 
 - name: adding wireshark-dev ppa repository
-  apt_repository:
+  ansible.builtin.apt_repository:
     repo: 'ppa:wireshark-dev/stable'
     state: present
