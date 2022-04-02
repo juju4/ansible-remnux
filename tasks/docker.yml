@@ -13,7 +13,7 @@
     name: "{{ docker_svc | default('docker') }}"
     enabled: false
   when: ansible_service_mgr == 'systemd' and remnux_docker_service_manual
-  ignore_errors: true
+  failed_when: false
 
 - name: Ensure docker pip is present
   ansible.builtin.pip:
@@ -26,7 +26,7 @@
         name: "{{ docker_svc | default('docker') }}"
         state: started
       when: remnux_docker_images != []
-      ignore_errors: true
+      failed_when: false
 
     ## https://remnux.org/docs/containers/malware-analysis/
     - name: pre-download Remnux docker images
@@ -34,5 +34,5 @@
         name: "{{ item }}"
         source: pull
       with_items: "{{ remnux_docker_images }}"
-      ignore_errors: true
+      failed_when: false
   when: not (ansible_virtualization_type is defined and ansible_virtualization_type == "docker")
