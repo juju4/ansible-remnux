@@ -20,7 +20,8 @@
     name: docker
     state: present
 
-- block:
+- name: Docker
+  block:
     - name: Ensure docker service is started before downloading images
       ansible.builtin.service:
         name: "{{ docker_svc | default('docker') }}"

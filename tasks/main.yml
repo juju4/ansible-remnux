@@ -26,7 +26,8 @@
   register: archi
   changed_when: False
   when: ansible_architecture == 'x86_64'
-- block:
+- name: x86_64 arch
+  block:
     - name: Ensure both i386/x86_64 architecture support for packages
       ansible.builtin.command: dpkg --add-architecture i386
       when: archi.stdout.find('i386') == -1
