@@ -1,0 +1,313 @@
+---
+
+remnux_gem_exec: '/usr/bin/gem'
+remnux_ruby_gems:
+  - { n: therubyracer, v: 0.12.2 }
+  - { n: origami, v: 2.0.3 }
+  - { n: pedump, v: 0.5.2 }
+
+remnux_ppa_packages:
+  - android-project-creator
+  - baksmali
+  - bddisasm
+  - bearparser
+  - binee
+  - capa
+  - dex2jar
+  - edb-debugger
+  - flare-floss
+  - ilspycmd
+  - libemu
+  - libemu-dev
+  - msoffice-crypt
+  - nsrllookup
+  - oledump
+  - pdfresurrect
+  - pev
+  - portex
+  - procdot
+  - pycdc
+  - sandfly-processdecloak
+  - scdbg
+  - signsrch
+  - swftools
+  - tcpflow
+  - upx-ucl
+  - xorsearch
+  - xorstrings
+  - yara
+
+gift_ppa_packages:
+  - libolecf
+  - sleuthkit
+
+sift_ppa_packages:
+  - bulk-extractor
+
+remnux_packages:
+  - apt-transport-https
+  - software-properties-common
+  - vbindiff
+  - wxhexeditor
+  - feh
+  - libffi-dev
+  - libc6:i386
+  - libstdc++6:i386
+  - libncurses5:i386
+  - zlib1g:i386
+  - binutils
+  - binwalk
+  - cabextract
+  - curl
+  - default-jre
+  - dialog
+  - enchant
+  - evince
+  - exfat-utils
+  # - fakenet-ng TODO
+  - file
+  - galculator
+  - stunnel4
+  - imagemagick
+  - ipython3
+  - nano
+  - nasm
+  - nautilus
+  - net-tools
+  - netcat
+  - pdftk-java
+  - perl
+  - pgadmin3
+  - pkg-config
+  - postgresql
+  - procyon-decompiler
+  - python-crypto
+  - python-dev
+  - python-dnspython
+  - python-magic
+  - python-numpy
+  - python-pil
+  - python-pyasn1
+  - python2
+  - python2-dev
+  - python3-netifaces
+  - python3-pip
+  - python3-pyqt5
+  - python3-pyqt5.qtwebkit
+  - python3-tk
+  - python3-urwid
+  - python3-venv
+  - python3-virtualenv
+  - python3
+  - qpdf
+  - snap
+  - snapd
+  - sqlite3
+  - sudo
+  - swig
+  - tesseract-ocr
+  - tor
+  - tshark
+  - tzdata
+  - vim
+  - virtualenv
+  - wget
+  - wine-stable
+  - xdg-utils
+  - xmlstarlet
+  - xterm
+  ## sift is using gdb so keep same, else keep installing/removing
+  ## but remnux-bashacks wants gdb-minimal and not gdb...
+  # - gdb-minimal
+  - gdb
+  - python3-virtualenv
+  - firefox
+  - xmlstarlet
+  - inspircd
+  - epic5
+  - tor
+  - torsocks
+  # - pdftk
+  - clamav-daemon
+  - clamav
+  - clamav-base
+  - clamav-freshclam
+  - ltrace
+  - strace
+  # - inetsim
+  - openssh-client
+  - openssh-server
+  - openssh-sftp-server
+  - foremost
+  - ngrep
+  - unhide
+  - tcpdump
+  - default-jre
+  - tcpick
+  - wireshark
+  - radare2
+  - p7zip-full
+  - upx-ucl
+  - libmozjs-52-0
+  - libmozjs-52-dev
+  - libmozjs-68-0
+  - rhino
+  - python3-crypto
+  # - volatility
+  # - volatility-tools
+  - ssdeep
+  ## use upstream community docker repo
+  # - docker-ce
+  - libimage-exiftool-perl
+  - scalpel
+  - liblzma-dev
+  - libenchant1c2a
+  - lame
+  - libbcprov-java
+  - libboost-dev
+  - libboost-filesystem-dev
+  - libboost-program-options-dev
+  - libboost-python-dev
+  - libboost-regex-dev
+  - libboost-system-dev
+  - libcommons-lang3-java
+  - libdpkg-perl
+  - ibus
+  - libgif7
+  - libgif-dev
+  - libjpeg-turbo8
+  - libjpeg-turbo8-dev
+  - libgtk2.0-0:i386
+  - libxxf86vm1:i386
+  - libsm6:i386
+  - libssl-dev
+  - lib32stdc++6
+  - linux-headers-generic
+  - gtk2-engines:i386
+  # - gtk2-engines-*:i386
+  # - libgtkmm-2.4-1c2:i386
+  - libcanberra-gtk-module:i386
+  - libxslt1-dev
+  - libxml2-dev
+  - zlib1g-dev
+  - libyaml-dev
+  - bundler
+  - build-essential
+  - python3
+  - python3-dev
+  - automake
+  - autoconf
+  - python3-pip
+  - ruby
+  - ruby-dev
+  - git
+  - subversion
+  - mercurial
+  - bundler
+  ## msg: No package matching 'unrar' is available
+  # - unrar
+  - unrar-free
+  - dos2unix
+  - tcpxtract
+  - libsqlite3-dev
+  - python3-pydot
+  - libncurses5:i386
+  - automake
+  - libmagic-dev
+  - libtool
+  - libusb-1.0-0
+  - bison
+  - flex
+  - libboost-all-dev
+  - libncurses5-dev
+  - python3-setuptools
+  - python3-magic
+  - libpcre3
+  - libpcre3-dev
+  - libpcre++-dev
+  - automake
+  - openssl
+  - libzmq3-dev
+  - libc6-dev-i386
+  - usbmount
+  - python3-numpy
+  - python3-scipy
+  - python3-levenshtein
+  - python3-pil
+  - libfuzzy-dev
+  - libfuzzy2
+  - libgraphviz-dev
+  - graphviz
+  - python3-utidylib
+  - rsakeyfind
+  - aeskeyfind
+  - ruby-gtk2
+  - libjavassist-java
+  - libjpeg-dev
+  - libjpeg8-dev
+  - geany
+  # - sysdig
+  - yara
+  - libyara3
+  - python3-yara
+  - python3-pyasn1
+  - python3-capstone
+  - python3-pefile
+  ## disabling as potential conflict with gift ppa
+  # - libolecf-utils
+  - scite
+  - libemail-outlook-message-perl
+  - libemail-mime-contenttype-perl
+  - libemail-mime-perl
+  - libemail-sender-perl
+  - libemail-simple-perl
+  - libio-all-perl
+  - libio-string-perl
+  - libole-storage-lite-perl
+  - python3-dnspython
+  - unzip
+  - menu-xdg
+  - lxterminal
+  - kmod
+  # To ensure ansible_default_ipv4 is populated
+  - iproute2
+  - iptables
+  - iputils-ping
+  # pip: netfilterqueue
+  - libnetfilter-queue-dev
+  - libnfnetlink-dev
+
+_remnux_pip_packages_version:
+  - { name: cryptography, version: 3.4.7 }
+
+remnux_pip_packages:
+  - distorm3
+  # - git+https://github.com/gdabah/distorm#egg=distorm3
+  - pyelftools
+  # - rekall
+  - jsbeautifier
+  - xortool
+  - cybox
+  - olefile
+  ## FIXME! compilation fails on digitalocean: 'x86_64-linux-gnu-gcc -pthread -fno-strict-aliasing -DNDEBUG -g -fwrapv -O2 -Wall -Wstrict-prototypes -fPIC -I/usr/include/libxml2 -Isrc/lxml/includes -I/usr/include/python2.7 -c src/lxml/lxml.etree.c -o build/temp.linux-x86_64-2.7/src/lxml/lxml.etree.o -w\n\nx86_64-linux-gnu-gcc: internal compiler error: Killed (program cc1)'
+  # - mitmproxy
+  - pydeep
+  - bottle
+  - pylzma
+  - pyelftools
+  - bitstring
+  ## FIXME! ImportError: cannot import name filterfalse
+  # - requesocks
+  - rarfile
+  - fuzzywuzzy
+  - docker-py
+  - r2pipe
+  - pypdns
+  - pypssl
+  - ipwhois
+  - shodan
+  - pygeoip
+  - docker-compose
+  - ndg-httpsclient
+  - dnslib
+  - pydivert
