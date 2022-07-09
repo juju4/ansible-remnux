@@ -127,7 +127,7 @@ remnux_packages:
   - libimage-exiftool-perl
   - scalpel
   - liblzma-dev
-  - libenchant-2
+  - libenchant-2-2
   - lame
   - libbcprov-java
   - libboost-dev
