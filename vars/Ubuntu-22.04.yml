@@ -6,43 +6,13 @@ remnux_ruby_gems:
   - { n: origami, v: 2.0.3 }
   - { n: pedump, v: 0.5.2 }
 
-remnux_ppa_packages:
-  - android-project-creator
-  - baksmali
-  - bddisasm
-  - bearparser
-  - binee
-  - capa
-  - dex2jar
-  - edb-debugger
-  - flare-floss
-  - ilspycmd
-  - libemu
-  - libemu-dev
-  - msoffice-crypt
-  - nsrllookup
-  - oledump
-  - pdfresurrect
-  - pev
-  - portex
-  - procdot
-  - pycdc
-  - sandfly-processdecloak
-  - scdbg
-  - signsrch
-  - swftools
-  - tcpflow
-  - upx-ucl
-  - xorsearch
-  - xorstrings
-  - yara
+remnux_ppa_packages: []
 
 gift_ppa_packages:
   - libolecf
   - sleuthkit
 
-sift_ppa_packages:
-  - bulk-extractor
+sift_ppa_packages: []
 
 remnux_packages:
   - apt-transport-https
@@ -61,9 +31,10 @@ remnux_packages:
   - curl
   - default-jre
   - dialog
-  - enchant
+  - enchant-2
   - evince
-  - exfat-utils
+  - exfat-fuse
+  - exfatprogs
   # - fakenet-ng TODO
   - file
   - galculator
@@ -77,21 +48,18 @@ remnux_packages:
   - netcat
   - pdftk-java
   - perl
-  - pgadmin3
+  # - pgadmin3
   - pkg-config
   - postgresql
   - procyon-decompiler
-  - python-crypto
-  - python-dev
-  - python-dnspython
-  - python-magic
-  - python-numpy
-  - python-pil
-  - python-pyasn1
   - python2
   - python2-dev
   - python3-netifaces
+  - python3-magic
+  - python3-numpy
+  - python3-pil
   - python3-pip
+  - python3-pyasn1
   - python3-pyqt5
   - python3-pyqt5.qtwebkit
   - python3-tk
@@ -127,14 +95,14 @@ remnux_packages:
   - epic5
   - tor
   - torsocks
-  # - pdftk
+  - pdftk
   - clamav-daemon
   - clamav
   - clamav-base
   - clamav-freshclam
   - ltrace
   - strace
-  # - inetsim
+  - inetsim
   - openssh-client
   - openssh-server
   - openssh-sftp-server
@@ -145,14 +113,12 @@ remnux_packages:
   - default-jre
   - tcpick
   - wireshark
-  - radare2
+  # - radare2
   - p7zip-full
   - upx-ucl
-  - libmozjs-52-0
-  - libmozjs-52-dev
-  - libmozjs-68-0
+  - libmozjs-91-0
+  - libmozjs-91-dev
   - rhino
-  - python3-crypto
   # - volatility
   # - volatility-tools
   - ssdeep
@@ -161,7 +127,7 @@ remnux_packages:
   - libimage-exiftool-perl
   - scalpel
   - liblzma-dev
-  - libenchant1c2a
+  - libenchant-2
   - lame
   - libbcprov-java
   - libboost-dev
@@ -229,7 +195,7 @@ remnux_packages:
   - openssl
   - libzmq3-dev
   - libc6-dev-i386
-  - usbmount
+  # - usbmount
   - python3-numpy
   - python3-scipy
   - python3-levenshtein
@@ -248,7 +214,7 @@ remnux_packages:
   - geany
   # - sysdig
   - yara
-  - libyara3
+  - libyara8
   - python3-yara
   - python3-pyasn1
   - python3-capstone
@@ -289,14 +255,12 @@ remnux_pip_packages:
   - xortool
   - cybox
   - olefile
-  ## FIXME! compilation fails on digitalocean: 'x86_64-linux-gnu-gcc -pthread -fno-strict-aliasing -DNDEBUG -g -fwrapv -O2 -Wall -Wstrict-prototypes -fPIC -I/usr/include/libxml2 -Isrc/lxml/includes -I/usr/include/python2.7 -c src/lxml/lxml.etree.c -o build/temp.linux-x86_64-2.7/src/lxml/lxml.etree.o -w\n\nx86_64-linux-gnu-gcc: internal compiler error: Killed (program cc1)'
   # - mitmproxy
   - pydeep
   - bottle
   - pylzma
   - pyelftools
   - bitstring
-  ## FIXME! ImportError: cannot import name filterfalse
   # - requesocks
   - rarfile
   - fuzzywuzzy
@@ -311,3 +275,5 @@ remnux_pip_packages:
   - ndg-httpsclient
   - dnslib
   - pydivert
+
+microsoft_dotnet: dotnet-runtime-6.0

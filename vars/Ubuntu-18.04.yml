@@ -324,3 +324,5 @@ remnux_pip_packages:
   - dnslib
   - netfilterqueue
   - pydivert
+
+microsoft_dotnet: dotnet-runtime-3.1

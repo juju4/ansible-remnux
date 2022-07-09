@@ -311,3 +311,5 @@ remnux_pip_packages:
   - ndg-httpsclient
   - dnslib
   - pydivert
+
+microsoft_dotnet: dotnet-runtime-3.1
