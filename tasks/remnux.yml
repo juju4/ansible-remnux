@@ -63,7 +63,7 @@
       register: www
     - name: Ensure /var/www exists
       ansible.builtin.file: dest=/var/www owner=www-data group=www-data mode=0755 state=directory
-    - name: enable autoindex inside nginx
+    - name: Enable autoindex inside nginx
       ansible.builtin.replace:
         dest: /etc/nginx/sites-enabled/default
         regexp: '^\s.*location \/ {'
@@ -88,7 +88,7 @@
         state: present
       register: pkg_result
       until: pkg_result is success
-  when: not remnux_pip_virtualenv|string
+  when: not remnux_pip_virtualenv | string
 - name: Virtualenv pip
   block:
     - name: Install pip packages - required version - virtualenv
@@ -103,12 +103,12 @@
     ## https://github.com/pypa/pip/issues/2931#issuecomment-151074766
     - name: Install pip packages - virtualenv
       ansible.builtin.pip:
-        name: "{{ [ 'setuptools', 'pip', 'pycrypto', 'pyparsing', 'appdirs' ] + remnux_pip_packages }}"
+        name: "{{ ['setuptools', 'pip', 'pycrypto', 'pyparsing', 'appdirs'] + remnux_pip_packages }}"
         state: present
         virtualenv: "{{ remnux_pip_virtualenv }}"
       register: pkg_result
       until: pkg_result is success
-  when: remnux_pip_virtualenv|string
+  when: remnux_pip_virtualenv | string
 
 - name: Install Ruby Gems
   ansible.builtin.gem: name={{ item.n }} version={{ item.v }} state=present user_install=no
@@ -150,7 +150,7 @@
 - name: Check /usr/share/remnux/docs/sitemap.xml exists
   ansible.builtin.stat: path=/usr/share/remnux/docs/sitemap.xml
   register: remnuxdocs
-- name: git clone Remnux docs
+- name: Git clone Remnux docs
   ansible.builtin.git:
     repo: https://github.com/REMnux/docs.git
     dest: /usr/share/remnux/docs
@@ -181,7 +181,7 @@
 - name: Ensure /var/log/thug directory exists
   ansible.builtin.file: dest=/var/log/thug mode=0777 state=directory
 
-- name: sshd | disable usedns
+- name: Sshd | disable usedns
   ansible.builtin.lineinfile:
     dest: /etc/ssh/sshd_config
     regexp: '^UseDNS no'
@@ -231,7 +231,7 @@
     mode: '0644'
   when:
     - (ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int <= 20)
-- name: enforce noclobber in remnux user bashrc
+- name: Enforce noclobber in remnux user bashrc
   ansible.builtin.lineinfile:
     dest: "/home/{{ remnux_user }}/.bashrc"
     regexp: '^set -o noclobber'
@@ -285,7 +285,7 @@
 - name: Check if /etc/apt/apt.conf.d/10periodic exists
   ansible.builtin.stat: path=/etc/apt/apt.conf.d/10periodic
   register: apt10periodic
-- name: disable automatic updates
+- name: Disable automatic updates
   ansible.builtin.replace:
     dest: /etc/apt/apt.conf.d/10periodic
     regexp: '^APT::Periodic::Update-Package-Lists \"1\"'

@@ -28,7 +28,7 @@
     replace: "autologin={{ remnux_user }}"
     mode: '0644'
   when: remnux_x11_env is defined and remnux_x11_env
-- name: disable user list at lxdm greeter
+- name: Disable user list at lxdm greeter
   ansible.builtin.replace:
     dest: '/etc/lxdm/lxdm.conf'
     regexp: '^disable=\d+$'
@@ -43,6 +43,6 @@
     mode: '0644'
   when: remnux_x11_env is defined and remnux_x11_env
 
-- name: ensure lxdm service is started and enabled
+- name: Ensure lxdm service is started and enabled
   ansible.builtin.service: name=lxdm state=started enabled=yes
   when: remnux_x11_env is defined and remnux_x11_env

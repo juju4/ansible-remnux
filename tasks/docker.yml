@@ -30,7 +30,7 @@
       failed_when: false
 
     ## https://remnux.org/docs/containers/malware-analysis/
-    - name: pre-download Remnux docker images
+    - name: Pre-download Remnux docker images
       ansible.builtin.docker_image:
         name: "{{ item }}"
         source: pull

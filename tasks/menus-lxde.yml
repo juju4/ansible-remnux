@@ -1,12 +1,12 @@
 ---
 
-- name: ensure menus tree exists with right permissions
+- name: Ensure menus tree exists with right permissions
   ansible.builtin.file: dest=/home/{{ remnux_user }}/.config/menus mode=0700 owner={{ remnux_user }} state=directory
 
-- name: ensure right permissions on ~/.local/share/desktop-directories
+- name: Ensure right permissions on ~/.local/share/desktop-directories
   ansible.builtin.file: dest=/home/{{ remnux_user }}/.local/share/desktop-directories mode=0700 owner={{ remnux_user }} state=directory
 
-- name: ensure right permissions on ~/.local/share/applications
+- name: Ensure right permissions on ~/.local/share/applications
   ansible.builtin.file: dest=/home/{{ remnux_user }}/.local/share/applications mode=0700 owner={{ remnux_user }} state=directory
 
 # This replace the whole menu.

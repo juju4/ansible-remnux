@@ -1,6 +1,6 @@
 ---
 
-- name: procdot | lib symlink
+- name: Procdot | lib symlink
   ansible.builtin.file:
     src: /usr/lib/x86_64-linux-gnu/libwebkitgtk-3.0.so.0
     dest: /usr/lib/x86_64-linux-gnu/libwebkit2gtk-4.0.so.37
@@ -24,7 +24,7 @@
   ansible.builtin.stat:
     path: "/home/{{ remnux_user }}/.procdot/default.pd"
   register: procdot
-- name: touch user procdot config
+- name: Touch user procdot config
   ansible.builtin.file:
     dest: "/home/{{ remnux_user }}/.procdot/default.pd"
     mode: '0600'

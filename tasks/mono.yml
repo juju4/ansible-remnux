@@ -1,12 +1,12 @@
 ---
 
-- name: adding Xamarin Mono signing key
+- name: Adding Xamarin Mono signing key
   ansible.builtin.apt_key:
     url: https://download.mono-project.com/repo/xamarin.gpg
     state: present
   when: remnux_with_xamarin_mono
 
-- name: adding Mono project repository
+- name: Adding Mono project repository
   ansible.builtin.apt_repository:
     repo: "deb [arch=amd64] https://download.mono-project.com/repo/ubuntu stable-{{ ansible_distribution_release }} main"
     filename: mono-official-stable.list

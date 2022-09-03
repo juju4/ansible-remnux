@@ -1,12 +1,12 @@
 ---
 # alternative: use snap?
 
-- name: adding Microsoft packages signing key
+- name: Adding Microsoft packages signing key
   ansible.builtin.apt_key:
     url: https://packages.microsoft.com/keys/microsoft.asc
     state: present
 
-- name: adding Microsoft packages repository
+- name: Adding Microsoft packages repository
   ansible.builtin.apt_repository:
     repo: 'deb [arch=amd64] http://packages.microsoft.com/repos/vscode stable main'
     filename: vscode.list

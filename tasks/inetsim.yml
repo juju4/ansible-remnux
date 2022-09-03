@@ -1,6 +1,6 @@
 ---
 
-- name: adding Inetsim archive signing key
+- name: Adding Inetsim archive signing key
   ## inetsim.org seems unreliable
   # apt_key: url=http://www.inetsim.org/inetsim-archive-signing-key.asc state=present
   ansible.builtin.apt_key:
@@ -8,7 +8,7 @@
     state: present
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
-- name: adding Inetsim repository
+- name: Adding Inetsim repository
   ansible.builtin.apt_repository: repo='deb http://www.inetsim.org/debian/ binary/' state=present
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 

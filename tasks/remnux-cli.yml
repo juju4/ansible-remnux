@@ -20,14 +20,14 @@
 - name: Execute remnux install
   ansible.builtin.command: "remnux install --user={{ remnux_user }}"
   become: yes
-  when: remnux_cli_install is defined and remnux_cli_install|bool
+  when: remnux_cli_install is defined and remnux_cli_install | bool
 
 - name: Execute remnux install cloud - keeping ssh
   ansible.builtin.command: "remnux install --mode=cloud --user={{ remnux_user }}"
   become: yes
-  when: remnux_cli_install_cloud is defined and remnux_cli_install_cloud|bool
+  when: remnux_cli_install_cloud is defined and remnux_cli_install_cloud | bool
 
 - name: Execute remnux upgrade
   ansible.builtin.command: "remnux upgrade --user={{ remnux_user }}"
   become: yes
-  when: remnux_cli_upgrade is defined and remnux_cli_upgrade|bool
+  when: remnux_cli_upgrade is defined and remnux_cli_upgrade | bool

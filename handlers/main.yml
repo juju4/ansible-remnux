@@ -1,20 +1,20 @@
 ---
 
-- name: restart sshd
+- name: Restart sshd
   ansible.builtin.service: name=ssh state=restarted
 
-- name: restart samba smbd
+- name: Restart samba smbd
   ansible.builtin.service: name=smbd state=restarted
 
-- name: restart samba nmbd
+- name: Restart samba nmbd
   ansible.builtin.service: name=nmbd state=restarted
 
-- name: update timezone
+- name: Update timezone
   ansible.builtin.command: dpkg-reconfigure --frontend noninteractive tzdata
 
 - name: Updating ClamAV Signatures
   ansible.builtin.command: freshclam --quiet
   when: not (ansible_virtualization_type is defined and ansible_virtualization_type == "docker")
 
-- name: run ldconfig
+- name: Run ldconfig
   ansible.builtin.command: ldconfig
