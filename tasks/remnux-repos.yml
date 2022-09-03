@@ -13,7 +13,6 @@
   ansible.builtin.apt_repository: repo='ppa:remnux/stable' state=present
   when: >
     ansible_distribution == 'Ubuntu' and (
-      ansible_distribution_release == 'trusty' or
       ansible_distribution_release == 'bionic' or
       ansible_distribution_release == 'focal'
     )
@@ -25,8 +24,6 @@
   ansible.builtin.apt_repository: repo='ppa:sift/stable' state=present
   when: >
     ansible_distribution == 'Ubuntu' and (
-      ansible_distribution_release == 'trusty' or
-      ansible_distribution_release == 'xenial' or
       ansible_distribution_release == 'bionic' or
       ansible_distribution_release == 'focal'
     )

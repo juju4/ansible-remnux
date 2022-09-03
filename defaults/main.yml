@@ -42,7 +42,6 @@ vm: true
 
 archives_dir: /usr/local/src/remnux/files
 
-## if empty, will install globally. might get conflict on six with sift/trusty
 # remnux_pip_virtualenv: ''
 remnux_pip_virtualenv: /usr/local/env-remnux
 

@@ -98,7 +98,7 @@
         state: present
         virtualenv: "{{ remnux_pip_virtualenv }}"
       with_items: "{{ remnux_pip_packages_version | default(_remnux_pip_packages_version) }}"
-    ## avoid conflict on six when installed along sift/trusty
+    ## avoid conflict on six when installed along sift
     ## if get 'setuptools must be installed to install from a source distribution', try to erase virtualenv and replay
     ## https://github.com/pypa/pip/issues/2931#issuecomment-151074766
     - name: Install pip packages - virtualenv
@@ -292,9 +292,6 @@
     replace: 'APT::Periodic::Update-Package-Lists \"0\";'
     mode: '0644'
   when: apt10periodic.stat.exists
-
-- import_tasks: remnux-conf.yml
-  when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'trusty'
 
 - import_tasks: docker.yml
   when: remnux_docker_enable
