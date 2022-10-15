@@ -9,7 +9,9 @@
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
 - name: Adding Inetsim repository
-  ansible.builtin.apt_repository: repo='deb http://www.inetsim.org/debian/ binary/' state=present
+  ansible.builtin.apt_repository:
+    repo: 'deb http://www.inetsim.org/debian/ binary/'
+    state: present
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
 - name: Ensure Inetsim package is present
@@ -20,7 +22,8 @@
   until: pkg_result is success
 
 - name: Check /etc/inetsim/inetsim.conf is present
-  ansible.builtin.stat: path=/etc/inetsim/inetsim.conf
+  ansible.builtin.stat:
+    path: /etc/inetsim/inetsim.conf
   register: inetsim
 - name: Configuring INetSim
   ansible.builtin.replace:
@@ -37,7 +40,8 @@
 #    done
 
 - name: Check /var/log/inetsim/main.log is present
-  ansible.builtin.stat: path=/var/log/inetsim/main.log
+  ansible.builtin.stat:
+    path: /var/log/inetsim/main.log
   register: inetsimlog
 - name: Configuring INetSim logs
   ansible.builtin.file:

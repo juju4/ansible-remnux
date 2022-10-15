@@ -10,7 +10,9 @@
 
 # https://launchpad.net/~remnux/+archive/ubuntu/stable
 - name: Adding REMnux repository
-  ansible.builtin.apt_repository: repo='ppa:remnux/stable' state=present
+  ansible.builtin.apt_repository:
+    repo: 'ppa:remnux/stable'
+    state: present
   when: >
     ansible_distribution == 'Ubuntu' and (
       ansible_distribution_release == 'bionic' or
@@ -21,7 +23,9 @@
 
 # https://launchpad.net/~sift/+archive/ubuntu/stable
 - name: Adding SIFT repository
-  ansible.builtin.apt_repository: repo='ppa:sift/stable' state=present
+  ansible.builtin.apt_repository:
+    repo: 'ppa:sift/stable'
+    state: present
   when: >
     ansible_distribution == 'Ubuntu' and (
       ansible_distribution_release == 'bionic' or
@@ -31,12 +35,16 @@
   until: apt_result is success
 
 - name: Install draios apt gpg key
-  ansible.builtin.apt_key: url=https://s3.amazonaws.com/download.draios.com/DRAIOS-GPG-KEY.public state=present
+  ansible.builtin.apt_key:
+    url: https://s3.amazonaws.com/download.draios.com/DRAIOS-GPG-KEY.public
+    state: present
   register: pkg_result
   until: pkg_result is success
 
 - name: Adding Draios repository (sysdig)
-  ansible.builtin.apt_repository: repo='deb http://download.draios.com/stable/deb stable-$(ARCH)/' state=present
+  ansible.builtin.apt_repository:
+    repo: 'deb http://download.draios.com/stable/deb stable-$(ARCH)/'
+    state: present
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
   register: pkg_result
   until: pkg_result is success

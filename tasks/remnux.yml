@@ -3,27 +3,41 @@
 ## or from inventory as seen http://www.stavros.io/posts/example-provisioning-and-deployment-ansible/
 
 - name: Creating remnux group
-  ansible.builtin.group: name={{ remnux_user }}
+  ansible.builtin.group:
+    name: "{{ remnux_user }}"
 - name: Creating remnux generic account
-  ansible.builtin.user: name={{ remnux_user }} password={{ remnux_pass }} groups={{ remnux_user }},sudo,docker append=yes shell=/bin/bash
+  ansible.builtin.user:
+    name: "{{ remnux_user }}"
+    password: "{{ remnux_pass }}"
+    groups: "{{ remnux_user }},sudo,docker"
+    append: "yes"
+    shell: "/bin/bash"
 
-- name: Add authorized keys for {{ remnux_user }} user
+- name: Add authorized keys for remnux_user
   ansible.builtin.authorized_key:
-    "user='{{ remnux_user }}' key='{{ item }}'"
+    user: '{{ remnux_user }}'
+    key: '{{ item }}'
   with_file: "{{ remnux_public_keys }}"
   when: remnux_public_keys is defined and remnux_public_keys
   become: yes
 
-- import_tasks: remnux-repos.yml
-- import_tasks: mono.yml
+- name: Import remnux-repos
+  ansible.builtin.import_tasks: remnux-repos.yml
+- name: Import mono
+  ansible.builtin.import_tasks: mono.yml
   when: remnux_with_mono|bool
-- import_tasks: microsoft.yml
+- name: Import microsoft
+  ansible.builtin.import_tasks: microsoft.yml
   when: remnux_with_microsoft|bool
-- import_tasks: microsoft-vscode.yml
+- name: Import microsoft-vscode
+  ansible.builtin.import_tasks: microsoft-vscode.yml
   when: remnux_with_microsoftvscode|bool
 
 - name: REMNUX | packages install
-  ansible.builtin.apt: name={{ remnux_packages }} state=present update_cache=yes
+  ansible.builtin.apt:
+    name: "{{ remnux_packages }}"
+    state: "present"
+    update_cache: "yes"
   notify:
     - Updating ClamAV Signatures
   async: 3600
@@ -38,20 +52,30 @@
   register: pkg_result
   until: pkg_result is success
 
-- import_tasks: inetsim.yml
+- name: Import inetsim
+  ansible.builtin.import_tasks: inetsim.yml
   when: remnux_with_inetsim|bool
 
-- import_tasks: ghidra.yml
+- name: Import ghidra
+  ansible.builtin.import_tasks: ghidra.yml
   when: remnux_with_ghidra|bool
 
 - name: Nginx webserver
+  when: remnux_webserver is defined and remnux_webserver == 'nginx'
   block:
     - name: REMNUX | nginx packages install
-      ansible.builtin.apt: name=nginx state=present update_cache=yes cache_valid_time=3600
+      ansible.builtin.apt:
+        name: nginx
+        state: present
+        update_cache: yes
+        cache_valid_time: 3600
       register: pkg_result
       until: pkg_result is success
     - name: Stopping Nginx daemon
-      ansible.builtin.service: name=nginx state=stopped enabled=no
+      ansible.builtin.service:
+        name: nginx
+        state: stopped
+        enabled: no
     - name: Configuring Web Server
       ansible.builtin.replace:
         dest: /etc/nginx/nginx.conf
@@ -59,10 +83,16 @@
         replace: 'worker_processes 1'
         mode: '0644'
     - name: Check if /var/www exists
-      ansible.builtin.stat: path=/var/www
+      ansible.builtin.stat:
+        path: /var/www
       register: www
     - name: Ensure /var/www exists
-      ansible.builtin.file: dest=/var/www owner=www-data group=www-data mode=0755 state=directory
+      ansible.builtin.file:
+        dest: /var/www
+        owner: www-data
+        group: www-data
+        mode: 0755
+        state: directory
     - name: Enable autoindex inside nginx
       ansible.builtin.replace:
         dest: /etc/nginx/sites-enabled/default
@@ -70,9 +100,9 @@
         replace: '\tlocation \/ {\n\t\tautoindex on;'
         mode: '0644'
         # lineinfile: "dest=/etc/nginx/sites-enabled/default line='\t\tautoindex on;' insertafter='^\\s.*location \\/ {'"
-  when: remnux_webserver is defined and remnux_webserver == 'nginx'
 
 - name: System pip
+  when: not remnux_pip_virtualenv | string
   block:
     - name: Install pip packages - required version
       ansible.builtin.pip:
@@ -88,8 +118,8 @@
         state: present
       register: pkg_result
       until: pkg_result is success
-  when: not remnux_pip_virtualenv | string
 - name: Virtualenv pip
+  when: remnux_pip_virtualenv | string
   block:
     - name: Install pip packages - required version - virtualenv
       ansible.builtin.pip:
@@ -108,15 +138,18 @@
         virtualenv: "{{ remnux_pip_virtualenv }}"
       register: pkg_result
       until: pkg_result is success
-  when: remnux_pip_virtualenv | string
 
 - name: Install Ruby Gems
-  ansible.builtin.gem: name={{ item.n }} version={{ item.v }} state=present user_install=no
+  community.general.gem:
+    name: "{{ item.n }}"
+    version: "{{ item.v }}"
+    state: "present"
+    user_install: "no"
   with_items: "{{ remnux_ruby_gems }}"
   register: pkg_result
   until: pkg_result is success
 - name: Install Ruby Gems - v2
-  ansible.builtin.gem:
+  community.general.gem:
     name: passivedns-client
     state: present
     user_install: no
@@ -134,7 +167,8 @@
     state: directory
 # This is needed for passivedns-client
 - name: Check if user passivedns-client config exists
-  ansible.builtin.stat: path=/home/{{ remnux_user }}/.passivedns-client
+  ansible.builtin.stat:
+    path: "/home/{{ remnux_user }}/.passivedns-client"
   register: passivednsclient
 - name: Review permissions for passivedns client
   ansible.builtin.file:
@@ -146,9 +180,14 @@
   when: not passivednsclient.stat.exists
 
 - name: Updating REMnux documentation
-  ansible.builtin.file: path=/home/{{ remnux_user }}/Desktop owner={{ remnux_user }} state=directory mode=0700
+  ansible.builtin.file:
+    path: "/home/{{ remnux_user }}/Desktop"
+    owner: "{{ remnux_user }}"
+    state: "directory"
+    mode: "0700"
 - name: Check /usr/share/remnux/docs/sitemap.xml exists
-  ansible.builtin.stat: path=/usr/share/remnux/docs/sitemap.xml
+  ansible.builtin.stat:
+    path: /usr/share/remnux/docs/sitemap.xml
   register: remnuxdocs
 - name: Git clone Remnux docs
   ansible.builtin.git:
@@ -164,7 +203,10 @@
     state: link
 
 - name: Ensure /var/www directory exists
-  ansible.builtin.file: path=/var/www state=directory mode=0755
+  ansible.builtin.file:
+    path: /var/www
+    state: directory
+    mode: 0755
 - name: Map remnux docs inside webserver root
   ansible.builtin.file:
     src: /usr/share/remnux/docs
@@ -174,12 +216,17 @@
 
 - name: Creating mount points and other directories
   ansible.builtin.file:
-    dest={{ item }} mode=0755 state=directory
+    dest: "{{ item }}"
+    mode: "0755"
+    state: "directory"
   with_items:
     - /mnt/cdrom
     - /opt
 - name: Ensure /var/log/thug directory exists
-  ansible.builtin.file: dest=/var/log/thug mode=0777 state=directory
+  ansible.builtin.file:
+    dest: /var/log/thug
+    mode: 0777
+    state: directory
 
 - name: Sshd | disable usedns
   ansible.builtin.lineinfile:
@@ -196,7 +243,8 @@
   with_items: "{{ remnux_services_disable }}"
 
 - name: Debug | ansible_virtualization_type var
-  ansible.builtin.debug: var=ansible_virtualization_type
+  ansible.builtin.debug:
+    var: ansible_virtualization_type
 - name: Modules exclusions for VM
   ansible.builtin.lineinfile:
     dest: /etc/modprobe.d/blacklist.conf
@@ -241,7 +289,7 @@
 - name: Configuring packet capture capabilities for non-root users
   # command: setcap 'CAP_NET_RAW+eip CAP_NET_ADMIN+eip' /usr/bin/dumpcap     ## NOK
   # capabilities: path=/usr/bin/dumpcap capability='CAP_NET_RAW+eip CAP_NET_ADMIN+eip' state=present     ## NOK
-  capabilities:
+  community.general.capabilities:
     path: /usr/bin/dumpcap
     capability: "{{ item }}"
     state: present
@@ -283,7 +331,8 @@
     mode: '0644'
 
 - name: Check if /etc/apt/apt.conf.d/10periodic exists
-  ansible.builtin.stat: path=/etc/apt/apt.conf.d/10periodic
+  ansible.builtin.stat:
+    path: /etc/apt/apt.conf.d/10periodic
   register: apt10periodic
 - name: Disable automatic updates
   ansible.builtin.replace:
@@ -293,7 +342,8 @@
     mode: '0644'
   when: apt10periodic.stat.exists
 
-- import_tasks: docker.yml
+- name: Import docker
+  ansible.builtin.import_tasks: docker.yml
   when: remnux_docker_enable
 
 - name: Setting permissions for {{ remnux_user }}

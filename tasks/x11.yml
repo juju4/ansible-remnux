@@ -1,7 +1,9 @@
 ---
 
 - name: Debian | x11 packages install
-  ansible.builtin.apt: name=xinit state=present
+  ansible.builtin.apt:
+    name: xinit
+    state: present
   register: pkg_result
   until: pkg_result is success
 
@@ -18,7 +20,8 @@
   register: pkg_result
   until: pkg_result is success
 
-- import_tasks: menus-lxde.yml
+- name: Import menus-lxde
+  ansible.builtin.import_tasks: menus-lxde.yml
   when: remnux_x11_env is defined and remnux_x11_env
 
 - name: Setting up auto-login for user {{ remnux_user }}
@@ -44,5 +47,8 @@
   when: remnux_x11_env is defined and remnux_x11_env
 
 - name: Ensure lxdm service is started and enabled
-  ansible.builtin.service: name=lxdm state=started enabled=yes
+  ansible.builtin.service:
+    name: lxdm
+    state: started
+    enabled: yes
   when: remnux_x11_env is defined and remnux_x11_env

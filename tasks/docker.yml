@@ -21,6 +21,7 @@
     state: present
 
 - name: Docker
+  when: not (ansible_virtualization_type is defined and ansible_virtualization_type == "docker")
   block:
     - name: Ensure docker service is started before downloading images
       ansible.builtin.service:
@@ -36,4 +37,3 @@
         source: pull
       with_items: "{{ remnux_docker_images }}"
       failed_when: false
-  when: not (ansible_virtualization_type is defined and ansible_virtualization_type == "docker")
