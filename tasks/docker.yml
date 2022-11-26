@@ -32,7 +32,7 @@
 
     ## https://remnux.org/docs/containers/malware-analysis/
     - name: Pre-download Remnux docker images
-      ansible.builtin.docker_image:
+      community.docker.docker_image:
         name: "{{ item }}"
         source: pull
       with_items: "{{ remnux_docker_images }}"

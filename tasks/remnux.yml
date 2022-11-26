@@ -14,7 +14,7 @@
     shell: "/bin/bash"
 
 - name: Add authorized keys for remnux_user
-  ansible.builtin.authorized_key:
+  ansible.posix.authorized_key:
     user: '{{ remnux_user }}'
     key: '{{ item }}'
   with_file: "{{ remnux_public_keys }}"
