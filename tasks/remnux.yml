@@ -128,6 +128,9 @@
         state: present
         virtualenv: "{{ remnux_pip_virtualenv }}"
       with_items: "{{ remnux_pip_packages_version | default(_remnux_pip_packages_version) }}"
+      # https://github.com/pypa/virtualenv/issues/2350
+      environment:
+        DEB_PYTHON_INSTALL_LAYOUT: 'deb'
     ## avoid conflict on six when installed along sift
     ## if get 'setuptools must be installed to install from a source distribution', try to erase virtualenv and replay
     ## https://github.com/pypa/pip/issues/2931#issuecomment-151074766
@@ -138,6 +141,8 @@
         virtualenv: "{{ remnux_pip_virtualenv }}"
       register: pkg_result
       until: pkg_result is success
+      environment:
+        DEB_PYTHON_INSTALL_LAYOUT: 'deb'
 
 - name: Install Ruby Gems
   community.general.gem:
