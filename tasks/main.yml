@@ -32,7 +32,8 @@
   when: ansible_architecture == 'x86_64'
   block:
     - name: Ensure both i386/x86_64 architecture support for packages
-      ansible.builtin.command: dpkg --add-architecture i386
+      ansible.builtin.command:  # noqa no-changed-when
+        cmd: dpkg --add-architecture i386
       when: archi.stdout.find('i386') == -1
 
 ## https://remnux.org/docs/distro/get/#install-remnux-on-an-existing-system
