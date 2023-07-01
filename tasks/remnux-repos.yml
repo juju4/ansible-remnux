@@ -8,6 +8,7 @@
   register: pkg_result
   until: pkg_result is success
 
+
 # https://launchpad.net/~remnux/+archive/ubuntu/stable
 - name: Adding REMnux repository
   ansible.builtin.apt_repository:
@@ -35,9 +36,10 @@
   until: apt_result is success
 
 - name: Install draios apt gpg key
-  ansible.builtin.apt_key:
+  ansible.builtin.get_url:
     url: https://s3.amazonaws.com/download.draios.com/DRAIOS-GPG-KEY.public
-    state: present
+    dest: /etc/apt/trusted.gpg.d/DRAIOS-GPG-KEY.asc
+    mode: 0644
   register: pkg_result
   until: pkg_result is success
 
