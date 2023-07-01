@@ -45,7 +45,7 @@
 
 - name: Adding Draios repository (sysdig)
   ansible.builtin.apt_repository:
-    repo: 'deb http://download.draios.com/stable/deb stable-$(ARCH)/'
+    repo: 'deb https://download.sysdig.com/stable/deb stable-$(ARCH)/'
     state: present
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
   register: pkg_result
