@@ -245,6 +245,7 @@ remnux_packages:
 
 _remnux_pip_packages_version:
   - { name: cryptography, version: 3.4.7 }
+  - { name: pyyaml, version: 6.0.1 }
 
 remnux_pip_packages:
   - distorm3
