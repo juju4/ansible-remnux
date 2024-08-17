@@ -1,0 +1,124 @@
+---
+name: default-bare
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+  schedule:  # run weekly, every Wednesday 05:00
+    - cron: '0 5 * * 3'
+
+permissions: {}
+
+jobs:
+  build:
+
+    permissions:
+      contents: read
+    runs-on: ubuntu-${{ matrix.version }}
+    continue-on-error: ${{ matrix.experimental }}
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        include:
+          - distribution: ubuntu
+            version: '24.04'
+            suite: default
+            experimental: true
+          - distribution: ubuntu
+            version: '22.04'
+            suite: default
+            experimental: false
+          - distribution: ubuntu
+            version: '20.04'
+            suite: default
+            experimental: false
+    env:
+      ANSIBLE_CALLBACKS_ENABLED: profile_tasks
+      ANSIBLE_EXTRA_VARS: ""
+      ANSIBLE_ROLE: juju4.remnux
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: ${{ env.ANSIBLE_ROLE }}
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Install dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          pip3 install ansible-lint flake8 yamllint
+          which ansible
+          pip3 install ansible
+          pip3 show ansible
+          ls -l $HOME/.local/bin || true
+          ls -l /opt/hostedtoolcache/Python/3.9.1/x64/bin || true
+          echo "/opt/hostedtoolcache/Python/3.9.1/x64/bin" >> $GITHUB_PATH
+          which ansible
+          ansible --version
+          cd $GITHUB_WORKSPACE/$ANSIBLE_ROLE
+          [ -f get-dependencies.sh ] && sh -x get-dependencies.sh
+          { echo '[defaults]'; echo 'callbacks_enabled = profile_tasks, timer'; echo 'roles_path = ../'; echo 'ansible_python_interpreter: /usr/bin/python3'; } >> ansible.cfg
+      - name: Environment
+        run: |
+          pwd
+          env
+          find -ls
+      - name: run test
+        run: |
+          cd $GITHUB_WORKSPACE/$ANSIBLE_ROLE && ansible-playbook -i localhost, --connection=local --become -vvv test/integration/${{ matrix.suite }}/default.yml ${ANSIBLE_EXTRA_VARS}
+        env:
+          PY_COLORS: '1'
+          ANSIBLE_FORCE_COLOR: '1'
+      - name: idempotency run
+        run: |
+          cd $GITHUB_WORKSPACE/$ANSIBLE_ROLE && ansible-playbook -i localhost, --connection=local --become -vvv test/integration/${{ matrix.suite }}/default.yml ${ANSIBLE_EXTRA_VARS} | tee /tmp/idempotency.log | grep -q 'changed=0.*failed=0'  && (echo 'Idempotence test: pass' && exit 0)  || (echo 'Idempotence test: fail' && cat /tmp/idempotency.log && exit 0)
+      - name: On failure
+        run: |
+          ansible -i inventory --connection=local -m setup localhost
+          systemctl -l --no-pager status
+          systemctl -l --no-pager --failed
+          ls -l /usr/bin/ | egrep '(python|pip|ansible)'
+          pip freeze
+          pip3 freeze
+          ip addr
+          cat /etc/resolv.conf
+          host www.google.com
+          ping -c 1 www.google.com || true
+          ping -c 1 8.8.8.8 || true
+        if: ${{ failure() }}
+        continue-on-error: true
+      - name: After script - systemd
+        run: |
+          systemctl -l --no-pager status iptables || true
+          systemd-analyze --no-pager security || true
+          rsyslogd -v
+        if: ${{ always() }}
+        continue-on-error: true
+      - name: After script - etc
+        run: |
+          ls -la /etc
+          ls -la /etc/ssh/
+        continue-on-error: true
+      - name: After script - apt
+        run: |
+          apt show libtsk-dev -a
+          apt show libtsk13 -a
+          apt show libewf -a
+          apt show libewf2 -a
+          sudo apt-get install -y apt-rdepends
+          apt-rdepends libtsk-dev
+        if: ${{ always() }}
+        continue-on-error: true
+      - name: After script - files
+        run: |
+          sudo ls /home/sansforensics
+          sudo ls /home/sansforensics/Desktop
+          ls -lA /usr/local/bin
+          ls -lA /usr/share/remnux
+          ls -lA /etc/apt/sources.list.d
+        if: ${{ always() }}
+        continue-on-error: true
