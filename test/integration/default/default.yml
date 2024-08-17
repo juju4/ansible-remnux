@@ -3,6 +3,8 @@
 - name: Test integration playbook
   hosts: all
   vars:
+    # geerlingguy.nodejs
+    nodejs_version: "22.x"
     # selection per disk space limit of CI/CD
     remnux_docker_images:
       - remnux/thug
