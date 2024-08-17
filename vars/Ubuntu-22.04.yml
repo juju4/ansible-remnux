@@ -196,6 +196,7 @@ remnux_packages:
   - libzmq3-dev
   - libc6-dev-i386
   # - usbmount
+  - python3-debian
   - python3-numpy
   - python3-scipy
   - python3-levenshtein

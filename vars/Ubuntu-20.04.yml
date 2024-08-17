@@ -90,6 +90,7 @@ remnux_packages:
   - python-pyasn1
   - python2
   - python2-dev
+  - python3-debian
   - python3-netifaces
   - python3-pip
   - python3-pyqt5

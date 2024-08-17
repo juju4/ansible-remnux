@@ -11,6 +11,11 @@
       # - remnux/jsdetox
       - remnux/radare2
       # - radare/radare2
+  pre_tasks:
+    - name: Ensure python3-debian package is present
+      ansible.builtin.package:
+        name: python3-debian
+        state: present
   roles:
     - { role: geerlingguy.docker, when: ansible_distribution == 'Ubuntu' }
     - juju4.remnux
