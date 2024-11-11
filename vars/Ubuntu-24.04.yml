@@ -23,7 +23,6 @@ remnux_packages:
   - libffi-dev
   - libc6:i386
   - libstdc++6:i386
-  - libncurses5:i386
   - zlib1g:i386
   - binutils
   - binwalk
@@ -178,7 +177,6 @@ remnux_packages:
   - tcpxtract
   - libsqlite3-dev
   - python3-pydot
-  - libncurses5:i386
   - automake
   - libmagic-dev
   - libtool
