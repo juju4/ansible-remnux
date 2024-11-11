@@ -25,7 +25,7 @@
     state: absent
   when: list1.stat.exists
 
-- name: Add repo using key from URL
+- name: Add microsoft repo
   ansible.builtin.deb822_repository:
     name: microsoft
     types: deb
@@ -34,6 +34,11 @@
     components: main
     architectures: amd64
     signed_by: https://packages.microsoft.com/keys/microsoft.asc
+  notify:
+    - Update apt cache
+
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers
 
 - name: Ensure Microsoft packages are present
   ansible.builtin.package:

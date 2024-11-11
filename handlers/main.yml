@@ -27,3 +27,7 @@
 - name: Run ldconfig
   ansible.builtin.command:  # noqa no-changed-when
     cmd: ldconfig
+
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: yes
