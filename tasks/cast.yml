@@ -1,0 +1,25 @@
+---
+# https://github.com/ekristen/cast
+
+- name: Ensure folder exists
+  ansible.builtin.file:
+    path: "/usr/local/share/cast"
+    owner: root
+    mode: '0755'
+    state: directory
+
+- name: Download cast
+  ansible.builtin.get_url:
+    url: "{{ item.u }}"
+    dest: "/usr/local/share/cast/{{ item.u | basename }}"
+    owner: root
+    mode: "{{ item.m }}"
+  with_items:
+    - { u: 'https://github.com/ekristen/cast/releases/download/v{{ remnux_cast_version }}/cast-v{{ remnux_cast_version }}-linux-amd64.deb', m: '0644' }
+    - { u: 'https://github.com/ekristen/cast/releases/download/v{{ remnux_cast_version }}/checksums.txt', m: '0400' }
+    - { u: 'https://github.com/ekristen/cast/releases/download/v{{ remnux_cast_version }}/checksums.txt.sig', m: '0400' }
+    - { u: 'https://github.com/ekristen/cast/releases/download/v{{ remnux_cast_version }}/cosign.pub', m: '0400' }
+
+- name: Install cast
+  ansible.builtin.apt:
+    deb: "/usr/local/share/cast/cast-v{{ remnux_cast_version }}-linux-amd64.deb"
