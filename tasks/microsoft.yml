@@ -1,5 +1,21 @@
 ---
 
+- name: Check current apt keys
+  ansible.builtin.command:
+    cmd: ls -l /usr/share/keyrings/ /etc/apt/keyrings/
+  changed_when: false
+  failed_when: false
+- name: Check current sources.list
+  ansible.builtin.command:
+    cmd: ls -l /etc/apt/sources.list.d/
+  changed_when: false
+  failed_when: false
+- name: Check if any microsoft sources.list
+  ansible.builtin.command:
+    cmd: cat /etc/apt/sources.list.d/*microsoft*.list
+  changed_when: false
+  failed_when: false
+
 - name: Add repo using key from URL
   ansible.builtin.deb822_repository:
     name: microsoft
