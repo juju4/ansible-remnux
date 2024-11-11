@@ -9,6 +9,15 @@
   ansible.builtin.include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml"
   when: ansible_distribution == 'Ubuntu'
 
+- name: Github Actions | Set facts
+  ansible.builtin.set_fact:
+    # https://github.com/termux/termux-packages/issues/13327
+    remnux_pip_virtualenv_env:
+      DEB_PYTHON_INSTALL_LAYOUT: 'deb'
+      CFLAGS: "-I/opt/hostedtoolcache/Python/3.12.7/x64/include/python3.12/cpython"
+  when: >
+    (ansible_env['GITHUB_ACTIONS'] is defined and ansible_env['GITHUB_ACTIONS'] == 'true')
+
 ## fails under lxd+systemd, https://github.com/ansible/ansible-modules-core/issues/5582
 - name: Set remnux hostname
   ansible.builtin.hostname:

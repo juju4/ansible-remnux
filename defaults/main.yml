@@ -62,3 +62,6 @@ remnux_docker_images:
   - radare/radare2
 
 remnux_cast_version: 0.15.2
+
+remnux_pip_virtualenv_env:
+  DEB_PYTHON_INSTALL_LAYOUT: 'deb'

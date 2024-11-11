@@ -141,8 +141,7 @@
         virtualenv: "{{ remnux_pip_virtualenv }}"
       register: pkg_result
       until: pkg_result is success
-      environment:
-        DEB_PYTHON_INSTALL_LAYOUT: 'deb'
+      environment: "{{ remnux_pip_virtualenv_env | default(omit) }}"
 
 - name: Install Ruby Gems
   community.general.gem:
