@@ -91,7 +91,7 @@
         dest: /var/www
         owner: www-data
         group: www-data
-        mode: 0755
+        mode: '0755'
         state: directory
     - name: Enable autoindex inside nginx
       ansible.builtin.replace:
@@ -211,7 +211,7 @@
   ansible.builtin.file:
     path: /var/www
     state: directory
-    mode: 0755
+    mode: '0755'
 - name: Map remnux docs inside webserver root
   ansible.builtin.file:
     src: /usr/share/remnux/docs
@@ -230,7 +230,7 @@
 - name: Ensure /var/log/thug directory exists
   ansible.builtin.file:
     dest: /var/log/thug
-    mode: 0777
+    mode: '0777'
     state: directory
 
 - name: Sshd | disable usedns

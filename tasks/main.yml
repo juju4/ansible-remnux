@@ -59,7 +59,7 @@
   ansible.builtin.file:
     dest: /etc/snort
     state: directory
-    mode: 0755
+    mode: '0755'
 - name: Ensure ansible variable is populated
   ansible.builtin.setup:
     filter: ansible_default_ipv4

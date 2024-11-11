@@ -46,7 +46,7 @@
 - name: Configuring INetSim logs
   ansible.builtin.file:
     dest: "{{ item }}"
-    mode: 0664
+    mode: '0664'
     state: touch
   with_items:
     - /var/log/inetsim/service.log

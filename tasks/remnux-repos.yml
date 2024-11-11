@@ -39,7 +39,7 @@
   ansible.builtin.get_url:
     url: https://s3.amazonaws.com/download.draios.com/DRAIOS-GPG-KEY.public
     dest: /etc/apt/trusted.gpg.d/DRAIOS-GPG-KEY.asc
-    mode: 0644
+    mode: '0644'
   register: pkg_result
   until: pkg_result is success
 
