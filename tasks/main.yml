@@ -9,12 +9,18 @@
   ansible.builtin.include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml"
   when: ansible_distribution == 'Ubuntu'
 
+- name: Debug | var ansible_env
+  ansible.builtin.debug:
+    var: ansible_env
+    verbosity: 1
 - name: Github Actions | Set facts
   ansible.builtin.set_fact:
     # https://github.com/termux/termux-packages/issues/13327
     remnux_pip_virtualenv_env:
       DEB_PYTHON_INSTALL_LAYOUT: 'deb'
       CFLAGS: "-I/opt/hostedtoolcache/Python/3.12.7/x64/include/python3.12/cpython"
+      # runner has a more recent python than older distributions
+    remnux_pip_packages_version: []
   when: >
     (ansible_env['GITHUB_ACTIONS'] is defined and ansible_env['GITHUB_ACTIONS'] == 'true')
 
