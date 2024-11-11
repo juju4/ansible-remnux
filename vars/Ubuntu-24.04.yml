@@ -203,7 +203,6 @@ remnux_packages:
   - python3-utidylib
   - rsakeyfind
   - aeskeyfind
-  - ruby-gtk2
   - libjavassist-java
   - libjpeg-dev
   - libjpeg8-dev
