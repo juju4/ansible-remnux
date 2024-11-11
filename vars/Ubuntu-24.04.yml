@@ -209,7 +209,7 @@ remnux_packages:
   - geany
   # - sysdig
   - yara
-  - libyara8
+  - libyara10
   - python3-yara
   - python3-pyasn1
   - python3-capstone
