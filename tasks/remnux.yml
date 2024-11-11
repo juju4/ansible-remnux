@@ -131,6 +131,10 @@
       # https://github.com/pypa/virtualenv/issues/2350
       environment:
         DEB_PYTHON_INSTALL_LAYOUT: 'deb'
+    - name: Debug | var remnux_pip_virtualenv_env
+      ansible.builtin.debug:
+        var: remnux_pip_virtualenv_env
+        verbosity: 1
     ## avoid conflict on six when installed along sift
     ## if get 'setuptools must be installed to install from a source distribution', try to erase virtualenv and replay
     ## https://github.com/pypa/pip/issues/2931#issuecomment-151074766
