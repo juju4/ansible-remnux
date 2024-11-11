@@ -36,7 +36,7 @@ jobs:
             experimental: false
     env:
       ANSIBLE_CALLBACKS_ENABLED: profile_tasks
-      ANSIBLE_EXTRA_VARS: ""
+      ANSIBLE_EXTRA_VARS: "-e 'ansible_python_interpreter=/usr/bin/python3'"  # python3-debian vs runner hosted python
       ANSIBLE_ROLE: juju4.remnux
 
     steps:
