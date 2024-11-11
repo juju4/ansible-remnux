@@ -28,7 +28,7 @@ remnux_ppa_packages:
   - procdot
   - pycdc
   - sandfly-processdecloak
-  - scdbg
+  # - scdbg
   - signsrch
   - swftools
   - tcpflow
