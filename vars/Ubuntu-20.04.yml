@@ -178,16 +178,16 @@ remnux_packages:
   - libgif-dev
   - libjpeg-turbo8
   - libjpeg-turbo8-dev
-  - libgtk2.0-0:i386
+  # - libgtk2.0-0:i386
   - libxxf86vm1:i386
   - libsm6:i386
   - libssl-dev
   - lib32stdc++6
   - linux-headers-generic
-  - gtk2-engines:i386
+  # - gtk2-engines:i386
   # - gtk2-engines-*:i386
   # - libgtkmm-2.4-1c2:i386
-  - libcanberra-gtk-module:i386
+  # - libcanberra-gtk-module:i386
   - libxslt1-dev
   - libxml2-dev
   - zlib1g-dev
