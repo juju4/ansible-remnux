@@ -16,18 +16,13 @@ remnux-cli installation is included in the role but not used by default as ideal
 
 ### Ansible
 It was tested on the following versions:
- * 1.9
- * 2.0
- * 2.2
- * 2.5
- * 2.10
+ * 2.10-2.17
 
 ### Operating systems
 
-* Ubuntu 14.04
-* Ubuntu 16.04
-* Ubuntu 18.04
 * Ubuntu 20.04
+* Ubuntu 22.04
+* Ubuntu 24.04 (tentative, depending on pending upstream ppa support)
 
 ## Example Playbook
 
