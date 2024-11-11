@@ -252,7 +252,7 @@ remnux_pip_packages:
   - cybox
   - olefile
   # - mitmproxy
-  - pydeep
+  # - pydeep
   - bottle
   - pylzma
   - pyelftools
