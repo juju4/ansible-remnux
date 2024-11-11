@@ -258,7 +258,8 @@ remnux_pip_packages:
   - cybox
   - olefile
   # - mitmproxy
-  - pydeep
+  # FIXME! src/_fastmath.c:74:23: error: ‘PyObject’ {aka ‘struct _object’} has no member named ‘ob_size’
+  # - pydeep
   - bottle
   - pylzma
   - pyelftools
