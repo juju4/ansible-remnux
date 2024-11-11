@@ -1,15 +1,14 @@
 ---
 
-- name: Adding Microsoft packages signing key
-  ansible.builtin.apt_key:
-    url: https://packages.microsoft.com/keys/microsoft.asc
-    state: present
-
-- name: Adding Microsoft prod packages repository
-  ansible.builtin.apt_repository:
-    repo: "deb [arch=amd64] http://packages.microsoft.com/ubuntu/{{ ansible_distribution_version }}/prod {{ ansible_distribution_release }} main"
-    filename: microsoft.list
-    state: present
+- name: Add repo using key from URL
+  ansible.builtin.deb822_repository:
+    name: microsoft
+    types: deb
+    uris: "http://packages.microsoft.com/ubuntu/{{ ansible_distribution_version }}/prod"
+    suites: '{{ ansible_distribution_release }}'
+    components: main
+    architectures: amd64
+    signed_by: https://packages.microsoft.com/keys/microsoft.asc
 
 - name: Ensure Microsoft packages are present
   ansible.builtin.package:
