@@ -187,7 +187,6 @@ remnux_packages:
   - python3-magic
   - libpcre3
   - libpcre3-dev
-  - libpcre++-dev
   - automake
   - openssl
   - libzmq3-dev
