@@ -51,8 +51,6 @@ remnux_packages:
   - pkg-config
   - postgresql
   - procyon-decompiler
-  - python2
-  - python2-dev
   - python3-debian
   - python3-netifaces
   - python3-magic
@@ -116,8 +114,8 @@ remnux_packages:
   # - radare2
   - p7zip-full
   - upx-ucl
-  - libmozjs-91-0
-  - libmozjs-91-dev
+  - libmozjs-115-0t64
+  - libmozjs-115-dev
   - rhino
   # - volatility
   # - volatility-tools
@@ -143,8 +141,8 @@ remnux_packages:
   - libgif-dev
   - libjpeg-turbo8
   - libjpeg-turbo8-dev
-  - libgtk2.0-0:i386
-  - libxxf86vm1:i386
+  - libgtk2.0-0t64
+  - libxxf86vm1
   - libsm6:i386
   - libssl-dev
   - lib32stdc++6
