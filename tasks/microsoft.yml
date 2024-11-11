@@ -12,9 +12,18 @@
   failed_when: false
 - name: Check if any microsoft sources.list
   ansible.builtin.command:
-    cmd: cat /etc/apt/sources.list.d/*microsoft*.list
+    cmd: cat /etc/apt/sources.list.d/microsoft-prod.list
   changed_when: false
   failed_when: false
+- name: Check if /etc/apt/sources.list.d/microsoft-prod.list
+  ansible.builtin.stat:
+    path: /etc/apt/sources.list.d/microsoft-prod.list
+  register: list1
+- name: Remove /etc/apt/sources.list.d/microsoft-prod.list if existing
+  ansible.builtin.file:
+    path: /etc/apt/sources.list.d/microsoft-prod.list
+    state: absent
+  when: list1.stat.exists
 
 - name: Add repo using key from URL
   ansible.builtin.deb822_repository:
