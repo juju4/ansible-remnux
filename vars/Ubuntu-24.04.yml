@@ -277,4 +277,4 @@ remnux_pip_packages:
   - dnslib
   - pydivert
 
-microsoft_dotnet: dotnet-runtime-6.0
+microsoft_dotnet: dotnet-runtime-8.0
