@@ -44,7 +44,7 @@ remnux_packages:
   - nasm
   - nautilus
   - net-tools
-  - netcat
+  - netcat-traditional
   - pdftk-java
   - perl
   # - pgadmin3
