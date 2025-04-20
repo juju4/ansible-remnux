@@ -87,7 +87,6 @@ remnux_packages:
   # - gdb-minimal
   - gdb
   - python3-virtualenv
-  - firefox
   - xmlstarlet
   - inspircd
   - epic5
@@ -270,5 +269,8 @@ remnux_pip_packages:
   - ndg-httpsclient
   - dnslib
   - pydivert
+
+remnux_snap_packages:
+  - firefox
 
 microsoft_dotnet: dotnet-runtime-8.0

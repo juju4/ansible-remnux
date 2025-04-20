@@ -45,6 +45,15 @@
   register: pkg_result
   until: pkg_result is success
 
+- name: REMNUX | packages install (snap-based)
+  ansible.builtin.apt:
+    name: "{{ remnux_snap_packages }}"
+    state: "present"
+  register: pkg_result
+  until: pkg_result is success
+  when:
+    - ansible_virtualization_type != 'lxc' or remnux_snap_enable | bool
+
 - name: REMNUX | remnux+sift ppa packages install
   ansible.builtin.apt:
     name: "{{ remnux_ppa_packages + sift_ppa_packages }}"

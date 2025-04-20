@@ -42,14 +42,17 @@
     mode: '0644'
   register: pkg_result
   until: pkg_result is success
+  when: false
 
 - name: Adding Draios repository (sysdig)
   ansible.builtin.apt_repository:
     repo: 'deb https://download.sysdig.com/stable/deb stable-$(ARCH)/'
     state: present
-  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
   register: pkg_result
   until: pkg_result is success
+  when:
+    - ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+    - false
 
 - name: Enabling multiverse repository
   ansible.builtin.replace:
@@ -59,6 +62,13 @@
     mode: '0644'
     backup: yes
 
+# https://www.jeffgeerling.com/blog/2022/aptkey-deprecated-debianubuntu-how-fix-ansible
+- name: Adding wireshark-dev gpg key
+  ansible.builtin.get_url:
+    url: "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xa2e402b85a4b70cd78d8a3d9d875551314eca0f0"
+    dest: /etc/apt/trusted.gpg.d/wireshark-dev.asc
+    mode: '0644'
+    owner: root
 - name: Adding wireshark-dev ppa repository
   ansible.builtin.apt_repository:
     repo: 'ppa:wireshark-dev/stable'
