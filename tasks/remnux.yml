@@ -18,7 +18,7 @@
     user: '{{ remnux_user }}'
     key: '{{ item }}'
   with_file: "{{ remnux_public_keys }}"
-  when: remnux_public_keys is defined and remnux_public_keys
+  when: remnux_public_keys is defined and remnux_public_keys | length > 0
   become: yes
 
 - name: Import remnux-repos
@@ -111,7 +111,8 @@
         # lineinfile: "dest=/etc/nginx/sites-enabled/default line='\t\tautoindex on;' insertafter='^\\s.*location \\/ {'"
 
 - name: System pip
-  when: not remnux_pip_virtualenv | string
+  when:
+    - remnux_pip_virtualenv | length <= 0
   block:
     - name: Install pip packages - required version
       ansible.builtin.pip:
@@ -128,7 +129,8 @@
       register: pkg_result
       until: pkg_result is success
 - name: Virtualenv pip
-  when: remnux_pip_virtualenv | string
+  when:
+    - remnux_pip_virtualenv | length > 0
   block:
     - name: Install pip packages - required version - virtualenv
       ansible.builtin.pip:
@@ -274,7 +276,7 @@
   with_items:
     - { regexp: "^blacklist i2c-piix4", line: "blacklist i2c-piix4" }
     - { regexp: "^blacklist intel_rapl", line: "blacklist intel_rapl" }
-  when: vm is defined and vm
+  when: vm is defined and vm | bool
 
 - name: Debian | Remove some packages
   ansible.builtin.apt:
@@ -361,7 +363,7 @@
 
 - name: Import docker
   ansible.builtin.import_tasks: docker.yml
-  when: remnux_docker_enable
+  when: remnux_docker_enable | bool
 
 - name: Setting permissions for {{ remnux_user }}
   ansible.builtin.file:

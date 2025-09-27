@@ -16,13 +16,13 @@
       - lxde
       - lxdm
     state: present
-  when: remnux_x11_env is defined and remnux_x11_env
+  when: remnux_x11_env is defined and remnux_x11_env | bool
   register: pkg_result
   until: pkg_result is success
 
 - name: Import menus-lxde
   ansible.builtin.import_tasks: menus-lxde.yml
-  when: remnux_x11_env is defined and remnux_x11_env
+  when: remnux_x11_env is defined and remnux_x11_env | bool
 
 - name: Setting up auto-login for user {{ remnux_user }}
   ansible.builtin.replace:
@@ -30,25 +30,25 @@
     regexp: '^#\ autologin=dgod'
     replace: "autologin={{ remnux_user }}"
     mode: '0644'
-  when: remnux_x11_env is defined and remnux_x11_env
+  when: remnux_x11_env is defined and remnux_x11_env | bool
 - name: Disable user list at lxdm greeter
   ansible.builtin.replace:
     dest: '/etc/lxdm/lxdm.conf'
     regexp: '^disable=\d+$'
     replace: 'disable=1'
     mode: '0644'
-  when: remnux_x11_env is defined and remnux_x11_env
+  when: remnux_x11_env is defined and remnux_x11_env | bool
 - name: Fix an error that would be otherwise seen when the user logs out using the GUI - pam_systemd
   ansible.builtin.lineinfile:
     dest: /etc/pam.d/lxdm
     regexp: '^session required pam_systemd.so'
     line: 'session required pam_systemd.so'
     mode: '0644'
-  when: remnux_x11_env is defined and remnux_x11_env
+  when: remnux_x11_env is defined and remnux_x11_env | bool
 
 - name: Ensure lxdm service is started and enabled
   ansible.builtin.service:
     name: lxdm
     state: started
     enabled: yes
-  when: remnux_x11_env is defined and remnux_x11_env
+  when: remnux_x11_env is defined and remnux_x11_env | bool

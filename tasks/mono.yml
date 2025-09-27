@@ -4,14 +4,14 @@
   ansible.builtin.apt_key:
     url: https://download.mono-project.com/repo/xamarin.gpg
     state: present
-  when: remnux_with_xamarin_mono
+  when: remnux_with_xamarin_mono | bool
 
 - name: Adding Mono project repository
   ansible.builtin.apt_repository:
     repo: "deb [arch=amd64] https://download.mono-project.com/repo/ubuntu stable-{{ ansible_distribution_release }} main"
     filename: mono-official-stable.list
     state: present
-  when: remnux_with_xamarin_mono
+  when: remnux_with_xamarin_mono | bool
 
 - name: Ensure mono-devel package is present
   ansible.builtin.package:

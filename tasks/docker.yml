@@ -6,13 +6,13 @@
     regexp: '^manual'
     line: 'manual'
     mode: '0644'
-  when: ansible_service_mgr != 'systemd' and remnux_docker_service_manual
+  when: ansible_service_mgr != 'systemd' and remnux_docker_service_manual | bool
 
 - name: Configure docker in manual mode - systemd
   ansible.builtin.systemd:
     name: "{{ docker_svc | default('docker') }}"
     enabled: false
-  when: ansible_service_mgr == 'systemd' and remnux_docker_service_manual
+  when: ansible_service_mgr == 'systemd' and remnux_docker_service_manual | bool
   failed_when: false
 
 - name: Ensure docker pip is present

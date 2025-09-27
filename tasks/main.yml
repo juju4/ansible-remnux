@@ -92,7 +92,7 @@
 
 - name: Import x11
   ansible.builtin.import_tasks: x11.yml
-  when: remnux_do_x11 is defined and remnux_do_x11
+  when: remnux_do_x11 is defined and remnux_do_x11 | bool
 
 - name: Review some limits  # noqa no-tabs
   ansible.builtin.lineinfile:
