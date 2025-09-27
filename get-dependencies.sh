@@ -12,7 +12,7 @@ fi
 #[ ! -d $rolesdir/geerlingguy.java ] && git clone https://github.com/geerlingguy/ansible-role-java.git $rolesdir/geerlingguy.java
 [ ! -d $rolesdir/geerlingguy.java ] && git clone https://github.com/juju4/ansible-role-java.git $rolesdir/geerlingguy.java
 [ ! -d $rolesdir/geerlingguy.docker ] && git clone https://github.com/geerlingguy/ansible-role-docker.git $rolesdir/geerlingguy.docker
-[ ! -d $rolesdir/geerlingguy.nodejs ] && git clone https://github.com/geerlingguy/ansible-role-nodejs.git $rolesdir/geerlingguy.nodejs
+[ ! -d $rolesdir/geerlingguy.nodejs ] && git clone https://github.com/juju4/ansible-role-nodejs.git $rolesdir/geerlingguy.nodejs
 #[ ! -d $rolesdir/ernestas-poskus.docker ] && git clone https://github.com/ernestas-poskus/ansible-role-docker.git $rolesdir/ernestas-poskus.docker
 #[ ! -d $rolesdir/jgeusebroek.docker ] && git clone https://github.com/jgeusebroek/ansible-role-docker.git $rolesdir/jgeusebroek.docker
 #[ ! -d $rolesdir/jgeusebroek.docker ] && git clone https://github.com/juju4/ansible-role-docker.git $rolesdir/jgeusebroek.docker
