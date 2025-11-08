@@ -9,7 +9,7 @@
 - name: Download Ghidra
   ansible.builtin.get_url:
     url: "{{ remnux_ghidra_url }}"
-    checksum: "{{ remnux_ghidra_checksum }}"
+    checksum: "{{ remnux_ghidra_checksum | default(omit) }}"
     dest: "{{ archives_dir }}/{{ remnux_ghidra_url | basename }}"
     mode: '0644'
 

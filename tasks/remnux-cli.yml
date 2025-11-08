@@ -11,11 +11,11 @@
 
 - name: Download remnux-cli
   ansible.builtin.get_url:
-    url: https://REMnux.org/remnux-cli
+    url: "https://github.com/REMnux/remnux-cli/releases/download/{{ remnux_cli_github_version }}/remnux-cli-linux"
     dest: /usr/local/bin/remnux
     mode: '0755'
     owner: root
-    checksum: "sha256:{{ remnux_cli_sha256 }}"
+    checksum: "{{ remnux_cli_sha256 | default(omit) }}"
 
 - name: Execute remnux install
   ansible.builtin.command:  # noqa no-changed-when
