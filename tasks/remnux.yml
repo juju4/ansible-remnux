@@ -38,6 +38,7 @@
     name: "{{ remnux_packages }}"
     state: "present"
     update_cache: "yes"
+  environment: "{{ remnux_packages_env | default(omit) }}"
   notify:
     - Updating ClamAV Signatures
   async: 3600

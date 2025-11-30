@@ -13,6 +13,8 @@
       # - remnux/jsdetox
       - remnux/radare2
       # - radare/radare2
+    remnux_packages_env:
+      PYTHONVERBOSE: 1
   pre_tasks:
     - name: Ensure python3-debian package is present
       ansible.builtin.package:
