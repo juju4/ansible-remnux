@@ -112,7 +112,8 @@ remnux_packages:
   - tcpdump
   - default-jre
   - tcpick
-  - wireshark
+  # FIXME! wireshark : Depends: wireshark-qt (= 3.6.2-2) but it is not going to be installed
+  # - wireshark
   # - radare2
   - p7zip-full
   - upx-ucl
