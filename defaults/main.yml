@@ -1,7 +1,7 @@
 ---
 
 # renovate: datasource=github-releases depName=REMnux/remnux-cli
-remnux_cli_github_version: 'v1.4.3'
+remnux_cli_github_version: 'v1.5.1'
 # remnux_cli_sha256: c8c6d6830cfeb48c9ada2b49c76523c8637d95dc41d00aac345282fb47021f8e
 tz: Etc/UTC
 
