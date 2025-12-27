@@ -6,7 +6,7 @@
     dest: /usr/lib/x86_64-linux-gnu/libwebkit2gtk-4.0.so.37
     state: link
     mode: '0644'
-  when: ansible_distribution_release == 'focal'
+  when: ansible_facts['distribution_release'] == 'focal'
 
 - name: Ensure procdot user directory exists
   ansible.builtin.file:

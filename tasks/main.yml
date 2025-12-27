@@ -3,11 +3,11 @@
 - name: FATAL
   ansible.builtin.fail:
     msg: "This role is only compatible with Ubuntu x86_64"
-  when: ansible_distribution != 'Ubuntu' or ansible_architecture != 'x86_64'
+  when: ansible_facts['distribution'] != 'Ubuntu' or ansible_facts['architecture'] != 'x86_64'
 
 - name: Include version-specific variables for Ubuntu.
-  ansible.builtin.include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml"
-  when: ansible_distribution == 'Ubuntu'
+  ansible.builtin.include_vars: "{{ ansible_facts['distribution'] }}-{{ ansible_facts['distribution_version'] }}.yml"
+  when: ansible_facts['distribution'] == 'Ubuntu'
 
 - name: Debug | var ansible_env
   ansible.builtin.debug:
@@ -43,9 +43,9 @@
   ansible.builtin.command: dpkg --print-foreign-architectures
   register: archi
   changed_when: False
-  when: ansible_architecture == 'x86_64'
+  when: ansible_facts['architecture'] == 'x86_64'
 - name: X86_64 arch
-  when: ansible_architecture == 'x86_64'
+  when: ansible_facts['architecture'] == 'x86_64'
   block:
     - name: Ensure both i386/x86_64 architecture support for packages
       ansible.builtin.command:  # noqa no-changed-when

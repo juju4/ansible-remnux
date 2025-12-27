@@ -15,9 +15,9 @@
     repo: 'ppa:remnux/stable'
     state: present
   when: >
-    ansible_distribution == 'Ubuntu' and (
-      ansible_distribution_release == 'bionic' or
-      ansible_distribution_release == 'focal'
+    ansible_facts['distribution'] == 'Ubuntu' and (
+      ansible_facts['distribution_release'] == 'bionic' or
+      ansible_facts['distribution_release'] == 'focal'
     )
   register: apt_result
   until: apt_result is success
@@ -28,9 +28,9 @@
     repo: 'ppa:sift/stable'
     state: present
   when: >
-    ansible_distribution == 'Ubuntu' and (
-      ansible_distribution_release == 'bionic' or
-      ansible_distribution_release == 'focal'
+    ansible_facts['distribution'] == 'Ubuntu' and (
+      ansible_facts['distribution_release'] == 'bionic' or
+      ansible_facts['distribution_release'] == 'focal'
     )
   register: apt_result
   until: apt_result is success
@@ -51,7 +51,7 @@
   register: pkg_result
   until: pkg_result is success
   when:
-    - ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+    - ansible_facts['distribution'] == 'Debian' or ansible_facts['distribution'] == 'Ubuntu'
     - false
 
 - name: Enabling multiverse repository

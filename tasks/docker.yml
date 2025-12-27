@@ -6,13 +6,13 @@
     regexp: '^manual'
     line: 'manual'
     mode: '0644'
-  when: ansible_service_mgr != 'systemd' and remnux_docker_service_manual | bool
+  when: ansible_facts['service_mgr'] != 'systemd' and remnux_docker_service_manual | bool
 
 - name: Configure docker in manual mode - systemd
   ansible.builtin.systemd:
     name: "{{ docker_svc | default('docker') }}"
     enabled: false
-  when: ansible_service_mgr == 'systemd' and remnux_docker_service_manual | bool
+  when: ansible_facts['service_mgr'] == 'systemd' and remnux_docker_service_manual | bool
   failed_when: false
 
 - name: Ensure docker pip is present
@@ -21,7 +21,7 @@
     state: present
 
 - name: Docker
-  when: not (ansible_virtualization_type is defined and ansible_virtualization_type == "docker")
+  when: not (ansible_facts['virtualization_type'] is defined and ansible_facts['virtualization_type'] == "docker")
   block:
     - name: Ensure docker service is started before downloading images
       ansible.builtin.service:

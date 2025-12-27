@@ -53,7 +53,7 @@
   register: pkg_result
   until: pkg_result is success
   when:
-    - ansible_virtualization_type != 'lxc' or remnux_snap_enable | bool
+    - ansible_facts['virtualization_type'] != 'lxc' or remnux_snap_enable | bool
 
 - name: REMNUX | remnux+sift ppa packages install
   ansible.builtin.apt:
@@ -262,9 +262,9 @@
     enabled: no
   with_items: "{{ remnux_services_disable }}"
 
-- name: Debug | ansible_virtualization_type var
+- name: Debug | ansible_facts['virtualization_type'] var
   ansible.builtin.debug:
-    var: ansible_virtualization_type
+    var: ansible_facts['virtualization_type']
 - name: Modules exclusions for VM
   ansible.builtin.lineinfile:
     dest: /etc/modprobe.d/blacklist.conf
@@ -298,7 +298,7 @@
     line: ' ntfs exfat\"'
     mode: '0644'
   when:
-    - (ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int <= 20)
+    - (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version']|int <= 20)
 - name: Enforce noclobber in remnux user bashrc
   ansible.builtin.lineinfile:
     dest: "/home/{{ remnux_user }}/.bashrc"
