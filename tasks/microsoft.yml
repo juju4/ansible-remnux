@@ -30,7 +30,7 @@
     name: microsoft
     types: deb
     uris: "http://packages.microsoft.com/ubuntu/{{ ansible_facts['distribution_version'] }}/prod"
-    suites: '{{ ansible_facts['distribution_release'] }}'
+    suites: "{{ ansible_facts['distribution_release'] }}"
     components: main
     architectures: amd64
     signed_by: https://packages.microsoft.com/keys/microsoft.asc
