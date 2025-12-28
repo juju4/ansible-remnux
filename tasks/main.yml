@@ -9,9 +9,9 @@
   ansible.builtin.include_vars: "{{ ansible_facts['distribution'] }}-{{ ansible_facts['distribution_version'] }}.yml"
   when: ansible_facts['distribution'] == 'Ubuntu'
 
-- name: Debug | var ansible_env
+- name: Debug | var ansible_facts['env']
   ansible.builtin.debug:
-    var: ansible_env
+    var: ansible_facts['env']
     verbosity: 1
 - name: Github Actions | Set facts
   ansible.builtin.set_fact:
@@ -22,8 +22,8 @@
       # runner has a more recent python than older distributions
     remnux_pip_packages_version: []
   when: >
-    (ansible_env['GITHUB_ACTIONS'] is defined and ansible_env['GITHUB_ACTIONS'] == 'true') or
-    (ansible_env['RUNNER_USER'] is defined and ansible_env['RUNNER_USER'] == 'runner')
+    (ansible_facts['env']['GITHUB_ACTIONS'] is defined and ansible_facts['env']['GITHUB_ACTIONS'] == 'true') or
+    (ansible_facts['env']['RUNNER_USER'] is defined and ansible_facts['env']['RUNNER_USER'] == 'runner')
 
 ## fails under lxd+systemd, https://github.com/ansible/ansible-modules-core/issues/5582
 - name: Set remnux hostname
