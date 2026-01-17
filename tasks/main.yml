@@ -88,7 +88,7 @@
     create: "yes"
   with_items:
     - 'DEBIAN_SNORT_HOME_NET="any"'
-    - "DEBIAN_SNORT_INTERFACE=\"{{ ansible_default_ipv4.address }}\""
+    - "DEBIAN_SNORT_INTERFACE=\"{{ ansible_facts['default_ipv4'].address }}\""
 
 - name: Import x11
   ansible.builtin.import_tasks: x11.yml
