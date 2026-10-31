@@ -1,0 +1,146 @@
+---
+name: default-bare-monthly
+
+on:
+  workflow_dispatch:
+  schedule:  # run on the 11th of the month
+    - cron: '40 1 11 * *'
+  merge_group:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref }}
+  cancel-in-progress: true
+
+permissions: {}
+
+jobs:
+  build:
+    permissions:
+      contents: read
+    runs-on: ${{ matrix.distribution }}-${{ matrix.version }}
+    continue-on-error: ${{ matrix.experimental }}
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        include:
+          - distribution: ubuntu
+            version: '26.04'
+            suite: default
+            experimental: true
+          - distribution: ubuntu
+            version: '24.04'
+            suite: default
+            experimental: false
+    env:
+      ANSIBLE_CALLBACKS_ENABLED: profile_tasks
+      ANSIBLE_EXTRA_VARS: ""
+      ANSIBLE_ROLE: juju4.remnux
+      ANSIBLE_SUITE: ${{ matrix.suite }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          path: ${{ env.ANSIBLE_ROLE }}
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97  # v7.0.0
+        with:
+          python-version: '3.14'
+      - name: Cache
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9  # v6.1.0
+        with:
+          path: |
+            /var/cache/apt/archives
+            /var/lib/apt
+            /var/_install
+          key: cache-ansible-remnux-${{ steps.get-date.outputs.date }}
+      - name: Install dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          pip3 install ansible-lint flake8 yamllint
+          pip3 install python-debian
+          which ansible
+          pip3 install ansible
+          pip3 show ansible
+          ls -l $HOME/.local/bin || true
+          ansible --version
+          cd $GITHUB_WORKSPACE/$ANSIBLE_ROLE
+          [ -f molecule/$ANSIBLE_SUITE/requirements.yml ] && ansible-galaxy install -r molecule/$ANSIBLE_SUITE/requirements.yml
+          [ -f get-dependencies.sh ] && sh -x get-dependencies.sh
+          { echo '[defaults]'; echo 'callback_enabled = profile_tasks, timer'; echo 'roles_path = ../:/home/runner/.ansible/roles'; echo 'ansible_python_interpreter: /usr/bin/python3'; } >> ansible.cfg
+      - name: Environment
+        run: |
+          set -x
+          ansible --version
+          ansible-config dump --only-changed -t all
+          ansible-galaxy collection list || true
+          ansible-galaxy role list || true
+          pwd
+          env
+          find . -ls
+      - name: Galaxy dependencies
+        run: |
+          cd $GITHUB_WORKSPACE/$ANSIBLE_ROLE && ansible-galaxy install --timeout 120 --verbose -r molecule/$ANSIBLE_SUITE/requirements.yml
+        continue-on-error: true
+      - name: run test
+        run: |
+          cd $GITHUB_WORKSPACE/$ANSIBLE_ROLE && ansible-playbook -i localhost, --connection=local --become -vvv test/integration/${{ matrix.suite }}/default.yml ${ANSIBLE_EXTRA_VARS}
+        env:
+          PY_COLORS: '1'
+          ANSIBLE_FORCE_COLOR: '1'
+      - name: idempotency run
+        run: |
+          cd $GITHUB_WORKSPACE/$ANSIBLE_ROLE && ansible-playbook -i localhost, --connection=local --become -vvv test/integration/${{ matrix.suite }}/default.yml ${ANSIBLE_EXTRA_VARS} | tee /tmp/idempotency.log | grep -q 'changed=0.*failed=0'  && (echo 'Idempotence test: pass' && exit 0)  || (echo 'Idempotence test: fail' && cat /tmp/idempotency.log && exit 0)
+      - name: On failure
+        run: |
+          systemctl -l --no-pager status
+          systemctl -l --no-pager --failed
+          ls -l /usr/bin/ | egrep '(python|pip|ansible)'
+          pip freeze
+          pip3 freeze
+          ip addr
+          cat /etc/resolv.conf
+          host www.google.com
+          ping -c 1 www.google.com || true
+          ping -c 1 8.8.8.8 || true
+          ps axuw
+          netstat -anp
+        if: ${{ failure() }}
+        continue-on-error: true
+      - name: After script - ansible setup
+        run: |
+          ansible -i inventory --connection=local -m setup localhost
+        if: ${{ always() }}
+        continue-on-error: true
+      - name: After script - systemd
+        run: |
+          systemctl -l --no-pager status iptables || true
+          systemd-analyze --no-pager security || true
+          rsyslogd -v
+        if: ${{ always() }}
+        continue-on-error: true
+      - name: After script - etc
+        run: |
+          ls -la /etc
+          ls -la /etc/ssh/
+        continue-on-error: true
+      - name: After script - apt
+        run: |
+          apt show libtsk-dev -a
+          apt show libtsk13 -a
+          apt show libewf -a
+          apt show libewf2 -a
+          sudo apt-get install -y apt-rdepends
+          apt-rdepends libtsk-dev
+        if: ${{ always() }}
+        continue-on-error: true
+      - name: After script - files
+        run: |
+          sudo ls /home/sansforensics
+          sudo ls /home/sansforensics/Desktop
+          ls -lA /usr/local/bin
+          ls -lA /usr/share/remnux
+          ls -lA /etc/apt/sources.list.d
+        if: ${{ always() }}
+        continue-on-error: true

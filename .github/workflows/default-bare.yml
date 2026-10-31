@@ -23,10 +23,6 @@ jobs:
       matrix:
         include:
           - distribution: ubuntu
-            version: '26.04'
-            suite: default
-            experimental: true
-          - distribution: ubuntu
             version: '24.04'
             suite: default
             experimental: false
