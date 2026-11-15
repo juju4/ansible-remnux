@@ -1,39 +1,27 @@
 ---
 # https://github.com/REMnux/salt-states/tree/master/remnux/repos
 
-- name: Install Remnux gpg key
-  ansible.builtin.apt_key:
-    url: "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xbff45016788de115"
-    state: present
-  register: pkg_result
-  until: pkg_result is success
-
-
 # https://launchpad.net/~remnux/+archive/ubuntu/stable
-- name: Adding REMnux repository
-  ansible.builtin.apt_repository:
-    repo: 'ppa:remnux/stable'
-    state: present
-  when: >
-    ansible_facts['distribution'] == 'Ubuntu' and (
-      ansible_facts['distribution_release'] == 'bionic' or
-      ansible_facts['distribution_release'] == 'focal'
-    )
-  register: apt_result
-  until: apt_result is success
+- name: Adding Remnux repo
+  ansible.builtin.deb822_repository:
+    name: remnux
+    types: deb
+    uris: https://ppa.launchpadcontent.net/remnux/stable/ubuntu
+    suites: '{{ ansible_distribution_release }}'
+    components: main
+    architectures: amd64
+    signed_by: "https://keyserver.ubuntu.com/pks/lookup?fingerprint=on&op=index&search=0xE90F33EEF615660D25A02D32BFF45016788DE115"
 
 # https://launchpad.net/~sift/+archive/ubuntu/stable
 - name: Adding SIFT repository
-  ansible.builtin.apt_repository:
-    repo: 'ppa:sift/stable'
-    state: present
-  when: >
-    ansible_facts['distribution'] == 'Ubuntu' and (
-      ansible_facts['distribution_release'] == 'bionic' or
-      ansible_facts['distribution_release'] == 'focal'
-    )
-  register: apt_result
-  until: apt_result is success
+  ansible.builtin.deb822_repository:
+    name: sift
+    types: deb
+    uris: https://ppa.launchpadcontent.net/sift/stable/ubuntu
+    suites: '{{ ansible_distribution_release }}'
+    components: main
+    architectures: amd64
+    signed_by: "https://keyserver.ubuntu.com/pks/lookup?fingerprint=on&op=index&search=0xE90F33EEF615660D25A02D32BFF45016788DE115"
 
 - name: Install draios apt gpg key
   ansible.builtin.get_url:
@@ -45,11 +33,13 @@
   when: false
 
 - name: Adding Draios repository (sysdig)
-  ansible.builtin.apt_repository:
-    repo: 'deb https://download.sysdig.com/stable/deb stable-$(ARCH)/'
-    state: present
-  register: pkg_result
-  until: pkg_result is success
+  ansible.builtin.deb822_repository:
+    name: draios
+    types: deb
+    uris: https://download.sysdig.com/stable/deb
+    suites: '{{ ansible_distribution_release }}'
+    components: "stable-{{ ansible_architecture }}"
+    signed_by: https://s3.amazonaws.com/download.draios.com/DRAIOS-GPG-KEY.public
   when:
     - ansible_facts['distribution'] == 'Debian' or ansible_facts['distribution'] == 'Ubuntu'
     - false
@@ -70,6 +60,10 @@
     mode: '0644'
     owner: root
 - name: Adding wireshark-dev ppa repository
-  ansible.builtin.apt_repository:
-    repo: 'ppa:wireshark-dev/stable'
-    state: present
+  ansible.builtin.deb822_repository:
+    name: wireshark-dev
+    types: deb
+    uris: https://ppa.launchpadcontent.net/wireshark-dev/stable/ubuntu
+    suites: '{{ ansible_distribution_release }}'
+    components: main
+    signed_by: /etc/apt/trusted.gpg.d/wireshark-dev.asc
