@@ -7,10 +7,52 @@
     name: remnux
     types: deb
     uris: https://ppa.launchpadcontent.net/remnux/stable/ubuntu
-    suites: '{{ ansible_distribution_release }}'
+    suites: '{{ ansible_facts.distribution_release }}'
     components: main
     architectures: amd64
-    signed_by: "https://keyserver.ubuntu.com/pks/lookup?fingerprint=on&op=index&search=0xE90F33EEF615660D25A02D32BFF45016788DE115"
+    signed_by: |-
+      -----BEGIN PGP PUBLIC KEY BLOCK-----
+      Version: Hockeypuck 2.2
+      Comment: Hostname:
+
+      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
+      =uYf7
+      -----END PGP PUBLIC KEY BLOCK-----
 
 # https://launchpad.net/~sift/+archive/ubuntu/stable
 - name: Adding SIFT repository
@@ -18,10 +60,40 @@
     name: sift
     types: deb
     uris: https://ppa.launchpadcontent.net/sift/stable/ubuntu
-    suites: '{{ ansible_distribution_release }}'
+    suites: '{{ ansible_facts.distribution_release }}'
     components: main
     architectures: amd64
-    signed_by: "https://keyserver.ubuntu.com/pks/lookup?fingerprint=on&op=index&search=0xE90F33EEF615660D25A02D32BFF45016788DE115"
+    signed_by: |-
+      -----BEGIN PGP PUBLIC KEY BLOCK-----
+      Comment: Hostname:
+      Version: Hockeypuck 2.2
+
+      xsFNBGY0ls8BEACsyS/2V/qJ0XOYfA9vkfLwP+FWXJwbSvDk+sSZXwjk9a2Hq/Yo
+      6F10LFt3BsNwWaRA/7cEPW5ovuEV+z5VgjGDl6ZhNGZTRX7BhEwX53+IN90+v8Lq
+      6jGFMhKYZQ1aZbRQQsWkZ2g7k05O9pQOCP6gbX8nARE/Z3ZxcD0oM9skPv9IcV7/
+      /JBs5hwGcWgyMEtuzblH7P8oadfOS5ajuuI5Mn63FLs6Njlqb/0j6RTn4ecwe5ok
+      a06iQOyM7w6kZyw971XapXSA8Xozjc/QX6Xw3nnM4E+IYn3neuVPy1hC9BI0ZWa4
+      a702NLpe0ipBRz0S/fkieUEdb42z/JY5hhYpqN/K8nhPP7vXIg9k88+oVo+3fpD5
+      mWC5qWEQxNY0u/x9GqHABHiwQHCU2dw7weyYKkpPVXS2SBEWMlzvKRN1gGf968Mq
+      IvD8DxQ74JCblAW9q33Wfn4mBW1lfTSCkReQN7Vp3H99hHXadn9qRJpzEqgBFCEG
+      3mC5GBZF5Eu5pLF+ldjTtMzW/5mgq7Rw4sn/ypKoyF2IYMVjlyUa7X4yAtuJjOJ8
+      guqOUncgdgTNA23RFIe+Q0CY6s/RPuGMx1NXLSlPPEjSWE8eiXFv00L1xd1LnMx0
+      r+evec2jmSPpJvzZuv7vxUz39TA9jkNmmOlib2kVFFRlq5w8Y9hMpDRtOwARAQAB
+      zRZMYXVuY2hwYWQgUFBBIGZvciBTSUZUwsGOBBMBCgA4FiEEk0ZQAdxMij/LvP4m
+      OkMojuCrJvsFAmY0ls8CGwMFCwkIBwIGFQoJCAsCBBYCAwECHgECF4AACgkQOkMo
+      juCrJvuxUQ/+JGSEG9hSBnzOTp7MC36u7F/2yLguRfP/51knBf0A+sWg/kl/lsYX
+      jD6/v3wRKUpEH9NKGbjniPFG1pwdp4gfKDvGVsLD2SXsLFAA8kg/d4XSwtY9RNs4
+      hhn7PwUv67SXYFPnVxgodlg1okFj2NIv9SiFVjhc/ZVvCQIi67h3airgURFvKD4Z
+      jqtRA/WI23HI4QL6lObj2zjcmHi+p4huWzd4ddvKL7tFUH9pjUb/JlDlhMXPzOKy
+      IG36CXTy0qRT59ElaSN53HoqPvzhE918eePmx7eCk7X1xd0zuAPsb/axh3/fzWKz
+      y3Rm7iZDMIETWO0V8+HwczaAH+lzX7ZnsXZ7WWwsd3T3axWzNE/W+yd9ZZG52Fd3
+      qb2r9TEptYEf4p3/fScEpcdji3hAHcV3XQxIGuWWVLVNsb+QZFfo/NKogINmphNp
+      WjdfmGurYB7u384k2cBX/ENPdCotZiOXWesCo0jz2wxiGMpCCZmwUfyOtZAXnLA8
+      Hs1asVVEpcc4uENTHNAfXKRu3Mr9GtOG6WqPKohHxhQT2pN9xQL/75pCqrwE+EPs
+      py4aX1oCEuD/X4nndprAW5aTtJRCCIOsE2fEdJjt7nNHgAhEorYwgdxRfxy+7nvz
+      vuDXq1Aav5U0plxWBDPSHd0YcnaynkUT51qz4L5wb9f6wJubJryeXZ0=
+      =x9yS
+      -----END PGP PUBLIC KEY BLOCK-----
 
 - name: Install draios apt gpg key
   ansible.builtin.get_url:
@@ -37,8 +109,8 @@
     name: draios
     types: deb
     uris: https://download.sysdig.com/stable/deb
-    suites: '{{ ansible_distribution_release }}'
-    components: "stable-{{ ansible_architecture }}"
+    suites: '{{ ansible_facts.distribution_release }}'
+    components: "stable-{{ ansible_facts.architecture }}"
     signed_by: https://s3.amazonaws.com/download.draios.com/DRAIOS-GPG-KEY.public
   when:
     - ansible_facts['distribution'] == 'Debian' or ansible_facts['distribution'] == 'Ubuntu'
@@ -64,6 +136,6 @@
     name: wireshark-dev
     types: deb
     uris: https://ppa.launchpadcontent.net/wireshark-dev/stable/ubuntu
-    suites: '{{ ansible_distribution_release }}'
+    suites: '{{ ansible_facts.distribution_release }}'
     components: main
     signed_by: /etc/apt/trusted.gpg.d/wireshark-dev.asc
