@@ -17,7 +17,7 @@
   with_items:
     - { u: 'https://github.com/ekristen/cast/releases/download/{{ remnux_cast_github_version }}/cast-{{ remnux_cast_github_version }}-linux-amd64.deb', m: '0644' }
     - { u: 'https://github.com/ekristen/cast/releases/download/{{ remnux_cast_github_version }}/checksums.txt', m: '0400' }
-    - { u: 'https://github.com/ekristen/cast/releases/download/{{ remnux_cast_github_version }}/checksums.txt.sig', m: '0400' }
+    - { u: 'https://github.com/ekristen/cast/releases/download/{{ remnux_cast_github_version }}/checksums.txt.sigstore', m: '0400' }
     - { u: 'https://github.com/ekristen/cast/releases/download/{{ remnux_cast_github_version }}/cosign.pub', m: '0400' }
 
 - name: Install cast
