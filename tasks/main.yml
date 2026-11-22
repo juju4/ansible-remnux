@@ -122,8 +122,5 @@
     mode: "0755"
     owner: "{{ remnux_user }}"
 
-- name: Import remnux-cli
-  ansible.builtin.import_tasks: remnux-cli.yml
-
 - name: Include cast
   ansible.builtin.include_tasks: cast.yml
