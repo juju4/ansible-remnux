@@ -1,7 +1,7 @@
 ---
 
 # renovate: datasource=github-releases depName=ekristen/cast
-remnux_cast_github_version: 'v1.0.44'
+remnux_cast_github_version: 'v1.0.42'
 # remnux_cast_sha256:
 
 tz: Etc/UTC
